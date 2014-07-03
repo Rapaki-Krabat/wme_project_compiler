@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ProjectMan.h"
+// #include "ProjectMan.h"
 #include "FilterUncompressed.h"
 
 #ifdef _DEBUG

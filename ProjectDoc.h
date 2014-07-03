@@ -9,8 +9,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "../engine_core/wme_ad/dcgf_ad.h"
-#include "../MFCExt/DCGFDoc.h"
+#include "./engine_core/wme_ad/dcgf_ad.h"
+#include "./MFCExt/DCGFDoc.h"
 #include "Package.h"
 #include "PackagerFilter.h"
 #include "EdSettings.h"

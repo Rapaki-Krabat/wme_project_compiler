@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "../engine_core/wme_ad/dcgf_ad.h"
+#include "./engine_core/wme_ad/dcgf_ad.h"
 #include "EdGame.h"
 
 class CEdSettings : public CBObject  

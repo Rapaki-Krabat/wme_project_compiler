@@ -2,21 +2,24 @@
 //
 
 #include "stdafx.h"
-#include "ProjectMan.h"
+// #include "ProjectMan.h"
+#include "Resource.h"
 #include <algorithm>
 
-#include "MainFrm.h"
-#include "ChildFrm.h"
+#include "./engine_core/wme_ad/dcgf_ad.h"
+
+// #include "MainFrm.h"
+// #include "ChildFrm.h"
 #include "ProjectDoc.h"
-#include "ProjectView.h"
-#include "ViewLog.h"
+// #include "ProjectView.h"
+// #include "ViewLog.h"
 #include "PackagerFilter.h"
 #include "FilterScript.h"
 #include "FilterExclude.h"
 #include "FilterUncompressed.h"
 #include "FilterCopy.h"
-#include "../MFCExt/TemplateDlg.h"
-#include "../MFCExt/utils_mfc.h"
+// #include "./MFCExt/TemplateDlg.h"
+#include "./MFCExt/utils_mfc.h"
 
 #include "PackageBuilder.h"
 
@@ -26,6 +29,8 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+#define LOC(X) X
 
 /////////////////////////////////////////////////////////////////////////////
 // CProjectDoc
@@ -479,6 +484,7 @@ BOOL CProjectDoc::OnNewDocument()
 	m_Filters.Add(FilterCopy);
 
 
+	/*
 	CTemplateDlg dlg;
 	dlg.m_SelectDir = true;
 	dlg.m_Subdir = "project";
@@ -492,6 +498,8 @@ BOOL CProjectDoc::OnNewDocument()
 		else return FALSE;
 	}
 	else return FALSE;
+	*/
+	return TRUE;
 }
 
 
@@ -568,11 +576,13 @@ bool CProjectDoc::CompilePackages(CPackage* SinglePackage)
 	ValidatePackages();
 	CPackageBuilder builder(this);
 
+	/*
 	CChildFrame* frame = (CChildFrame*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame();
 	if(frame)
 	{
 		frame->m_Framework.SetActiveTab(frame->m_Framework.Get(6));
 	}
+	*/
 
 	OnSaveDocument(GetPathName());
 	bool Ret = builder.Compile(SinglePackage);
@@ -591,32 +601,44 @@ bool CProjectDoc::CompilePackages(CPackage* SinglePackage)
 //////////////////////////////////////////////////////////////////////////
 void CProjectDoc::AddWarning(CString Text, CString Filename)
 {
+	/*
 	CProjectView* View = GetView();
 	if(View && View->m_ViewLog) View->m_ViewLog->AddWarning(Text, Filename);
+	*/
+	printf("WARNING! %s:%s.\n", Text, Filename);
 }
 
 
 //////////////////////////////////////////////////////////////////////////
 void CProjectDoc::AddError(CString Text, CString Filename)
 {
+	/*
 	CProjectView* View = GetView();
 	if(View && View->m_ViewLog) View->m_ViewLog->AddError(Text, Filename);
+	*/
+	printf("ERROR! %s:%s.\n", Text, Filename);
 }
 
 
 //////////////////////////////////////////////////////////////////////////
 void CProjectDoc::AddInfo(CString Text, CString Filename)
 {
+	/*
 	CProjectView* View = GetView();
 	if(View && View->m_ViewLog) View->m_ViewLog->AddInfo(Text, Filename);
+	*/
+	printf("INFO! %s:%s.\n", Text, Filename);
 }
 
 
 //////////////////////////////////////////////////////////////////////////
 void CProjectDoc::AddLog(CString Text, CString Filename)
 {
+	/*
 	CProjectView* View = GetView();
 	if(View && View->m_ViewLog) View->m_ViewLog->AddLog(Text, Filename);
+	*/
+	printf("LOG! %s:%s.\n", Text, Filename);
 }
 
 
@@ -649,8 +671,10 @@ CString CProjectDoc::GetWMEPath()
 
 
 //////////////////////////////////////////////////////////////////////////
+
 void CProjectDoc::OnProjectRun() 
 {
+#if 0
 	int ShowSettings = GetRegInt(HKEY_CURRENT_USER, DCGF_TOOLS_REG_PATH, "ShowSettingsDlg", 1);
 
 	if((GetAsyncKeyState(VK_CONTROL) & 0x8000)!=0){
@@ -670,6 +694,7 @@ void CProjectDoc::OnProjectRun()
 	((CDCGFApp*)AfxGetApp())->m_Active = false;
 	//UINT Ret = WinExec(WmePath, SW_NORMAL);
 	ShellExecute(NULL, "open", WmePath, Params, GetPath(GetPathName()), SW_NORMAL);
+#endif
 }
 
 
@@ -685,6 +710,7 @@ CProjectView* CProjectDoc::GetView()
 //////////////////////////////////////////////////////////////////////////
 BOOL CProjectDoc::SaveModified() 
 {
+/*
 	CProjectView* View = GetView();
 	if(View && View->m_ThreadWorking){
 		MessageBeep(MB_ICONERROR);
@@ -692,6 +718,8 @@ BOOL CProjectDoc::SaveModified()
 	}
 	
 	return CDCGFDoc::SaveModified();
+	*/
+	return TRUE;
 }
 
 

@@ -3,15 +3,15 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "projectman.h"
+// #include "projectman.h"
 #include "PackageBuilder.h"
 
 #include "ProjectDoc.h"
 #include "PackagerFilter.h"
-#include "CompileDlg.h"
-#include "../MFCExt/utils_mfc.h"
+// #include "CompileDlg.h"
+#include "./MFCExt/utils_mfc.h"
 #include <Shlwapi.h>
-#include "dcpackage.h"
+#include "./engine_core/wme_base/dcpackage.h"
 #include "zlib.h"
 #include "UtilIcon.h"
 #include "Package.h"
@@ -22,6 +22,8 @@
 static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
+
+#define LOC(X) X
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -73,6 +75,7 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 	CString NewExeName = "";
 
 
+	/*
 	CCompileDlg dlg;
 	AfxGetMainWnd()->EnableWindow(FALSE);
 
@@ -82,7 +85,7 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 	dlg.m_Title1.SetWindowText("");
 	dlg.m_Title2.SetWindowText("");
 	dlg.m_Progress.SetPos(0);
-
+	*/
 
 	CString OutputPath = m_Doc->m_PackOutputFolder;
 	if(OutputPath[OutputPath.GetLength()-1]!='\\') OutputPath+="\\";
@@ -92,10 +95,10 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 	}
 
 	// prepare output
-	dlg.m_Title1.SetWindowText(LOC("/str0108/Preparing output folder..."));
-	dlg.Update();
+	printf(LOC("/str0108/Preparing output folder..."));
+	// dlg.Update();
 	if(MakePath(OutputPath)==""){
-		m_Doc->AddError(CString(LOC("/str0109/Cannot create output folder")) + " '" + OutputPath + "'");
+		printf(CString(LOC("/str0109/Cannot create output folder")) + " '" + OutputPath + "'");
 		ret = false;
 		goto finish;
 	}
@@ -105,8 +108,8 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 	// prepare packages/files
 	Cleanup();
 	
-	dlg.m_Title1.SetWindowText(LOC("/str0110/Preparing build..."));
-	dlg.Update();	
+	printf(LOC("/str0110/Preparing build..."));
+	//dlg.Update();	
 
 	bool IsNT = false;
 	OSVERSIONINFO osvi;
@@ -123,14 +126,14 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 			if(GetExt(NewExeName).CompareNoCase("EXE")!=0) NewExeName += ".exe";
 
 			if(!::CopyFile(m_Doc->GetWMEPath(), NewExeName, FALSE)){
-				m_Doc->AddWarning(LOC("/str0148/Error copying the engine runtime to the output folder"));
+				printf(LOC("/str0148/Error copying the engine runtime to the output folder"));
 			}
 			else if(m_Doc->m_PackChangeIcon)
 			{
 				// change icon
 				if(!IsNT)
 				{
-					m_Doc->AddWarning(LOC("/str0149/Icon changing is not supported on this Windows version"));
+					printf(LOC("/str0149/Icon changing is not supported on this Windows version"));
 				}
 				else{
 
@@ -143,10 +146,10 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 
 					HANDLE h = BeginUpdateResource(NewExeName, FALSE);
 					if(h){
-						if(!AddIconToRes(h, IconName, 1, 101)) m_Doc->AddWarning(LOC("/str0150/Error changing icon"));
+						if(!AddIconToRes(h, IconName, 1, 101))printf(LOC("/str0150/Error changing icon"));
 						EndUpdateResource(h, FALSE);
 					}
-					else m_Doc->AddWarning("/str0150/Error changing icon");
+					else printf("/str0150/Error changing icon");
 				}
 			}
 		}
@@ -163,14 +166,14 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 
 			if(!::CopyFile(ToolsPath, NewSetName, FALSE))
 			{
-				m_Doc->AddWarning(LOC("/str1162/Error copying settings.exe to the output folder"));
+				printf(LOC("/str1162/Error copying settings.exe to the output folder"));
 			}
 			else if(m_Doc->m_PackChangeIconSet)
 			{
 				// change icon
 				if(!IsNT)
 				{
-					m_Doc->AddWarning(LOC("/str0149/Icon changing is not supported on this Windows version"));
+					printf(LOC("/str0149/Icon changing is not supported on this Windows version"));
 				}
 				else
 				{
@@ -182,10 +185,10 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 
 					HANDLE h = BeginUpdateResource(NewSetName, FALSE);
 					if(h){
-						if(!AddIconToRes(h, IconName, 1, 101)) m_Doc->AddWarning(LOC("/str0150/Error changing icon"));
+						if(!AddIconToRes(h, IconName, 1, 101))printf(LOC("/str0150/Error changing icon"));
 						EndUpdateResource(h, FALSE);
 					}
-					else m_Doc->AddWarning("/str0150/Error changing icon");
+					else printf("/str0150/Error changing icon");
 				}
 			}
 		}
@@ -201,7 +204,7 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 
 			if(!::CopyFile(ToolsPath, TargetFile, FALSE))
 			{
-				m_Doc->AddWarning(LOC("/str1185/Error copying D3DX library to the output folder"));
+				printf(LOC("/str1185/Error copying D3DX library to the output folder"));
 			}
 		}
 
@@ -210,7 +213,7 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 		{
 			if(!IsNT)
 			{
-				m_Doc->AddWarning(LOC("/str1168/Inserting Game Explorer data is not supported on this Windows version"));
+				printf(LOC("/str1168/Inserting Game Explorer data is not supported on this Windows version"));
 			}
 			else AddGDF(NewExeName);
 		}
@@ -231,12 +234,12 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 					if(TRUE==::CopyFile(Plugin->m_DllPath, OutputPath + ShortName, FALSE))
 					{
 						PluginFound = true;
-						m_Doc->AddInfo(LOC("/str1124/Copying plugin") + CString(" ") + ShortName);
+						printf(LOC("/str1124/Copying plugin") + CString(" ") + ShortName);
 					}
 					break;
 				}
 			}
-			if(!PluginFound) m_Doc->AddError(LOC("/str1125/Error copying plugin") + CString(" ") + m_Doc->m_PluginList[i]);
+			if(!PluginFound)printf(LOC("/str1125/Error copying plugin") + CString(" ") + m_Doc->m_PluginList[i]);
 		}
 
 		// debugging stuff
@@ -250,7 +253,7 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 
 			if(!::CopyFile(ToolsPath, TargetFile, FALSE))
 			{
-				m_Doc->AddWarning(LOC("/str1176/Error copying wme_report.dll to the output folder"));
+				printf(LOC("/str1176/Error copying wme_report.dll to the output folder"));
 			}
 		}
 		if(m_Doc->m_PackAddDebugMode || m_Doc->m_PackAddFpsDisplay)
@@ -281,53 +284,58 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 		GetAllFiles(package, package->FullName);
 		if(package->m_Files.GetSize()>0) m_Packages.Add(package);
 		else{
-			m_Doc->AddWarning(CString(LOC("/str0111/Package")) + " '" + package->Name + "': " + LOC("/str0112/no files to add"));
+			printf(CString(LOC("/str0111/Package")) + " '" + package->Name + "': " + LOC("/str0112/no files to add"));
 			delete package;
 		}
 	}
+
+	/*
 	if(dlg.m_CloseRequest){
 		m_Doc->AddWarning(LOC("/str0113/Cancelled by user"));
 		goto finish;
 	}
+	*/
 	
 	if(m_Packages.GetSize()==0){
-		m_Doc->AddWarning(LOC("/str0114/All packages are empty."));
+		printf(LOC("/str0114/All packages are empty."));
 		goto finish;
 	}
 
 
-	dlg.m_Progress.SetRange32(0, m_TotalFiles);
+	// dlg.m_Progress.SetRange32(0, m_TotalFiles);
 
 	// build packages
 	for(i=0; i<m_Packages.GetSize(); i++){		
-		ret = CreatePackage(m_Packages[i], &dlg, OutputPath);
+		ret = CreatePackage(m_Packages[i], NULL/* &dlg */, OutputPath);
 		if(!ret) break;
 
 		if(m_Doc->m_PackCopyExe && m_Doc->m_BindPackage==m_Packages[i]->Name){
 			AppendFiles(NewExeName, OutputPath + m_Packages[i]->Name + "." + PACKAGE_EXTENSION);
 		}
 
+		/*
 		if(dlg.m_CloseRequest){
-			m_Doc->AddWarning(LOC("/str0113/Cancelled by user"));
+			printf(LOC("/str0113/Cancelled by user"));
 			goto finish;
-		}	
+		}
+		*/
 	}
 
 	// build master index
 	if(ret && m_Doc->m_PackBuildMasterIndex)
-		ret = CreateMasterPackage(&dlg, OutputPath);
+		ret = CreateMasterPackage(NULL/*&dlg */, OutputPath);
 
 
 
 
 finish:
-	dlg.EndDialog(IDOK);
-	dlg.DestroyWindow();
-	AfxGetMainWnd()->EnableWindow(TRUE);
+	//dlg.EndDialog(IDOK);
+	//dlg.DestroyWindow();
+	//AfxGetMainWnd()->EnableWindow(TRUE);
 	Cleanup();
 
 	if(!ret) DeleteAllPAckages(OutputPath, SinglePackage);
-	else m_Doc->AddInfo(LOC("/str0115/Packages created successfuly"));
+	else printf(LOC("/str0115/Packages created successfuly"));
 	MessageBeep(ret?MB_OK:MB_ICONERROR);
 
 	return ret;
@@ -370,24 +378,24 @@ bool CPackageBuilder::GetAllFiles(TPackage *Package, CString Path)
 
 
 //////////////////////////////////////////////////////////////////////////
-bool CPackageBuilder::CreatePackage(TPackage* Package, CCompileDlg* dlg, CString OutputPath)
+bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg, CString OutputPath)
 {
 	DWORD dw;
 	int i;
 
 	// initialize filters
-	dlg->m_Title1.SetWindowText(LOC("/str0116/Initializing filters..."));
-	dlg->m_Title2.SetWindowText("");
-	dlg->Update();
+	printf(LOC("/str0116/Initializing filters..."));
+	//dlg->m_Title2.SetWindowText("");
+	//dlg->Update();
 	for(i=0; i<m_Doc->m_Filters.GetSize(); i++) m_Doc->m_Filters[i]->Initialize(Package);
 
 
-	dlg->m_Title1.SetWindowText(CString(LOC("/str0117/Package")) + ": " + Package->Name);
+	printf(CString(LOC("/str0117/Package")) + ": " + Package->Name);
 	m_Doc->AddInfo(CString(LOC("/str0118/Creating package")) + " '" + Package->Name + "'");
 	CString Filename = OutputPath + Package->Name + "." + PACKAGE_EXTENSION;
 	FILE* f = fopen(Filename, "wb");
 	if(!f){
-		m_Doc->AddError(CString(LOC("/str0119/Error opening file")) + " '" + Filename + "' " + LOC("/str0120/for writing"));
+		printf(CString(LOC("/str0119/Error opening file")) + " '" + Filename + "' " + LOC("/str0120/for writing"));
 		return false;
 	}
 
@@ -419,20 +427,22 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, CCompileDlg* dlg, CString
 		TFile* File = Package->m_Files[i];
 
 		m_ProcessedFiles++;
-		dlg->m_Title2.SetWindowText(CString(LOC("/str0121/File")) + ": " + File->Name);
-		dlg->m_Progress.SetPos(m_ProcessedFiles);
-		dlg->Update();
+		printf(CString(LOC("/str0121/File")) + ": " + File->Name);
+		// dlg->m_Progress.SetPos(m_ProcessedFiles);
+		//dlg->Update();
+		/*
 		if(dlg->m_CloseRequest){
 			fclose(f);
 			m_Doc->AddWarning(LOC("/str0113/Cancelled by user"));
 			return false;
 		}
+		*/
 
 		// read file
 		FILE* entry = fopen(File->FullName, "rb");
 		if(!entry){
 			fclose(f);
-			m_Doc->AddError(CString(LOC("/str0122/Cannot open file")) + " '" + File->FullName + "' " + LOC("/str0123/for reading"), File->Name);
+			printf(CString(LOC("/str0122/Cannot open file")) + " '" + File->FullName + "' " + LOC("/str0123/for reading"), File->Name);
 			return false;
 		}
 		fseek(entry, 0, SEEK_END);
@@ -442,7 +452,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, CCompileDlg* dlg, CString
 		if(!Buffer){
 			fclose(entry);
 			fclose(f);
-			m_Doc->AddError(CString(LOC("/str0124/Cannot allocate memory for file")) + " '" + File->FullName + "'", File->Name);
+			printf(CString(LOC("/str0124/Cannot allocate memory for file")) + " '" + File->FullName + "'", File->Name);
 			return false;
 		}
 
@@ -469,7 +479,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, CCompileDlg* dlg, CString
 		// error applying filter?
 		if(Processed==CPackagerFilter::PROC_ERROR){
 			fclose(f);
-			m_Doc->AddError(CString(LOC("/str0125/Error applying filter to file")) + " '" + File->Name + "'", File->Name);
+			printf(CString(LOC("/str0125/Error applying filter to file")) + " '" + File->Name + "'", File->Name);
 			return false;
 		}
 
@@ -498,7 +508,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, CCompileDlg* dlg, CString
 			if(!CompBuffer) CompressedSize = 0;
 			else{
 				if(Z_OK!=compress(CompBuffer, &CompressedSize, Buffer, Size)){
-					m_Doc->AddWarning(CString(LOC("/str0126/Error compressing file")) + " '" + File->FullName + "'", File->Name);
+					printf(CString(LOC("/str0126/Error compressing file")) + " '" + File->FullName + "'", File->Name);
 					delete [] CompBuffer;
 					CompressedSize = 0;
 				}
@@ -573,17 +583,17 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, CCompileDlg* dlg, CString
 
 #define MASTER_NAME "master"
 //////////////////////////////////////////////////////////////////////////
-bool CPackageBuilder::CreateMasterPackage(CCompileDlg* dlg, CString OutputPath)
+bool CPackageBuilder::CreateMasterPackage(void* /*CCompileDlg*/ dlg, CString OutputPath)
 {
 	DWORD dw;
 
-	dlg->m_Title1.SetWindowText(CString(LOC("/str0111/Package")) + ": " + CString(MASTER_NAME));
-	dlg->m_Title2.SetWindowText("");
-	m_Doc->AddInfo(LOC("/str0127/Creating master index package"));
+	printf(CString(LOC("/str0111/Package")) + ": " + CString(MASTER_NAME));
+	// dlg->m_Title2.SetWindowText("");
+	printf(LOC("/str0127/Creating master index package"));
 	CString Filename = OutputPath + MASTER_NAME + "." + PACKAGE_EXTENSION;
 	FILE* f = fopen(Filename, "wb");
 	if(!f){
-		m_Doc->AddError(CString(LOC("/str0119/Error opening file")) + " '" + Filename + "' " + LOC("/str0120/for writing"));
+		printf(CString(LOC("/str0119/Error opening file")) + " '" + Filename + "' " + LOC("/str0120/for writing"));
 		return false;
 	}
 
@@ -777,12 +787,12 @@ bool CPackageBuilder::AddGDF(CString ExeName)
 		if(h)
 		{
 			if(!GdfBuffer)
-				m_Doc->AddError(CString(LOC("/str0122/Cannot open file")) + " '" + GdfFile + "' ");
+				printf(CString(LOC("/str0122/Cannot open file")) + " '" + GdfFile + "' ");
 			else
 				UpdateResource(h, "DATA", "__GDF_XML", MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), GdfBuffer, GdfSize);
 
 			if(!ThumbBuffer)
-				m_Doc->AddError(CString(LOC("/str0122/Cannot open file")) + " '" + ThumbFile + "' ");
+				printf(CString(LOC("/str0122/Cannot open file")) + " '" + ThumbFile + "' ");
 			else
 				UpdateResource(h, "DATA", "__GDF_THUMBNAIL", MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), ThumbBuffer, ThumbSize);
 

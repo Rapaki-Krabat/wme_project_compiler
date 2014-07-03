@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ProjectMan.h"
+// #include "ProjectMan.h"
 #include "FilterExclude.h"
 
 #ifdef _DEBUG

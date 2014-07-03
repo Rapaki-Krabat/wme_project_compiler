@@ -85,7 +85,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\engine_core\wme_base\;..\external_lib\zlib;..\external_lib\sapi;..\external_lib\vorbis\include;..\external_lib\libogg\include;..\external_lib\libpng;..\external_lib\libjpeg;..\external_lib\libtheora\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\external_lib\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;DCGF_ADVENTURE;WME_D3D9;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -118,7 +118,7 @@
       <ValidateAllParameters>false</ValidateAllParameters>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\engine_core\wme_base\;..\external_lib\zlib;..\external_lib\sapi;..\external_lib\vorbis\include;..\external_lib\libogg\include;..\external_lib\libpng;..\external_lib\libjpeg;..\external_lib\libtheora\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\external_lib\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;DCGF_ADVENTURE;WME_D3D9;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -152,7 +152,7 @@
       <ValidateAllParameters>false</ValidateAllParameters>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\engine_core\wme_base\;..\external_lib\zlib;..\external_lib\sapi;..\external_lib\vorbis\include;..\external_lib\libogg\include;..\external_lib\libpng;..\external_lib\libjpeg;..\external_lib\libtheora\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\external_lib\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;DCGF_ADVENTURE;WME_D3D9;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -179,27 +179,12 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\external_lib\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\mfcext\DCGFApp.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\mfcext\DCGFDoc.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\mfcext\DCGFStringTable.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\mfcext\DCGFView.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="EdGame.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
@@ -230,6 +215,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MFCExt\DCGFStringTable.cpp" />
+    <ClCompile Include="MFCExt\utils_mfc.cpp" />
     <ClCompile Include="NumEncoder.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
@@ -259,26 +246,35 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\mfcext\utils_mfc.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EdGame.h" />
     <ClInclude Include="EdSettings.h" />
+    <ClInclude Include="engine_core\wme_ad\dcgf_ad.h" />
+    <ClInclude Include="engine_core\wme_base\BTextUtils.h" />
+    <ClInclude Include="engine_core\wme_base\coll_templ.h" />
+    <ClInclude Include="engine_core\wme_base\dcgf.h" />
+    <ClInclude Include="engine_core\wme_base\dcpackage.h" />
+    <ClInclude Include="engine_core\wme_base\dctypes.h" />
+    <ClInclude Include="engine_core\wme_base\PlatformWin.h" />
+    <ClInclude Include="engine_core\wme_base\resource.h" />
+    <ClInclude Include="engine_core\wme_base\utils.h" />
     <ClInclude Include="FilterCopy.h" />
     <ClInclude Include="FilterExclude.h" />
     <ClInclude Include="FilterScript.h" />
     <ClInclude Include="FilterUncompressed.h" />
+    <ClInclude Include="MFCExt\DCGFApp.h" />
+    <ClInclude Include="MFCExt\dcgfdoc.h" />
+    <ClInclude Include="MFCExt\DCGFStringTable.h" />
+    <ClInclude Include="MFCExt\dcgfview.h" />
+    <ClInclude Include="MFCExt\templatedlg.h" />
+    <ClInclude Include="MFCExt\undostate.h" />
+    <ClInclude Include="MFCExt\utils_mfc.h" />
     <ClInclude Include="NumEncoder.h" />
     <ClInclude Include="Package.h" />
     <ClInclude Include="PackageBuilder.h" />
     <ClInclude Include="PackagerFilter.h" />
-    <ClInclude Include="PageFilters.h" />
     <ClInclude Include="PagePackage.h" />
-    <ClInclude Include="PagePlugins.h" />
     <ClInclude Include="ProjectDoc.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="StdAfx.h" />

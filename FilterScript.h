@@ -10,7 +10,7 @@
 #endif // _MSC_VER > 1000
 
 #include "PackagerFilter.h"
-#include "../engine_core/wme_ad/dcgf_ad.h"
+#include "./engine_core/wme_ad/dcgf_ad.h"
 
 class CFilterScript : public CPackagerFilter  
 {

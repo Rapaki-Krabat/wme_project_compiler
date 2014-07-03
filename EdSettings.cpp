@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ProjectMan.h"
+// #include "ProjectMan.h"
 #include "EdSettings.h"
 
 #include "../engine_core/wme_base/BParser.h"

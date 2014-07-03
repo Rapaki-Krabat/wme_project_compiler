@@ -15,18 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\mfcext\DCGFApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mfcext\DCGFDoc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mfcext\DCGFStringTable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mfcext\DCGFView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EdGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -63,10 +51,13 @@
     <ClCompile Include="StdAfx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\mfcext\utils_mfc.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="MFCExt\utils_mfc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MFCExt\DCGFStringTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,13 +92,7 @@
     <ClInclude Include="PackagerFilter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PageFilters.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PagePackage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PagePlugins.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ProjectDoc.h">
@@ -123,6 +108,54 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UtilIcon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine_core\wme_ad\dcgf_ad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine_core\wme_base\dcgf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine_core\wme_base\BTextUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine_core\wme_base\dcpackage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine_core\wme_base\dctypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine_core\wme_base\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine_core\wme_base\utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine_core\wme_base\coll_templ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine_core\wme_base\PlatformWin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCExt\utils_mfc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCExt\dcgfdoc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCExt\DCGFApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCExt\DCGFStringTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCExt\dcgfview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCExt\undostate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCExt\templatedlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

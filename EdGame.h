@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "../engine_core/wme_ad/dcgf_ad.h"
+#include "./engine_core/wme_ad/dcgf_ad.h"
 
 class CEdGame : public CBObject  
 {
@@ -56,7 +56,7 @@ public:
 	char* m_Cursor;
 	char* m_ActiveCursor;
 	char* m_NoninteractiveCursor;
-	TTalkSkipButton m_TalkSkipButton;
+//	TTalkSkipButton m_TalkSkipButton;
 
 	// compatibility bits
 	bool m_CompatKillMethodThreads;
