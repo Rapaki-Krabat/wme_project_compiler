@@ -1,0 +1,509 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\mfcext\BCMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\BrowseForFolder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\BtnST.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChildFrm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CompatDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CompileDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\CShellFileOp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\DCGFApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\DCGFDoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\DCGFFrameWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\DCGFMDIChildWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\DCGFStringTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\DCGFView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EdGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EdSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FilterCopy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FilterExclude.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FilterScript.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FilterUncompressed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FolderDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\FormViewEx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GuidDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LogItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NumEncoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Package.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PackageBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PackagerFilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PageFilters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\pagegeneral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PagePackage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PagePlugins.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PageVista.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectDoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectMan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\PropList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PropSheetEx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReminderDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\RootDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveLoadDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\ScriptDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\StatLink.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\TemplateDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\TemplateMgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\TemplateProp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\UndoState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilIcon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\utils_mfc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewHint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewLog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewportDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewProps.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mfcext\VisualFx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ChildFrm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CompatDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CompileDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EdGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EdSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FilterCopy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FilterExclude.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FilterScript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FilterUncompressed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FolderDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GuidDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LogItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NumEncoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Package.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PackageBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PackagerFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PageFilters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PagePackage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PagePlugins.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PageVista.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectDoc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectMan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PropSheetEx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReminderDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveLoadDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilIcon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewHint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewLog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewportDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewProps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\95check.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\actor3d.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ActorDoc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\DefDoc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\MFCExt\res\delete.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\MFCExt\res\down.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\EntityDoc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\FontDoc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\help.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\im_orgh.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\im_orghv.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\im_orgv.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\im_pane.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\im_panh.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\im_panhv.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\im_pann.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\im_panne.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\im_pannw.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\im_pans.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\im_panse.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\im_pansw.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\im_panv.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\im_panw.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\invalid.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\engine_core\wme_base\res\invalid.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\invalid_debug.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\engine_core\wme_base\res\invalid_debug.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\engine_core\wme_base\res\link.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\link.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\minifwnd.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\move4way.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\MFCExt\res\new.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\MFCExt\res\nodes.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\nodrop.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\outline_green.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\outline_green.fnt">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\popup_file.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\preview.3DS">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\preview.scene">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ProjectDoc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ProjectMan.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ProjectMan.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ProjectManDoc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\MFCExt\res\props.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\sarrows.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ScriptDoc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\engine_core\wme_base\res\shadow.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\shadow.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\splith.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\splitv.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\system_font.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\engine_core\wme_base\res\system_font.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\toolbar1.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\trck4way.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\trcknesw.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\trckns.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\trcknwse.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\trckwe.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\MFCExt\res\up.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\warning.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\WindowDoc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\engine_core\wme_base\res\wme_orange.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\wme_orange.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\engine_core\wme_base\res\wpt.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\wpt.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\engine_core\wme_base\res\system_font.fnt" />
+    <None Include="res\system_font.fnt" />
+    <None Include="..\engine_core\wme_base\res\wpt.sprite" />
+    <None Include="res\wpt.sprite" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ProjectMan.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
