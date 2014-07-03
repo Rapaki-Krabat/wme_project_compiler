@@ -190,16 +190,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\mfcext\DCGFFrameWindow.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\mfcext\DCGFMDIChildWindow.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="..\mfcext\DCGFStringTable.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
@@ -264,11 +254,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\mfcext\ScriptDlg.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Create</PrecompiledHeader>
@@ -281,19 +266,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChildFrm.h" />
-    <ClInclude Include="CompatDlg.h" />
-    <ClInclude Include="CompileDlg.h" />
     <ClInclude Include="EdGame.h" />
     <ClInclude Include="EdSettings.h" />
     <ClInclude Include="FilterCopy.h" />
     <ClInclude Include="FilterExclude.h" />
     <ClInclude Include="FilterScript.h" />
     <ClInclude Include="FilterUncompressed.h" />
-    <ClInclude Include="FolderDlg.h" />
-    <ClInclude Include="GuidDlg.h" />
-    <ClInclude Include="LogItem.h" />
-    <ClInclude Include="MainFrm.h" />
     <ClInclude Include="NumEncoder.h" />
     <ClInclude Include="Package.h" />
     <ClInclude Include="PackageBuilder.h" />
@@ -301,22 +279,11 @@
     <ClInclude Include="PageFilters.h" />
     <ClInclude Include="PagePackage.h" />
     <ClInclude Include="PagePlugins.h" />
-    <ClInclude Include="PageVista.h" />
     <ClInclude Include="ProjectDoc.h" />
-    <ClInclude Include="ProjectMan.h" />
-    <ClInclude Include="ProjectView.h" />
-    <ClInclude Include="PropSheetEx.h" />
-    <ClInclude Include="ReminderDlg.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="SaveLoadDlg.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="TreeItem.h" />
     <ClInclude Include="UtilIcon.h" />
-    <ClInclude Include="ViewHint.h" />
-    <ClInclude Include="ViewLog.h" />
-    <ClInclude Include="ViewportDlg.h" />
-    <ClInclude Include="ViewProps.h" />
-    <ClInclude Include="ViewTree.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\95check.bmp" />

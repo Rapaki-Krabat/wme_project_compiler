@@ -21,12 +21,6 @@
     <ClCompile Include="..\mfcext\DCGFDoc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\mfcext\DCGFFrameWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mfcext\DCGFMDIChildWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\mfcext\DCGFStringTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,9 +60,6 @@
     <ClCompile Include="ProjectDoc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\mfcext\ScriptDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StdAfx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -80,15 +71,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChildFrm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CompatDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CompileDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EdGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -105,18 +87,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FilterUncompressed.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FolderDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GuidDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LogItem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MainFrm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NumEncoder.h">
@@ -140,28 +110,10 @@
     <ClInclude Include="PagePlugins.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PageVista.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ProjectDoc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectMan.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ProjectView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PropSheetEx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ReminderDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SaveLoadDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StdAfx.h">
@@ -171,21 +123,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UtilIcon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewHint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewLog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewportDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewProps.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
