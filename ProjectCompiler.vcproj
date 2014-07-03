@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="ProjectMan"
+	Name="ProjectCompiler"
 	ProjectGUID="{7AAC312A-DD8C-4AC1-9015-1B2A8F32A8D2}"
-	RootNamespace="ProjectMan"
+	RootNamespace="ProjectCompiler"
 	Keyword="MFCProj"
 	TargetFrameworkVersion="131072"
 	>

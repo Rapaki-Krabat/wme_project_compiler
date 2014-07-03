@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7AAC312A-DD8C-4AC1-9015-1B2A8F32A8D2}</ProjectGuid>
-    <RootNamespace>ProjectMan</RootNamespace>
+    <RootNamespace>ProjectCompiler</RootNamespace>
     <Keyword>MFCProj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
