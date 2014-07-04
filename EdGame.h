@@ -56,7 +56,7 @@ public:
 	char* m_Cursor;
 	char* m_ActiveCursor;
 	char* m_NoninteractiveCursor;
-//	TTalkSkipButton m_TalkSkipButton;
+	TTalkSkipButton m_TalkSkipButton;
 
 	// compatibility bits
 	bool m_CompatKillMethodThreads;

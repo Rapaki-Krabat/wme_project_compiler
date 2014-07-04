@@ -46,7 +46,7 @@ public:
 	static CString Copyright;
 	void DeleteAllPAckages(CString Path, CPackage* SinglePackage);
 	bool CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg, CString OutputPath);
-	bool CreateMasterPackage(void* /*CCompileDlg*/ * dlg, CString OutputPath);
+	bool CreateMasterPackage(void* /*CCompileDlg*/ dlg, CString OutputPath);
 	void Cleanup();
 	bool GetAllFiles(TPackage* Package, CString Path);
 	int m_TotalFiles;

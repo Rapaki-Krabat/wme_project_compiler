@@ -134,55 +134,55 @@ const char* CDCGFStringTable::GetString(const char *Original)
 }
 
 
-//////////////////////////////////////////////////////////////////////////
-bool CDCGFStringTable::LocWindow(CWnd *Window)
-{
-	if(!Window || !Window->GetSafeHwnd()) return false;
-
-	CString WinText;
-	Window->GetWindowText(WinText);
-	Window->SetWindowText(LOC(WinText));
-
-	return EnumChildWindows(Window->GetSafeHwnd(), LocWinCallback, (LPARAM)0)!=0;
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-BOOL CDCGFStringTable::LocWinCallback(HWND hwnd, LPARAM lParam)
-{
-	CWnd* Window = CWnd::FromHandle(hwnd);
-	if(!Window) return FALSE;
-
-	CString WinText;
-	Window->GetWindowText(WinText);
-	Window->SetWindowText(LOC(WinText));
-	
-	return TRUE;
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-bool CDCGFStringTable::LocMenu(CMenu* Menu)
-{
-	for(int i=0; i<(int)Menu->GetMenuItemCount(); i++){
-		UINT cmd = Menu->GetMenuItemID(i);
-		if(cmd==0) continue;
-		
-		CString Str;
-
-		Menu->GetMenuString(i, Str, MF_BYPOSITION);
-
-		if(Str=="" && Menu->IsKindOf(RUNTIME_CLASS(BCMenu))){
-			((BCMenu*)Menu)->GetMenuText(i, Str);
-			((BCMenu*)Menu)->SetMenuText(i, LOC(Str));
-		}
-		else{
-			Menu->ModifyMenu(i, MF_BYPOSITION|MF_STRING, cmd, LOC(Str));
-		}
-
-		CMenu* SubMenu = Menu->GetSubMenu(i);
-		if(SubMenu) LocMenu(SubMenu);
-	}
-
-	return true;
-}
+////////////////////////////////////////////////////////////////////////////
+//bool CDCGFStringTable::LocWindow(CWnd *Window)
+//{
+//	if(!Window || !Window->GetSafeHwnd()) return false;
+//
+//	CString WinText;
+//	Window->GetWindowText(WinText);
+//	Window->SetWindowText(LOC(WinText));
+//
+//	return EnumChildWindows(Window->GetSafeHwnd(), LocWinCallback, (LPARAM)0)!=0;
+//}
+//
+//
+////////////////////////////////////////////////////////////////////////////
+//BOOL CDCGFStringTable::LocWinCallback(HWND hwnd, LPARAM lParam)
+//{
+//	CWnd* Window = CWnd::FromHandle(hwnd);
+//	if(!Window) return FALSE;
+//
+//	CString WinText;
+//	Window->GetWindowText(WinText);
+//	Window->SetWindowText(LOC(WinText));
+//	
+//	return TRUE;
+//}
+//
+//
+////////////////////////////////////////////////////////////////////////////
+//bool CDCGFStringTable::LocMenu(CMenu* Menu)
+//{
+//	for(int i=0; i<(int)Menu->GetMenuItemCount(); i++){
+//		UINT cmd = Menu->GetMenuItemID(i);
+//		if(cmd==0) continue;
+//		
+//		CString Str;
+//
+//		Menu->GetMenuString(i, Str, MF_BYPOSITION);
+//
+//		if(Str=="" && Menu->IsKindOf(RUNTIME_CLASS(BCMenu))){
+//			((BCMenu*)Menu)->GetMenuText(i, Str);
+//			((BCMenu*)Menu)->SetMenuText(i, LOC(Str));
+//		}
+//		else{
+//			Menu->ModifyMenu(i, MF_BYPOSITION|MF_STRING, cmd, LOC(Str));
+//		}
+//
+//		CMenu* SubMenu = Menu->GetSubMenu(i);
+//		if(SubMenu) LocMenu(SubMenu);
+//	}
+//
+//	return true;
+//}

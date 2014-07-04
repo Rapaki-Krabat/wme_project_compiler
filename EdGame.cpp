@@ -39,7 +39,7 @@ CEdGame::CEdGame(CBGame* inGame):CBObject(inGame)
 
 	m_IndicatorX = m_IndicatorY = m_IndicatorWidth = -1;
 	m_IndicatorHeight = 8;
-	m_IndicatorColor = DRGBA(255, 0, 0, 128);
+//	m_IndicatorColor = DRGBA(255, 0, 0, 128);
 
 	m_TalkSkipButton = TALK_SKIP_LEFT;
 
@@ -329,7 +329,7 @@ HRESULT CEdGame::LoadBufferGame(BYTE * Buffer, bool Complete)
 			{
 				int r, g, b, a;
 				parser.ScanStr((char*)params, "%d,%d,%d,%d", &r, &g, &b, &a);
-				m_IndicatorColor = DRGBA(r, g, b, a);
+//				m_IndicatorColor = DRGBA(r, g, b, a);
 			}
 			break;
 

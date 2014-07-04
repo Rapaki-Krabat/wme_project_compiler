@@ -2,6 +2,7 @@
 #include "DCGFApp.h"
 #include "DCGFStringTable.h"
 #include "utils_mfc.h"
+#include "../engine_core/wme_ad/dcgf_ad.h"
 
 
 
@@ -24,6 +25,7 @@ bool UpdateIntEdit(CWnd* Owner, CEdit* Edit, int* Var){
 
 
 //////////////////////////////////////////////////////////////////////////
+/*
 CString GetRelativeFilename(CBGame *Game, CString InitFile, CString Filter, CString& Dir, CWnd* Parent, bool AllowCreate)
 {
 	CString ret = "";
@@ -76,7 +78,7 @@ CString GetRelativeFilename(CBGame *Game, CString InitFile, CString Filter, CStr
 	}
 	return ret;
 }
-
+*/
 
 //////////////////////////////////////////////////////////////////////////
 CString MakePath(CString Path){

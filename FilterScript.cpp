@@ -14,6 +14,8 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
+#define LOC(X) X
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -68,7 +70,7 @@ CString CFilterScript::GetSection()
 bool CFilterScript::Initialize(CPackageBuilder::TPackage* Package)
 {
 	m_Document->PrioritizePackage(Package->Name);
-	m_Game->m_Registry->SetIniName((char*)LPCSTR(m_Document->GetPathName()));
+//	m_Game->m_Registry->SetIniName((char*)LPCSTR(m_Document->GetPathName()));
 	m_Game->m_FileManager->SetBasePath((char*)LPCSTR(m_Document->m_ProjectRoot));
 	m_Game->m_ScEngine->EmptyScriptCache();
 

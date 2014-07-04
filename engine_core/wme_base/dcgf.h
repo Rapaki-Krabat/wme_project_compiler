@@ -156,12 +156,21 @@ typedef void (*SYS_INSTANCE_CALLBACK)(void* Instance, void* Data);
 #include "wme_plugin.h"
 #include "BScriptable.h"
 #include "BScriptHolder.h"
-#include "BDynBuffer.h"
 #include "BObject.h"
+#include "BPlugin.h"
+#include "BPluginMgr.h"
+#include "BDynBuffer.h"
 #include "BFile.h"
 #include "BFileEntry.h"
 #include "BFileManager.h"
 #include "BStringTable.h"
+
+// scripting classes
+#include "dcscript.h"
+#include "ScValue.h"
+#include "ScStack.h"
+#include "ScScript.h"
+#include "ScEngine.h"
 
 #if 0
 
@@ -242,13 +251,6 @@ typedef void (*SYS_INSTANCE_CALLBACK)(void* Instance, void* Data);
 #include "UIText.h"
 #include "UIWindow.h"
 #include "UIMarkup.h"
-
-// scripting classes
-#include "dcscript.h"
-#include "ScValue.h"
-#include "ScStack.h"
-#include "ScScript.h"
-#include "ScEngine.h"
 
 // video classes
 #include "VidSubtitle.h"

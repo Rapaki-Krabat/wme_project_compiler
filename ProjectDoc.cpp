@@ -451,7 +451,7 @@ BOOL CProjectDoc::OnOpenDocument(LPCTSTR lpszPathName)
 
 	
 	// other settings
-	Game->m_Registry->SetIniName((char*)lpszPathName);
+	// Game->m_Registry->SetIniName((char*)lpszPathName);
 	Game->m_FileManager->SetBasePath((char*)LPCSTR(m_ProjectRoot));
 
 	SAFE_DELETE(m_Settings);

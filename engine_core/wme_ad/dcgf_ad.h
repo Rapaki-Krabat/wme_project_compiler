@@ -15,10 +15,10 @@ class CAdGame;
 
 #include "AdGame.h"
 
+#include "AdTypes.h"
+
 
 #if 0
-
-#include "AdTypes.h"
 
 #include "AdSpriteSet.h"
 #include "AdTalkNode.h"
