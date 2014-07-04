@@ -197,10 +197,16 @@
     </ClCompile>
     <ClCompile Include="engine_core\wme_ad\AdGame.cpp" />
     <ClCompile Include="engine_core\wme_base\BBase.cpp" />
+    <ClCompile Include="engine_core\wme_base\BDiskFile.cpp" />
+    <ClCompile Include="engine_core\wme_base\BFileEntry.cpp" />
+    <ClCompile Include="engine_core\wme_base\BFileManager.cpp" />
     <ClCompile Include="engine_core\wme_base\BGame.cpp" />
     <ClCompile Include="engine_core\wme_base\BNamedObject.cpp" />
     <ClCompile Include="engine_core\wme_base\BObject.cpp" />
+    <ClCompile Include="engine_core\wme_base\BPackage.cpp" />
     <ClCompile Include="engine_core\wme_base\BParser.cpp" />
+    <ClCompile Include="engine_core\wme_base\BPkgFile.cpp" />
+    <ClCompile Include="engine_core\wme_base\BResourceFile.cpp" />
     <ClCompile Include="engine_core\wme_base\BScriptable.cpp" />
     <ClCompile Include="engine_core\wme_base\BScriptHolder.cpp" />
     <ClCompile Include="engine_core\wme_base\BStringUtil.cpp" />
