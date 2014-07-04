@@ -61,6 +61,20 @@ CProjectDoc::CProjectDoc()
 	SetDefaults();
 }
 
+CProjectDoc::CProjectDoc(const char *projectFile)
+{
+	Game = ::new CAdGame();
+	Game->m_EditorForceScripts = true;
+	Game->m_DoNotExpandStrings = true;
+	Game->Initialize1();
+
+	m_Settings = NULL;
+	SetDefaults();
+	OnOpenDocument(projectFile);
+}
+
+
+
 
 //////////////////////////////////////////////////////////////////////////
 CProjectDoc::~CProjectDoc()

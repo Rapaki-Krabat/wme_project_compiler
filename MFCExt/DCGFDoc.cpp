@@ -1,7 +1,7 @@
 // DCGFDoc.cpp : implementation file
 //
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "DCGFApp.h"
 #include "DCGFDoc.h"
 // #include "RootDlg.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "DCGFApp.h"
 #include "DCGFStringTable.h"
 #include "utils_mfc.h"

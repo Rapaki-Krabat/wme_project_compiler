@@ -3,7 +3,7 @@
 // http://dead-code.org/redir.php?target=wme
 
 
-#include "StdAfx.h"
+//#include "StdAfx.h"
 #include "dcgf.h"
 #include "BPkgFile.h"
 

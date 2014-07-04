@@ -2,7 +2,7 @@
 // For conditions of distribution and use, see copyright notice in license.txt
 // http://dead-code.org/redir.php?target=wme
 
-#include "StdAfx.h"
+//#include "StdAfx.h"
 #include "dcgf.h"
 #include "BGame.h"
 //#include "SXString.h"
@@ -372,8 +372,8 @@ HRESULT CBGame::Initialize1()
 //	m_FontStorage = new CBFontStorage(this);
 //	if(m_FontStorage==NULL) goto init_fail;
 //
-//	m_FileManager = new CBFileManager(this);
-//	if(m_FileManager==NULL) goto init_fail;
+	m_FileManager = new CBFileManager(this);
+	if(m_FileManager==NULL) goto init_fail;
 //
 //	m_NetworkMgr = new CBNetworkMgr(this);
 //	if(m_NetworkMgr==NULL) goto init_fail;
@@ -396,8 +396,8 @@ HRESULT CBGame::Initialize1()
 //	m_DirectoryClass = new CSXDirectory(this);
 //	if(m_DirectoryClass==NULL) goto init_fail;
 //
-//	m_ScEngine = new CScEngine(this);
-//	if(m_ScEngine==NULL) goto init_fail;
+	m_ScEngine = new CScEngine(this);
+	if(m_ScEngine==NULL) goto init_fail;
 //
 //	m_VideoPlayer = new CVidPlayer(this);
 //	if(m_VideoPlayer==NULL) goto init_fail;
@@ -415,9 +415,9 @@ HRESULT CBGame::Initialize1()
 //	m_PluginMgr->RegisterPlugins();
 //
 //
-//	return S_OK;
+	return S_OK;
 //
-//init_fail:
+init_fail:
 //	if(m_DirectoryClass) delete m_DirectoryClass;
 //	if(m_MathClass) delete m_MathClass;
 //	if(m_KeyboardState) delete m_KeyboardState;
@@ -427,12 +427,12 @@ HRESULT CBGame::Initialize1()
 //	if(m_SurfaceStorage) delete m_SurfaceStorage;
 //	if(m_FontStorage) delete m_FontStorage;
 //	if(m_SoundMgr) delete m_SoundMgr;
-//	if(m_FileManager) delete m_FileManager;
+	if(m_FileManager) delete m_FileManager;
 //	if(m_NetworkMgr) delete m_NetworkMgr;
 //	if(m_AccessMgr) delete m_AccessMgr;
-//	if(m_ScEngine) delete m_ScEngine;
+	if(m_ScEngine) delete m_ScEngine;
 //	if(m_VideoPlayer) delete m_VideoPlayer;
-//	return E_FAIL;
+	return E_FAIL;
 //}
 //
 //

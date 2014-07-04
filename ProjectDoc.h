@@ -21,6 +21,8 @@ class CProjectView;
 
 class CProjectDoc : public CDCGFDoc
 {
+public:
+	CProjectDoc(const char* projectFile);
 protected: // create from serialization only
 	CProjectDoc();
 	DECLARE_DYNCREATE(CProjectDoc)
