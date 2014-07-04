@@ -205,6 +205,7 @@ void CScStack::PushNative(CBScriptable *Val, bool Persistent)
 
 
 //////////////////////////////////////////////////////////////////////////
+/*
 HRESULT CScStack::Persist(CBPersistMgr* PersistMgr){
 	
 	PersistMgr->Transfer(TMEMBER(Game));
@@ -214,7 +215,7 @@ HRESULT CScStack::Persist(CBPersistMgr* PersistMgr){
 
 	return S_OK;
 }
-
+*/
 
 //////////////////////////////////////////////////////////////////////////
 // IWmeStack

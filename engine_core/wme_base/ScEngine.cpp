@@ -83,6 +83,7 @@ CScEngine::CScEngine(CBGame* inGame):CBBase(inGame)
 	}
 
 	// register 'Math' as global variable
+	/*
 	if(!m_Globals->PropExists("Math"))
 	{
 		CScValue val(Game);
@@ -97,6 +98,7 @@ CScEngine::CScEngine(CBGame* inGame):CBBase(inGame)
 		val.SetNative(Game->m_DirectoryClass, true);
 		m_Globals->SetProp("Directory", &val);
 	}
+	*/
 
 	// prepare script cache
 	for(int i=0; i<MAX_CACHED_SCRIPTS; i++) m_CachedScripts[i] = NULL;	
@@ -250,7 +252,7 @@ CScScript* CScEngine::RunScript(char *Filename, CBScriptHolder* Owner)
 		script->m_Globals->SetProp("this", &val);
 		
 		m_Scripts.Add(script);
-		Game->GetDebugMgr()->OnScriptInit(script);
+//		Game->GetDebugMgr()->OnScriptInit(script);
 		
 		return script;
 	}
@@ -515,7 +517,7 @@ HRESULT CScEngine::RemoveFinishedScripts()
 		if(m_Scripts[i]->m_State==SCRIPT_FINISHED || m_Scripts[i]->m_State==SCRIPT_ERROR)
 		{
 			if(!m_Scripts[i]->m_Thread && m_Scripts[i]->m_Owner) m_Scripts[i]->m_Owner->RemoveScript(m_Scripts[i]);
-			Game->GetDebugMgr()->OnScriptShutdown(m_Scripts[i]);
+//			Game->GetDebugMgr()->OnScriptShutdown(m_Scripts[i]);
 			delete m_Scripts[i];
 			m_Scripts.RemoveAt(i);
 			i--;
@@ -599,6 +601,7 @@ HRESULT CScEngine::ResetScript(CScScript* Script)
 }
 
 //////////////////////////////////////////////////////////////////////////
+/*
 HRESULT CScEngine::Persist(CBPersistMgr* PersistMgr)
 {
 	if(!PersistMgr->m_Saving) Cleanup();
@@ -611,7 +614,7 @@ HRESULT CScEngine::Persist(CBPersistMgr* PersistMgr)
 
 	return S_OK;
 }
-
+*/
 
 //////////////////////////////////////////////////////////////////////////
 void CScEngine::EditorCleanup()
@@ -722,7 +725,7 @@ HRESULT CScEngine::DbgSendScripts(IWmeDebugClient* Client)
 //////////////////////////////////////////////////////////////////////////
 HRESULT CScEngine::AddBreakpoint(char* ScriptFilename, int Line)
 {
-	if(!Game->GetDebugMgr()->m_Enabled) return S_OK;
+//	if(!Game->GetDebugMgr()->m_Enabled) return S_OK;
 
 	CScBreakpoint* Bp = NULL;
 	for(int i=0; i<m_Breakpoints.GetSize(); i++)
@@ -754,7 +757,7 @@ HRESULT CScEngine::AddBreakpoint(char* ScriptFilename, int Line)
 //////////////////////////////////////////////////////////////////////////
 HRESULT CScEngine::RemoveBreakpoint(char* ScriptFilename, int Line)
 {
-	if(!Game->GetDebugMgr()->m_Enabled) return S_OK;
+//	if(!Game->GetDebugMgr()->m_Enabled) return S_OK;
 
 	for(int i=0; i<m_Breakpoints.GetSize(); i++)
 	{
@@ -785,7 +788,7 @@ HRESULT CScEngine::RemoveBreakpoint(char* ScriptFilename, int Line)
 //////////////////////////////////////////////////////////////////////////
 HRESULT CScEngine::RefreshScriptBreakpoints()
 {
-	if(!Game->GetDebugMgr()->m_Enabled) return S_OK;
+//	if(!Game->GetDebugMgr()->m_Enabled) return S_OK;
 
 	for(int i=0; i<m_Scripts.GetSize(); i++)
 	{
@@ -797,7 +800,7 @@ HRESULT CScEngine::RefreshScriptBreakpoints()
 //////////////////////////////////////////////////////////////////////////
 HRESULT CScEngine::RefreshScriptBreakpoints(CScScript* Script)
 {
-	if(!Game->GetDebugMgr()->m_Enabled) return S_OK;
+//	if(!Game->GetDebugMgr()->m_Enabled) return S_OK;
 
 	if(!Script || !Script->m_Filename) return E_FAIL;
 
@@ -817,7 +820,7 @@ HRESULT CScEngine::RefreshScriptBreakpoints(CScScript* Script)
 //////////////////////////////////////////////////////////////////////////
 HRESULT CScEngine::SaveBreakpoints()
 {
-	if(!Game->GetDebugMgr()->m_Enabled) return S_OK;
+//	if(!Game->GetDebugMgr()->m_Enabled) return S_OK;
 
 
 	char Text[512];
@@ -832,10 +835,10 @@ HRESULT CScEngine::SaveBreakpoints()
 			sprintf(Key, "Breakpoint%d", Count);
 			sprintf(Text, "%s:%d", m_Breakpoints[i]->m_Filename, m_Breakpoints[i]->m_Lines[j]);
 
-			Game->m_Registry->WriteString("Debug", Key, Text);
+//			Game->m_Registry->WriteString("Debug", Key, Text);
 		}
 	}
-	Game->m_Registry->WriteInt("Debug", "NumBreakpoints", Count);
+//	Game->m_Registry->WriteInt("Debug", "NumBreakpoints", Count);
 
 	return S_OK;
 }
@@ -843,26 +846,26 @@ HRESULT CScEngine::SaveBreakpoints()
 //////////////////////////////////////////////////////////////////////////
 HRESULT CScEngine::LoadBreakpoints()
 {
-	if(!Game->GetDebugMgr()->m_Enabled) return S_OK;
+//	if(!Game->GetDebugMgr()->m_Enabled) return S_OK;
 
 
 	char Text[512];
 	char Key[100];
 
-	int Count = Game->m_Registry->ReadInt("Debug", "NumBreakpoints", 0);
-	for(int i=1; i<=Count; i++)
-	{
-		DWORD BufSize = 512;
-		sprintf(Key, "Breakpoint%d", i);
-		Game->m_Registry->ReadString("Debug", Key, Text, &BufSize, "");
-		
-		char* Path = CBUtils::StrEntry(0, Text, ':');
-		char* Line = CBUtils::StrEntry(1, Text, ':');
-
-		if(Path!=NULL && Line!=NULL) AddBreakpoint(Path, atoi(Line));
-		SAFE_DELETE_ARRAY(Path);
-		SAFE_DELETE_ARRAY(Line);
-	}
+//	int Count = Game->m_Registry->ReadInt("Debug", "NumBreakpoints", 0);
+//	for(int i=1; i<=Count; i++)
+//	{
+//		DWORD BufSize = 512;
+//		sprintf(Key, "Breakpoint%d", i);
+////		Game->m_Registry->ReadString("Debug", Key, Text, &BufSize, "");
+//		
+//		char* Path = CBUtils::StrEntry(0, Text, ':');
+//		char* Line = CBUtils::StrEntry(1, Text, ':');
+//
+//		if(Path!=NULL && Line!=NULL) AddBreakpoint(Path, atoi(Line));
+//		SAFE_DELETE_ARRAY(Path);
+//		SAFE_DELETE_ARRAY(Line);
+//	}
 
 	return S_OK;
 }

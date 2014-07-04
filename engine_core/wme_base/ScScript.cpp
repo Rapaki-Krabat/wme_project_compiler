@@ -443,14 +443,14 @@ HRESULT CScScript::ExecuteInstruction()
 		if(m_ScopeStack->m_SP<0)
 		{
 			m_Globals->SetProp(m_Symbols[dw], m_Operand);
-			if(Game->GetDebugMgr()->m_Enabled)
-				Game->GetDebugMgr()->OnVariableInit(WME_DBGVAR_SCRIPT, this, NULL, m_Globals->GetProp(m_Symbols[dw]), m_Symbols[dw]);
+//			if(Game->GetDebugMgr()->m_Enabled)
+//				Game->GetDebugMgr()->OnVariableInit(WME_DBGVAR_SCRIPT, this, NULL, m_Globals->GetProp(m_Symbols[dw]), m_Symbols[dw]);
 		}
 		else
 		{
 			m_ScopeStack->GetTop()->SetProp(m_Symbols[dw], m_Operand);
-			if(Game->GetDebugMgr()->m_Enabled)
-				Game->GetDebugMgr()->OnVariableInit(WME_DBGVAR_SCOPE, this, m_ScopeStack->GetTop(), m_ScopeStack->GetTop()->GetProp(m_Symbols[dw]), m_Symbols[dw]);
+//			if(Game->GetDebugMgr()->m_Enabled)
+//				Game->GetDebugMgr()->OnVariableInit(WME_DBGVAR_SCOPE, this, m_ScopeStack->GetTop(), m_ScopeStack->GetTop()->GetProp(m_Symbols[dw]), m_Symbols[dw]);
 		}
 
 		break;
@@ -465,8 +465,8 @@ HRESULT CScScript::ExecuteInstruction()
 			m_Operand->SetNULL();
 			m_Engine->m_Globals->SetProp(m_Symbols[dw], m_Operand, false, inst==II_DEF_CONST_VAR);
 
-			if(Game->GetDebugMgr()->m_Enabled)
-				Game->GetDebugMgr()->OnVariableInit(WME_DBGVAR_GLOBAL, this, NULL, m_Engine->m_Globals->GetProp(m_Symbols[dw]), m_Symbols[dw]);
+//			if(Game->GetDebugMgr()->m_Enabled)
+//				Game->GetDebugMgr()->OnVariableInit(WME_DBGVAR_GLOBAL, this, NULL, m_Engine->m_Globals->GetProp(m_Symbols[dw]), m_Symbols[dw]);
 		}
 		break;
 		}
@@ -474,13 +474,13 @@ HRESULT CScScript::ExecuteInstruction()
 	case II_RET:
 		if(m_ScopeStack->m_SP>=0 && m_CallStack->m_SP>=0)
 		{
-			Game->GetDebugMgr()->OnScriptShutdownScope(this, m_ScopeStack->GetTop());
+//			Game->GetDebugMgr()->OnScriptShutdownScope(this, m_ScopeStack->GetTop());
 
 			m_ScopeStack->Pop();
 			m_IP = (DWORD)m_CallStack->Pop()->GetInt();
 
-			if(m_ScopeStack->m_SP<0) Game->GetDebugMgr()->OnScriptChangeScope(this, NULL);
-			else Game->GetDebugMgr()->OnScriptChangeScope(this, m_ScopeStack->GetTop());
+//			if(m_ScopeStack->m_SP<0) Game->GetDebugMgr()->OnScriptChangeScope(this, NULL);
+//			else Game->GetDebugMgr()->OnScriptChangeScope(this, m_ScopeStack->GetTop());
 		}
 		else
 		{
@@ -606,8 +606,8 @@ HRESULT CScScript::ExecuteInstruction()
 		m_Operand->SetNULL();
 		m_ScopeStack->Push(m_Operand);
 
-		if(m_ScopeStack->m_SP<0) Game->GetDebugMgr()->OnScriptChangeScope(this, NULL);
-		else Game->GetDebugMgr()->OnScriptChangeScope(this, m_ScopeStack->GetTop());
+//		if(m_ScopeStack->m_SP<0) Game->GetDebugMgr()->OnScriptChangeScope(this, NULL);
+//		else Game->GetDebugMgr()->OnScriptChangeScope(this, m_ScopeStack->GetTop());
 
 		break;
 	
@@ -665,8 +665,8 @@ HRESULT CScScript::ExecuteInstruction()
 					}
 				}
 
-				if(Game->GetDebugMgr()->m_Enabled)
-					Game->GetDebugMgr()->OnVariableChangeValue(var, val);
+//				if(Game->GetDebugMgr()->m_Enabled)
+//					Game->GetDebugMgr()->OnVariableChangeValue(var, val);
 			}
 
 			break;
@@ -735,8 +735,8 @@ HRESULT CScScript::ExecuteInstruction()
 			}
 			else var->SetProp(str, val);
 
-			if(Game->GetDebugMgr()->m_Enabled)
-				Game->GetDebugMgr()->OnVariableChangeValue(var, NULL);
+//			if(Game->GetDebugMgr()->m_Enabled)
+//				Game->GetDebugMgr()->OnVariableChangeValue(var, NULL);
 
 			break;
 		}
@@ -1013,6 +1013,7 @@ HRESULT CScScript::ExecuteInstruction()
 			if(NewLine != m_CurrentLine)
 			{
 				m_CurrentLine = NewLine;
+				/*
 				if(Game->GetDebugMgr()->m_Enabled)
 				{
 					Game->GetDebugMgr()->OnScriptChangeLine(this, m_CurrentLine);
@@ -1032,6 +1033,7 @@ HRESULT CScScript::ExecuteInstruction()
 						break;
 					}
 				}
+				*/
 			}			
 			break;
 
@@ -1143,14 +1145,14 @@ HRESULT CScScript::Sleep(DWORD Duration)
 	}
 	
 	m_State = SCRIPT_SLEEPING;
-	if(Game->m_State == GAME_FROZEN){
-		m_WaitTime = timeGetTime() + Duration;
-		m_WaitFrozen = true;
-	}
-	else{
-		m_WaitTime = Game->m_Timer + Duration;
-		m_WaitFrozen = false;
-	}
+	//if(Game->m_State == GAME_FROZEN){
+	//	m_WaitTime = timeGetTime() + Duration;
+	//	m_WaitFrozen = true;
+	//}
+	//else{
+	//	m_WaitTime = Game->m_Timer + Duration;
+	//	m_WaitFrozen = false;
+	//}
 	return S_OK;
 }
 
@@ -1197,6 +1199,7 @@ void __cdecl CScScript::RuntimeError(LPSTR fmt, ...)
 
 
 //////////////////////////////////////////////////////////////////////////
+/*
 HRESULT CScScript::Persist(CBPersistMgr* PersistMgr){
 	
 	PersistMgr->Transfer(TMEMBER(Game));
@@ -1262,6 +1265,7 @@ HRESULT CScScript::Persist(CBPersistMgr* PersistMgr){
 
 	return S_OK;
 }
+*/
 
 //////////////////////////////////////////////////////////////////////////
 void CScScript::AfterLoad()
@@ -1297,7 +1301,7 @@ CScScript* CScScript::InvokeEventHandler(char *EventName, bool Unbreakable)
 		if(SUCCEEDED(ret)){
 			thread->m_Unbreakable = Unbreakable;
 			m_Engine->m_Scripts.Add(thread);
-			Game->GetDebugMgr()->OnScriptEventThreadInit(thread, this, EventName);
+//			Game->GetDebugMgr()->OnScriptEventThreadInit(thread, this, EventName);
 			return thread;
 		}
 		else{
@@ -1462,8 +1466,8 @@ HRESULT CScScript::ExternalCall(CScStack *Stack, CScStack *ThisStack, CScScript:
 				break;
 				case TYPE_MEMBUFFER:
 				{
-					CSXMemBuffer* Buf = new CSXMemBuffer(Game, (void*)ret);
-					Stack->PushNative(Buf, false);
+//					CSXMemBuffer* Buf = new CSXMemBuffer(Game, (void*)ret);
+//					Stack->PushNative(Buf, false);
 				}
 				break;
 				case TYPE_FLOAT:				

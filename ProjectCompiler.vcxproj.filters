@@ -96,6 +96,12 @@
     <ClCompile Include="engine_core\wme_base\ScValue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="engine_core\wme_base\BStringUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine_core\wme_base\utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EdGame.h">
@@ -196,212 +202,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\95check.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\actor3d.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\ActorDoc.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\DefDoc.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\MFCExt\res\delete.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\MFCExt\res\down.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\EntityDoc.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\FontDoc.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\help.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\im_orgh.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\im_orghv.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\im_orgv.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\im_pane.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\im_panh.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\im_panhv.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\im_pann.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\im_panne.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\im_pannw.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\im_pans.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\im_panse.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\im_pansw.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\im_panv.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\im_panw.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\invalid.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\engine_core\wme_base\res\invalid.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\invalid_debug.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\engine_core\wme_base\res\invalid_debug.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\engine_core\wme_base\res\link.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\link.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\minifwnd.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\move4way.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\MFCExt\res\new.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\MFCExt\res\nodes.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\nodrop.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\outline_green.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\outline_green.fnt">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\popup_file.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\preview.3DS">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\preview.scene">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\ProjectDoc.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\ProjectMan.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\ProjectMan.rc2">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\ProjectManDoc.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\MFCExt\res\props.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\sarrows.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\ScriptDoc.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\engine_core\wme_base\res\shadow.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\shadow.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\splith.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\splitv.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\system_font.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\engine_core\wme_base\res\system_font.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\Toolbar.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\toolbar1.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\trck4way.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\trcknesw.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\trckns.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\trcknwse.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\trckwe.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\MFCExt\res\up.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\warning.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\WindowDoc.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\engine_core\wme_base\res\wme_orange.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\wme_orange.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\engine_core\wme_base\res\wpt.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\wpt.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="..\engine_core\wme_base\res\system_font.fnt" />
     <None Include="res\system_font.fnt" />
     <None Include="..\engine_core\wme_base\res\wpt.sprite" />
     <None Include="res\wpt.sprite" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="ProjectMan.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

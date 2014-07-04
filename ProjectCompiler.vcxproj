@@ -203,10 +203,12 @@
     <ClCompile Include="engine_core\wme_base\BParser.cpp" />
     <ClCompile Include="engine_core\wme_base\BScriptable.cpp" />
     <ClCompile Include="engine_core\wme_base\BScriptHolder.cpp" />
+    <ClCompile Include="engine_core\wme_base\BStringUtil.cpp" />
     <ClCompile Include="engine_core\wme_base\ScEngine.cpp" />
     <ClCompile Include="engine_core\wme_base\ScScript.cpp" />
     <ClCompile Include="engine_core\wme_base\ScStack.cpp" />
     <ClCompile Include="engine_core\wme_base\ScValue.cpp" />
+    <ClCompile Include="engine_core\wme_base\utils.cpp" />
     <ClCompile Include="FilterCopy.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
@@ -294,79 +296,10 @@
     <ClInclude Include="UtilIcon.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\95check.bmp" />
-    <None Include="res\actor3d.ico" />
-    <None Include="res\ActorDoc.ico" />
-    <None Include="res\DefDoc.ico" />
-    <None Include="..\MFCExt\res\delete.bmp" />
-    <None Include="..\MFCExt\res\down.bmp" />
-    <None Include="res\EntityDoc.ico" />
-    <None Include="res\FontDoc.ico" />
-    <None Include="res\help.cur" />
-    <None Include="res\im_orgh.cur" />
-    <None Include="res\im_orghv.cur" />
-    <None Include="res\im_orgv.cur" />
-    <None Include="res\im_pane.cur" />
-    <None Include="res\im_panh.cur" />
-    <None Include="res\im_panhv.cur" />
-    <None Include="res\im_pann.cur" />
-    <None Include="res\im_panne.cur" />
-    <None Include="res\im_pannw.cur" />
-    <None Include="res\im_pans.cur" />
-    <None Include="res\im_panse.cur" />
-    <None Include="res\im_pansw.cur" />
-    <None Include="res\im_panv.cur" />
-    <None Include="res\im_panw.cur" />
-    <None Include="res\invalid.bmp" />
-    <None Include="..\engine_core\wme_base\res\invalid.bmp" />
-    <None Include="res\invalid_debug.bmp" />
-    <None Include="..\engine_core\wme_base\res\invalid_debug.bmp" />
-    <None Include="..\engine_core\wme_base\res\link.cur" />
-    <None Include="res\link.cur" />
-    <None Include="res\minifwnd.bmp" />
-    <None Include="res\move4way.cur" />
-    <None Include="..\MFCExt\res\new.bmp" />
-    <None Include="..\MFCExt\res\nodes.bmp" />
-    <None Include="res\nodrop.cur" />
-    <None Include="res\outline_green.bmp" />
-    <None Include="res\outline_green.fnt" />
-    <None Include="res\popup_file.bmp" />
-    <None Include="res\preview.3DS" />
-    <None Include="res\preview.scene" />
-    <None Include="res\ProjectDoc.ico" />
-    <None Include="res\ProjectMan.ico" />
-    <None Include="res\ProjectMan.rc2" />
-    <None Include="res\ProjectManDoc.ico" />
-    <None Include="..\MFCExt\res\props.bmp" />
-    <None Include="res\sarrows.cur" />
-    <None Include="res\ScriptDoc.ico" />
-    <None Include="..\engine_core\wme_base\res\shadow.png" />
-    <None Include="res\shadow.png" />
-    <None Include="res\splith.cur" />
-    <None Include="res\splitv.cur" />
-    <None Include="res\system_font.bmp" />
-    <None Include="..\engine_core\wme_base\res\system_font.bmp" />
-    <None Include="res\Toolbar.bmp" />
-    <None Include="res\toolbar1.bmp" />
-    <None Include="res\trck4way.cur" />
-    <None Include="res\trcknesw.cur" />
-    <None Include="res\trckns.cur" />
-    <None Include="res\trcknwse.cur" />
-    <None Include="res\trckwe.cur" />
-    <None Include="..\MFCExt\res\up.bmp" />
-    <None Include="res\warning.ico" />
-    <None Include="res\WindowDoc.ico" />
-    <None Include="..\engine_core\wme_base\res\wme_orange.bmp" />
-    <None Include="res\wme_orange.bmp" />
-    <None Include="..\engine_core\wme_base\res\wpt.bmp" />
-    <None Include="res\wpt.bmp" />
     <None Include="..\engine_core\wme_base\res\system_font.fnt" />
     <None Include="res\system_font.fnt" />
     <None Include="..\engine_core\wme_base\res\wpt.sprite" />
     <None Include="res\wpt.sprite" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="ProjectMan.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

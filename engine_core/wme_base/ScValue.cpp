@@ -716,6 +716,7 @@ void CScValue::SetValue(CScValue *Val)
 
 
 //////////////////////////////////////////////////////////////////////////
+/*
 HRESULT CScValue::Persist(CBPersistMgr* PersistMgr)
 {
 	PersistMgr->Transfer(TMEMBER(Game));
@@ -795,11 +796,11 @@ HRESULT CScValue::Persist(CBPersistMgr* PersistMgr)
 
 	}
 	fclose(f);
-	*/
+// 	comment end
 	
 	return S_OK;
 }
-
+*/
 
 //////////////////////////////////////////////////////////////////////////
 HRESULT CScValue::SaveAsText(CBDynBuffer* Buffer, int Indent)

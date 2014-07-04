@@ -155,9 +155,18 @@ typedef HRESULT (WINAPI *PERSISTLOAD)(void*, CBPersistMgr*);
 
 #else
 
-#define DECLARE_PERSISTENT(class_name, parent_class)
-#define IMPLEMENT_PERSISTENT(class_name, persistent_class)
+#define DECLARE_PERSISTENT(class_name, parent_class)\
+	static char m_ClassName[];\
+	virtual const char* GetClassName();
+
+#define IMPLEMENT_PERSISTENT(class_name, persistent_class)\
+	char class_name::m_ClassName[] = #class_name;\
+	const char* class_name::GetClassName(){\
+		return #class_name;\
+	}
+
 #define TMEMBER(member_name)
+
 #define TMEMBER_INT(member_name)
 
 
