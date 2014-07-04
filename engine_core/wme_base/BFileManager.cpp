@@ -411,7 +411,7 @@ HRESULT CBFileManager::RegisterPackages()
 		}
 	}
 
-	char ExePath[MAX_PATH];
+//	char ExePath[MAX_PATH];
 	//CBPlatform::GetModuleFileName(NULL, ExePath, MAX_PATH);
 
 	//RegisterPackage("", ExePath, true);

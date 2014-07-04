@@ -265,7 +265,7 @@ CScScript* CScEngine::RunScript(char *Filename, CBScriptHolder* Owner)
 //////////////////////////////////////////////////////////////////////////
 BYTE* CScEngine::GetCompiledScript(char *Filename, DWORD *OutSize, bool IgnoreCache)
 {
-	int i;
+//	int i;
 
 	// is script in cache?
 	/*
@@ -860,8 +860,8 @@ HRESULT CScEngine::LoadBreakpoints()
 //	if(!Game->GetDebugMgr()->m_Enabled) return S_OK;
 
 
-	char Text[512];
-	char Key[100];
+//	char Text[512];
+//	char Key[100];
 
 //	int Count = Game->m_Registry->ReadInt("Debug", "NumBreakpoints", 0);
 //	for(int i=1; i<=Count; i++)

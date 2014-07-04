@@ -37,7 +37,7 @@ public:
 	virtual HRESULT RenderShadowGeometry();
 	virtual HRESULT InitAfterLoad();
 	static void AfterLoadScene(void* Scene, void* Data);
-	virtual TShadowType GetMaxShadowType(CBObject* Object=NULL);
+	// virtual TShadowType GetMaxShadowType(CBObject* Object=NULL);
 
 	bool m_SmartItemCursor;
 

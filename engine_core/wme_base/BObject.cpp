@@ -1025,8 +1025,8 @@ HRESULT CBObject::Persist(CBPersistMgr *PersistMgr)
 */
 
 //////////////////////////////////////////////////////////////////////////
-//HRESULT CBObject::SetCursor(char* Filename)
-//{
+HRESULT CBObject::SetCursor(char* Filename)
+{
 //	if(!m_SharedCursors) SAFE_DELETE(m_Cursor);
 //
 //	m_SharedCursors = false;
@@ -1036,7 +1036,8 @@ HRESULT CBObject::Persist(CBPersistMgr *PersistMgr)
 //		return E_FAIL;
 //	}
 //	else return S_OK;
-//}
+	return S_OK;
+}
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -1081,8 +1082,8 @@ bool CBObject::HandleMouseWheel(int Delta)
 
 
 //////////////////////////////////////////////////////////////////////////
-//HRESULT CBObject::PlaySFX(char *Filename, bool Looping, bool PlayNow, char* EventName, DWORD LoopStart)
-//{
+HRESULT CBObject::PlaySFX(char *Filename, bool Looping, bool PlayNow, char* EventName, DWORD LoopStart)
+{
 //	// just play loaded sound
 //	if(Filename==NULL && m_SFX){
 //		if(Game->m_EditorMode || m_SFXStart){
@@ -1120,55 +1121,60 @@ bool CBObject::HandleMouseWheel(int Delta)
 //	}
 //	else{
 //		SAFE_DELETE(m_SFX);
-//		return E_FAIL;
+		return E_FAIL;
 //	}
-//}
+}
 
 
 //////////////////////////////////////////////////////////////////////////
-//HRESULT CBObject::StopSFX(bool DeleteSound)
-//{
+HRESULT CBObject::StopSFX(bool DeleteSound)
+{
 //	if(m_SFX){
 //		m_SFX->Stop();
 //		if(DeleteSound) SAFE_DELETE(m_SFX);
 //		return S_OK;
 //	}
 //	else return E_FAIL;
-//}
+	return 0;
+}
 //
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBObject::PauseSFX()
-//{
+HRESULT CBObject::PauseSFX()
+{
 //	if(m_SFX) return m_SFX->Pause();
 //	else return E_FAIL;
-//}
+	return 0;
+}
 //
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBObject::ResumeSFX()
-//{
+HRESULT CBObject::ResumeSFX()
+{
 //	if(m_SFX) return m_SFX->Resume();
 //	else return E_FAIL;
-//}
+	return 0;
+}
 
 
 //////////////////////////////////////////////////////////////////////////
-//HRESULT CBObject::SetSFXTime(DWORD Time)
-//{
+HRESULT CBObject::SetSFXTime(DWORD Time)
+{
 //	m_SFXStart = Time;
 //	if(m_SFX && m_SFX->IsPlaying()) return m_SFX->SetPositionTime(Time);
 //	else return S_OK;
-//}
+	return S_OK;
+}
 //
 
 //////////////////////////////////////////////////////////////////////////
-//HRESULT CBObject::SetSFXVolume(int Volume)
-//{
+HRESULT CBObject::SetSFXVolume(int Volume)
+{
 //	m_SFXVolume = Volume;
 //	if(m_SFX) return m_SFX->SetVolume(Volume);
 //	else return S_OK;
-//}
+	return 0;
+}
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -1199,6 +1205,7 @@ HRESULT CBObject::UpdateSounds()
 //		Ret = Sound->ApplyFX(m_SFXType, m_SFXParam1, m_SFXParam2, m_SFXParam3, m_SFXParam4);
 //	}
 //	return Ret;
+	//return S_OK;
 //}
 
 //////////////////////////////////////////////////////////////////////////

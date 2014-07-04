@@ -1449,20 +1449,21 @@ HRESULT CAdGame::Persist(CBPersistMgr *PersistMgr)
 
 */
 //////////////////////////////////////////////////////////////////////////
-//HRESULT CAdGame::LoadGame(char* Filename)
-//{
+HRESULT CAdGame::LoadGame(char* Filename)
+{
 //	HRESULT ret = CBGame::LoadGame(Filename);
 //	if(SUCCEEDED(ret)) CSysClassRegistry::GetInstance()->EnumInstances(AfterLoadRegion, "CAdRegion", NULL);
 //	return ret;
-//}
+	return 0;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CAdGame::InitAfterLoad()
-//{
+HRESULT CAdGame::InitAfterLoad()
+{
 //	CBGame::InitAfterLoad();
 //	CSysClassRegistry::GetInstance()->EnumInstances(AfterLoadScene,   "CAdScene",   NULL);
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
 //void CAdGame::AfterLoadScene(void* Scene, void* Data)
@@ -2374,8 +2375,8 @@ HRESULT CAdGame::DisplayDebugInfo()
 //}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CAdGame::GetLayerSize(int* LayerWidth, int* LayerHeight, RECT* Viewport, bool* CustomViewport)
-//{
+HRESULT CAdGame::GetLayerSize(int* LayerWidth, int* LayerHeight, RECT* Viewport, bool* CustomViewport)
+{
 //	if(m_Scene && m_Scene->m_MainLayer)
 //	{
 //		int PortX, PortY, PortWidth, PortHeight;
@@ -2399,21 +2400,22 @@ HRESULT CAdGame::DisplayDebugInfo()
 //			if(Game->m_EditorResolutionWidth>0) *LayerWidth = Game->m_EditorResolutionWidth;
 //			if(Game->m_EditorResolutionHeight>0) *LayerHeight = Game->m_EditorResolutionHeight;
 //		}
-//		return S_OK;
+		return S_OK;
 //	}
 //	else return CBGame::GetLayerSize(LayerWidth, LayerHeight, Viewport, CustomViewport);
-//}
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//DWORD CAdGame::GetAmbientLightColor()
-//{
+DWORD CAdGame::GetAmbientLightColor()
+{
 //	if(m_Scene) return m_Scene->m_AmbientLightColor;
 //	else return CBGame::GetAmbientLightColor();
-//}
+	return 0;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CAdGame::GetFogParams(bool* FogEnabled, DWORD* FogColor, float* Start, float* End)
-//{
+HRESULT CAdGame::GetFogParams(bool* FogEnabled, DWORD* FogColor, float* Start, float* End)
+{
 //	if(m_Scene)
 //	{
 //		*FogEnabled = m_Scene->m_FogEnabled;
@@ -2423,7 +2425,8 @@ HRESULT CAdGame::DisplayDebugInfo()
 //		return S_OK;
 //	}
 //	else return CBGame::GetFogParams(FogEnabled, FogColor, Start, End);
-//}
+	return 0;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
 HRESULT CAdGame::OnScriptShutdown(CScScript* Script)

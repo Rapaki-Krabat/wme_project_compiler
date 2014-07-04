@@ -477,21 +477,23 @@ void CBGame::DEBUG_DebugEnable(const char* Filename)
 
 	if(!m_DEBUG_LogFile)
 	{
-		char SafeLogFilename[MAX_PATH];
-		CBPlatform::GetSafeLogFilename(SafeLogFilename);
-		m_DEBUG_LogFile = fopen(SafeLogFilename, "a+");
+		//char SafeLogFilename[MAX_PATH];
+		//CBPlatform::GetSafeLogFilename(SafeLogFilename);
+		//m_DEBUG_LogFile = fopen(SafeLogFilename, "a+");
 	}
 
 	if(m_DEBUG_LogFile!=NULL) fprintf(m_DEBUG_LogFile, "\n");
 
-	SYSTEMTIME st;
-	GetLocalTime(&st);
+	//SYSTEMTIME st;
+	//GetLocalTime(&st);
+
+/*
 #ifdef _DEBUG
 	LOG(0, "********** DEBUG LOG OPENED %02d-%02d-%04d (Debug Build) *******************", st.wDay, st.wMonth, st.wYear);
 #else
 	LOG(0, "********** DEBUG LOG OPENED %02d-%02d-%04d (Release Build) *****************", st.wDay, st.wMonth, st.wYear);
 #endif
-
+*/
 	LOG(0, "%s ver %d.%d.%d%s, Compiled on " __DATE__ ", " __TIME__, DCGF_NAME, DCGF_VER_MAJOR, DCGF_VER_MINOR, DCGF_VER_BUILD, DCGF_VER_SUFFIX);
 	//LOG(0, "Extensions: %s ver %d.%02d", EXT_NAME, EXT_VER_MAJOR, EXT_VER_MINOR);
 
@@ -500,7 +502,7 @@ void CBGame::DEBUG_DebugEnable(const char* Filename)
 	CBUtils::GetWindowsVersion(ver_string);
 	LOG(0, "Platform: %s", ver_string);
 	CBUtils::DebugMessage(NULL, "About to get DirectX version...");
-	CBUtils::GetDXVersion(NULL, ver_string, MAX_PATH);
+	// CBUtils::GetDXVersion(NULL, ver_string, MAX_PATH);
 	LOG(0, "DirectX version: %s", ver_string);
 	LOG(0, "");
 }
@@ -538,9 +540,9 @@ void __cdecl CBGame::LOG(HRESULT res, LPSTR fmt, ...)
 	}
 	//if(m_DebugMgr) m_DebugMgr->OnLog(res, buff);
 
-	SYSTEMTIME st;
-	CBPlatform::GetLocalTime(&st);
-	fprintf(m_DEBUG_LogFile, "%02d:%02d: %s\n", st.wHour, st.wMinute, buff);
+//	SYSTEMTIME st;
+	//CBPlatform::GetLocalTime(&st);
+	//fprintf(m_DEBUG_LogFile, "%02d:%02d: %s\n", st.wHour, st.wMinute, buff);
 	//if(res!=S_OK) fprintf(m_DEBUG_LogFile, "       returned: %s\n", DXGetErrorString(res));
 	fflush(m_DEBUG_LogFile);
 
@@ -561,7 +563,7 @@ HRESULT CBGame::InitLoop()
 {
 	m_ViewportSP = -1;
 	
-	m_CurrentTime = CBPlatform::timeGetTime();
+	//m_CurrentTime = CBPlatform::timeGetTime();
 	
 	//GetDebugMgr()->OnGameTick();
 	//m_Renderer->InitLoop();
@@ -1396,7 +1398,7 @@ HRESULT CBGame::ScCallMethod(CScScript* Script, CScStack *Stack, CScStack *ThisS
 		if(right < left) CBUtils::Swap(&left, &right);
 		if(bottom < top) CBUtils::Swap(&top, &bottom);
 
-		CBPlatform::SetRect(&m_MouseLockRect, left, top, right, bottom);
+		//CBPlatform::SetRect(&m_MouseLockRect, left, top, right, bottom);
 
 		Stack->PushNULL();
 		return S_OK;
@@ -1704,8 +1706,8 @@ HRESULT CBGame::ScCallMethod(CScScript* Script, CScStack *Stack, CScStack *ThisS
 	else if(strcmp(Name, "SetActiveCursor")==0)
 	{
 		Stack->CorrectParams(1);
-		if(SUCCEEDED(SetActiveCursor(Stack->Pop()->GetString()))) Stack->PushBool(true);
-		else Stack->PushBool(false);
+		//if(SUCCEEDED(SetActiveCursor(Stack->Pop()->GetString()))) Stack->PushBool(true);
+		//else Stack->PushBool(false);
 
 		return S_OK;
 	}
@@ -2861,8 +2863,8 @@ HRESULT CBGame::ScSetProperty(char *Name, CScValue *Value)
 	//////////////////////////////////////////////////////////////////////////
 	else if(strcmp(Name, "Shadows")==0)
 	{
-		if(Value->GetBool()) SetMaxShadowType(SHADOW_STENCIL);
-		else SetMaxShadowType(SHADOW_NONE);
+		//if(Value->GetBool()) SetMaxShadowType(SHADOW_STENCIL);
+		//else SetMaxShadowType(SHADOW_NONE);
 
 		return S_OK;
 	}
@@ -2872,8 +2874,8 @@ HRESULT CBGame::ScSetProperty(char *Name, CScValue *Value)
 	//////////////////////////////////////////////////////////////////////////
 	else if(strcmp(Name, "SimpleShadows")==0)
 	{
-		if(Value->GetBool()) SetMaxShadowType(SHADOW_SIMPLE);
-		else SetMaxShadowType(SHADOW_STENCIL);
+		//if(Value->GetBool()) SetMaxShadowType(SHADOW_SIMPLE);
+		//else SetMaxShadowType(SHADOW_STENCIL);
 
 		return S_OK;
 	}
@@ -2883,7 +2885,7 @@ HRESULT CBGame::ScSetProperty(char *Name, CScValue *Value)
 	//////////////////////////////////////////////////////////////////////////
 	else if(strcmp(Name, "MaxShadowType")==0)
 	{
-		SetMaxShadowType((TShadowType)Value->GetInt());
+		//SetMaxShadowType((TShadowType)Value->GetInt());
 		return S_OK;
 	}
 
@@ -3092,11 +3094,13 @@ bool CBGame::ValidObject(CBObject *Object)
 	if(!Object) return false;
 	if(Object==this) return true;
 	
+	
 	for(int i=0; i<m_RegObjects.GetSize(); i++)
 	{
 		if(m_RegObjects[i] == Object) return true;
 	}
-	return m_PluginMgr->ValidObject(Object);
+	// return m_PluginMgr->ValidObject(Object);
+	return false;
 }
 
 
@@ -3143,7 +3147,7 @@ void CBGame::PublishNatives()
 	m_ScEngine->ExtDefineVariable("this");
 
 	// register plugin classes
-	m_PluginMgr->RegisterClasses();
+	//m_PluginMgr->RegisterClasses();
 }
 
 
@@ -3313,7 +3317,7 @@ HRESULT CBGame::ExternalCall(CScScript* Script, CScStack* Stack, CScStack* ThisS
 		int s = Stack->Pop()->GetInt();
 		int l = Stack->Pop()->GetInt();
 
-		Stack->PushInt(CBUtils::HSLtoRGB(h, s, l));
+		// Stack->PushInt(CBUtils::HSLtoRGB(h, s, l));
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -4336,6 +4340,7 @@ HRESULT CBGame::GetSaveDir(char* Buffer)
 
 	if(m_PersonalizedSave)
 	{
+		/*
 		Handled = CBPlatform::GetPrivateSaveDirectory(Buffer);
 		if(Handled)
 		{
@@ -4349,7 +4354,8 @@ HRESULT CBGame::GetSaveDir(char* Buffer)
 			{
 				if(strchr("\\|*?:\"<>/", Buffer[i])) Buffer[i] = '_';
 			}
-		}		
+		}
+		*/
 	}
 	if(!m_PersonalizedSave || !Handled) strcpy(Buffer, m_LocalSaveDir);
 
@@ -4403,7 +4409,7 @@ HRESULT CBGame::EmptySaveSlot(int Slot)
 	char Filename[MAX_PATH+1];
 	GetSaveSlotFilename(Slot, Filename);
 
-	CBPlatform::DeleteFile(Filename);
+	// CBPlatform::DeleteFile(Filename);
 
 	return S_OK;
 }
@@ -4792,24 +4798,24 @@ HRESULT CBGame::SetWaitCursor(char* Filename)
 
 
 //////////////////////////////////////////////////////////////////////////
-//bool CBGame::IsVideoPlaying()
-//{
+bool CBGame::IsVideoPlaying()
+{
 //	if(m_VideoPlayer->IsPlaying()) return true;
 //	if(m_TheoraPlayer && m_TheoraPlayer->IsPlaying()) return true;
-//	return false;
-//}
+	return false;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::StopVideo()
-//{
+HRESULT CBGame::StopVideo()
+{
 //	if(m_VideoPlayer->IsPlaying()) m_VideoPlayer->Stop();
 //	if(m_TheoraPlayer && m_TheoraPlayer->IsPlaying())
 //	{
 //		m_TheoraPlayer->Stop();
 //		SAFE_DELETE(m_TheoraPlayer);
 //	}
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
 //HRESULT CBGame::DrawCursor(CBSprite* Cursor)
@@ -4846,28 +4852,31 @@ bool CBGame::DeleteValue(IWmeValue* Value)
 }
 
 //////////////////////////////////////////////////////////////////////////
-//IWmeParamSet* CBGame::CreateParamSet()
-//{
+IWmeParamSet* CBGame::CreateParamSet()
+{
 //	return new CBParamSet(this);
-//}
+	return NULL;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//bool CBGame::DeleteParamSet(IWmeParamSet* ParamSet)
-//{
+bool CBGame::DeleteParamSet(IWmeParamSet* ParamSet)
+{
 //	if(ParamSet) delete (CBParamSet*)ParamSet;
-//	return true;
-//}
+	return true;
+}
 
 //////////////////////////////////////////////////////////////////////////
 bool CBGame::SubscribeEvent(IWmeObject* Object, EWmeEvent Event)
 {
-	return m_PluginMgr->SubscribeEvent(Object, Event);
+	//return m_PluginMgr->SubscribeEvent(Object, Event);
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////
 bool CBGame::UnsubscribeEvent(IWmeObject* Object, EWmeEvent Event)
 {
-	return m_PluginMgr->UnsubscribeEvent(Object, Event);
+	//return m_PluginMgr->UnsubscribeEvent(Object, Event);
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -4988,29 +4997,31 @@ void* CBGame::GetInterface(const char* ClassName)
 
 
 //////////////////////////////////////////////////////////////////////////
-//CBObject* CBGame::GetNextAccessObject(CBObject* CurrObject)
-//{
+CBObject* CBGame::GetNextAccessObject(CBObject* CurrObject)
+{
 //	if(m_FocusedWindow)
 //	{
 //		return m_FocusedWindow->GetNextAccessObject(CurrObject);
 //	}
 //	else return NULL;
-//}
+	return NULL;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//CBObject* CBGame::GetPrevAccessObject(CBObject* CurrObject)
-//{
+CBObject* CBGame::GetPrevAccessObject(CBObject* CurrObject)
+{
 //	if(m_FocusedWindow)
 //	{
 //		return m_FocusedWindow->GetPrevAccessObject(CurrObject);
 //	}
 //	else return NULL;
-//}
+	return NULL;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::OnActivate(bool Activate, bool RefreshMouse)
-//{
+HRESULT CBGame::OnActivate(bool Activate, bool RefreshMouse)
+{
 //	if(m_ShuttingDown || !m_Renderer) return S_OK;
 //
 //	m_Renderer->m_Active = Activate;
@@ -5025,12 +5036,12 @@ void* CBGame::GetInterface(const char* ClassName)
 //	if(Activate) m_SoundMgr->ResumeAll();
 //	else m_SoundMgr->PauseAll();
 //
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::OnMouseLeftDown()
-//{
+HRESULT CBGame::OnMouseLeftDown()
+{
 //	if(IsVideoPlaying())
 //	{
 //		StopVideo();
@@ -5052,12 +5063,12 @@ void* CBGame::GetInterface(const char* ClassName)
 //	m_MouseLeftDown = true;
 //	CBPlatform::SetCapture(m_Renderer->m_Window);
 //
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::OnMouseLeftUp()
-//{
+HRESULT CBGame::OnMouseLeftUp()
+{
 //	if(IsVideoPlaying()) return S_OK;
 //
 //	if(m_ActiveObject) m_ActiveObject->HandleMouse(MOUSE_RELEASE, MOUSE_BUTTON_LEFT);
@@ -5074,12 +5085,12 @@ void* CBGame::GetInterface(const char* ClassName)
 //			m_ActiveObject->ApplyEvent("LeftRelease");
 //		}
 //	}
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::OnMouseLeftDblClick() 
-//{
+HRESULT CBGame::OnMouseLeftDblClick() 
+{
 //	if(IsVideoPlaying()) return S_OK;
 //
 //	if(m_State==GAME_RUNNING && !m_Interactive) return S_OK;
@@ -5094,12 +5105,12 @@ void* CBGame::GetInterface(const char* ClassName)
 //			m_ActiveObject->ApplyEvent("LeftDoubleClick");
 //		}
 //	}
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::OnMouseRightDblClick()
-//{
+HRESULT CBGame::OnMouseRightDblClick()
+{
 //	if(IsVideoPlaying()) return S_OK;
 //
 //	if(m_State==GAME_RUNNING && !m_Interactive) return S_OK;
@@ -5114,12 +5125,12 @@ void* CBGame::GetInterface(const char* ClassName)
 //			m_ActiveObject->ApplyEvent("RightDoubleClick");
 //		}
 //	}
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::OnMouseRightDown()
-//{
+HRESULT CBGame::OnMouseRightDown()
+{
 //	if(IsVideoPlaying()) return S_OK;
 //
 //	if(m_ActiveObject) m_ActiveObject->HandleMouse(MOUSE_CLICK, MOUSE_BUTTON_RIGHT);
@@ -5132,12 +5143,12 @@ void* CBGame::GetInterface(const char* ClassName)
 //			m_ActiveObject->ApplyEvent("RightClick");
 //		}
 //	}
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::OnMouseRightUp() 
-//{
+HRESULT CBGame::OnMouseRightUp() 
+{
 //	if(IsVideoPlaying()) return S_OK;
 //
 //	if(m_ActiveObject) m_ActiveObject->HandleMouse(MOUSE_RELEASE, MOUSE_BUTTON_RIGHT);
@@ -5150,12 +5161,12 @@ void* CBGame::GetInterface(const char* ClassName)
 //			m_ActiveObject->ApplyEvent("RightRelease");
 //		}
 //	}
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::OnMouseMiddleDown() 
-//{
+HRESULT CBGame::OnMouseMiddleDown() 
+{
 //	if(IsVideoPlaying()) return S_OK;
 //
 //	if(m_State==GAME_RUNNING && !m_Interactive) return S_OK;
@@ -5170,12 +5181,12 @@ void* CBGame::GetInterface(const char* ClassName)
 //			m_ActiveObject->ApplyEvent("MiddleClick");
 //		}
 //	}
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::OnMouseMiddleUp() 
-//{
+HRESULT CBGame::OnMouseMiddleUp() 
+{
 //	if(IsVideoPlaying()) return S_OK;
 //
 //	if(m_ActiveObject) m_ActiveObject->HandleMouse(MOUSE_RELEASE, MOUSE_BUTTON_MIDDLE);
@@ -5188,12 +5199,12 @@ void* CBGame::GetInterface(const char* ClassName)
 //			m_ActiveObject->ApplyEvent("MiddleRelease");
 //		}
 //	}
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::OnPaint()
-//{
+HRESULT CBGame::OnPaint()
+{
 //	if(m_Renderer && m_Renderer->m_Windowed && m_Renderer->m_Ready)
 //	{
 //		m_Renderer->InitLoop();
@@ -5201,33 +5212,34 @@ void* CBGame::GetInterface(const char* ClassName)
 //		DisplayDebugInfo();
 //		m_Renderer->WindowedBlt();
 //	}
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::OnWindowClose()
-//{
+HRESULT CBGame::OnWindowClose()
+{
 //	if(CanHandleEvent("QuitGame"))
 //	{
 //		if(m_State!=GAME_FROZEN) Game->ApplyEvent("QuitGame");
 //		return S_OK;
 //	}
 //	else return E_FAIL;
-//}
+	return 0;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::OnWinsock(WPARAM wparam, LPARAM lparam)
-//{
+HRESULT CBGame::OnWinsock(WPARAM wparam, LPARAM lparam)
+{
 //	if(Game->m_NetworkMgr)
 //	{
 //		if(SUCCEEDED(m_NetworkMgr->OnWinsockEvent(wparam, lparam))) return S_OK;
 //	}
-//	return E_FAIL;
-//}
+	return E_FAIL;
+}
 
 //////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::DisplayDebugInfo() 
-//{
+HRESULT CBGame::DisplayDebugInfo() 
+{
 //	char str[100];
 //
 //	if(m_DEBUG_ShowFPS)
@@ -5262,8 +5274,8 @@ void* CBGame::GetInterface(const char* ClassName)
 //		if(m_ActiveObject!=NULL) m_SystemFont->DrawText((BYTE*)m_ActiveObject->m_Name, 0, 150, m_Renderer->m_Width, TAL_RIGHT);
 //	}
 //
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
 //HRESULT CBGame::SetMaxShadowType(TShadowType MaxShadowType)
@@ -5292,8 +5304,8 @@ void* CBGame::GetInterface(const char* ClassName)
 //}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::GetLayerSize(int* LayerWidth, int* LayerHeight, RECT* Viewport, bool* CustomViewport)
-//{
+HRESULT CBGame::GetLayerSize(int* LayerWidth, int* LayerHeight, RECT* Viewport, bool* CustomViewport)
+{
 //	if(m_Renderer)
 //	{
 //		*LayerWidth = m_Renderer->m_Width;
@@ -5304,17 +5316,18 @@ void* CBGame::GetInterface(const char* ClassName)
 //	}
 //	else return E_FAIL;
 //
-//}
+	return 0;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//DWORD CBGame::GetAmbientLightColor()
-//{
-//	return 0x00000000;
-//}
+DWORD CBGame::GetAmbientLightColor()
+{
+	return 0x00000000;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//void CBGame::GetMousePos(POINT* Pos)
-//{
+void CBGame::GetMousePos(POINT* Pos)
+{
 //	CBPlatform::GetCursorPos(Pos);
 //	CBPlatform::ScreenToClient(Game->m_Renderer->m_Window, Pos);
 //
@@ -5352,18 +5365,18 @@ void* CBGame::GetInterface(const char* ClassName)
 //			CBPlatform::SetCursorPos(NewPos.x, NewPos.y);
 //		}
 //	}
-//}
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::GetFogParams(bool* FogEnabled, DWORD* FogColor, float* Start, float* End)
-//{
+HRESULT CBGame::GetFogParams(bool* FogEnabled, DWORD* FogColor, float* Start, float* End)
+{
 //	*FogEnabled = false;
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::MiniUpdate()
-//{
+HRESULT CBGame::MiniUpdate()
+{
 //	if(!m_MiniUpdateEnabled) return S_OK;
 //
 //	if(timeGetTime() - m_LastMiniUpdate > 200)
@@ -5371,11 +5384,11 @@ void* CBGame::GetInterface(const char* ClassName)
 //		if(m_SoundMgr) m_SoundMgr->InitLoop();
 //		m_LastMiniUpdate = timeGetTime();
 //	}
-//	return S_OK;
-//}
+	return S_OK;
+}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CBGame::OnScriptShutdown(CScScript* Script)
-//{
-//	return S_OK;
-//}
+HRESULT CBGame::OnScriptShutdown(CScScript* Script)
+{
+	return S_OK;
+}

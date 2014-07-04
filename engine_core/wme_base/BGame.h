@@ -120,7 +120,7 @@ public:
 	bool m_SupportsRealTimeShadows;
 	TShadowType m_MaxShadowType;
 	HRESULT SetMaxShadowType(TShadowType MaxShadowType);
-	virtual TShadowType GetMaxShadowType(CBObject* Object=NULL);
+	// virtual TShadowType GetMaxShadowType(CBObject* Object=NULL);
 
 	bool m_IndicatorDisplay;
 	DWORD m_IndicatorColor;
