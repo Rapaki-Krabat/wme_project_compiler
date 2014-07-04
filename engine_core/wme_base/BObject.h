@@ -12,12 +12,12 @@
 
 #include "../../../engine_core/wme_base/wme_plugin.h"
 
-class CBSprite;
-class CBSound;
-class CBEventSet;
-class C3DModel;
-class CBSurface;
-class CXModel;
+//class CBSprite;
+//class CBSound;
+//class CBEventSet;
+//class C3DModel;
+//class CBSurface;
+//class CXModel;
 
 class CBObject : public CBScriptHolder
 {
@@ -42,7 +42,7 @@ public:
 	virtual bool GetExtendedFlag(char* FlagName);
 	virtual HRESULT ResetSoundPan();
 	virtual HRESULT UpdateSounds();
-	HRESULT UpdateOneSound(CBSound* Sound);
+//	HRESULT UpdateOneSound(CBSound* Sound);
 	bool m_AutoSoundPanning;
 	DWORD m_SFXStart;
 	int m_SFXVolume;
@@ -52,7 +52,7 @@ public:
 	HRESULT PauseSFX();
 	HRESULT StopSFX(bool DeleteSound=true);
 	HRESULT PlaySFX(char* Filename, bool Looping=false, bool PlayNow=true, char* EventName=NULL, DWORD LoopStart=0);
-	CBSound* m_SFX;
+//	CBSound* m_SFX;
 
 	TSFXType m_SFXType;
 	float m_SFXParam1;
@@ -75,9 +75,9 @@ public:
 	bool m_Is3D;
 	DECLARE_PERSISTENT(CBObject, CBScriptHolder);
 	virtual HRESULT ShowCursor();
-	CBSprite* m_Cursor;
+//	CBSprite* m_Cursor;
 	bool m_SharedCursors;
-	CBSprite* m_ActiveCursor;
+//	CBSprite* m_ActiveCursor;
 	virtual HRESULT SaveAsText(CBDynBuffer* Buffer, int Indent);
 	virtual HRESULT Listen(CBScriptHolder* param1, DWORD param2);
 	bool m_Ready;
@@ -105,14 +105,14 @@ public:
 
 	// 3d stuff
 	float m_Angle;
-	C3DModel* m_Model;
-	CXModel* m_ModelX;
-	CXModel* m_ShadowModel;
+//	C3DModel* m_Model;
+//	CXModel* m_ModelX;
+//	CXModel* m_ShadowModel;
 //	D3DXMATRIX m_WorldMatrix;
 //	D3DXVECTOR3 m_PosVector;
 //	HRESULT GetMatrix(D3DXMATRIX* ModelMatrix, D3DXVECTOR3* PosVect=NULL);	
 	DWORD m_ShadowColor;
-	CBSurface* m_ShadowImage;
+//	CBSurface* m_ShadowImage;
 	float m_ShadowSize;
 	float m_Scale3D;
 //	D3DXVECTOR3 m_ShadowLightPos;

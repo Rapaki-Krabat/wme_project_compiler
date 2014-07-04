@@ -104,7 +104,7 @@ public:
 	TTextEncoding m_TextEncoding;
 	bool m_TextRTL;
 
-	CBSprite* m_LoadingIcon;
+//	CBSprite* m_LoadingIcon;
 	int m_LoadingIconX;
 	int m_LoadingIconY;
 	int m_LoadingIconPersistent;
@@ -142,7 +142,7 @@ public:
 	int m_SaveImageY;
 	int m_LoadImageX;
 	int m_LoadImageY;
-	CBSurface* m_SaveLoadImage;
+//	CBSurface* m_SaveLoadImage;
 
 	HRESULT DisplayIndicator();
 
@@ -363,7 +363,7 @@ public:
 	HRESULT SetActiveObject(CBObject* Obj);	
 
 //	CBSprite* m_LastCursor;
-	HRESULT DrawCursor(CBSprite* Cursor);
+//	HRESULT DrawCursor(CBSprite* Cursor);
 
 	virtual HRESULT InitAfterLoad();
 

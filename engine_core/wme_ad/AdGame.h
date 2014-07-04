@@ -11,6 +11,8 @@
 #endif // _MSC_VER > 1000
 
 #include "../wme_base/BGame.h"
+#include "AdTypes.h"
+
 
 class CAdGame : public CBGame  
 {
@@ -81,7 +83,7 @@ public:
 	int m_TexStandLifeTime;
 	int m_TexTalkLifeTime;
 
-//	TTalkSkipButton m_TalkSkipButton;
+	TTalkSkipButton m_TalkSkipButton;
 //	TVideoSkipButton m_VideoSkipButton;
 
 	virtual HRESULT GetVersion(BYTE* VerMajor, BYTE* VerMinor, BYTE* ExtMajor, BYTE* ExtMinor);

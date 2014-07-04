@@ -110,6 +110,8 @@ class CBPersistMgr;
 typedef void* (WINAPI *PERSISTBUILD)(void);
 typedef HRESULT (WINAPI *PERSISTLOAD)(void*, CBPersistMgr*);
 
+#if 0
+
 #define DECLARE_PERSISTENT(class_name, parent_class)\
 	static char m_ClassName[];\
 	static void* WINAPI PersistBuild(void);\
@@ -151,9 +153,21 @@ typedef HRESULT (WINAPI *PERSISTLOAD)(void*, CBPersistMgr*);
 #define TMEMBER(member_name) #member_name, &member_name
 #define TMEMBER_INT(member_name) #member_name, (int*)&member_name
 
+#else
+
+#define DECLARE_PERSISTENT(class_name, parent_class)
+#define IMPLEMENT_PERSISTENT(class_name, persistent_class)
+#define TMEMBER(member_name)
+#define TMEMBER_INT(member_name)
+
+
+#endif
+
 typedef void (*SYS_INSTANCE_CALLBACK)(void* Instance, void* Data);
 
 #include "wme_plugin.h"
+#include "BBase.h"
+#include "BParser.h"
 #include "BScriptable.h"
 #include "BScriptHolder.h"
 #include "BObject.h"
@@ -328,10 +342,8 @@ struct SHADOWVOLVERTEX
 #endif
 
 
-#if 0
 // big boss
 #include "BGame.h"
-#endif
 
 // framework extensions
 //#include "extension.h"
