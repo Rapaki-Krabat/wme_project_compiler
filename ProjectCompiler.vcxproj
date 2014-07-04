@@ -203,6 +203,10 @@
     <ClCompile Include="engine_core\wme_base\BParser.cpp" />
     <ClCompile Include="engine_core\wme_base\BScriptable.cpp" />
     <ClCompile Include="engine_core\wme_base\BScriptHolder.cpp" />
+    <ClCompile Include="engine_core\wme_base\ScEngine.cpp" />
+    <ClCompile Include="engine_core\wme_base\ScScript.cpp" />
+    <ClCompile Include="engine_core\wme_base\ScStack.cpp" />
+    <ClCompile Include="engine_core\wme_base\ScValue.cpp" />
     <ClCompile Include="FilterCopy.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>

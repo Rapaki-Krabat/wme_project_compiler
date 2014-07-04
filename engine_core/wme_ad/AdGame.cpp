@@ -7,6 +7,7 @@
 #include "AdGame.h"
 // #include "PartEmitter.h"
 
+#if 0
 #ifdef WME_D3D9
 	#if _DEBUG
 		#pragma comment(lib, "wme_base_d3d9_d.lib")
@@ -20,7 +21,7 @@
 		#pragma comment(lib, "wme_base.lib")
 	#endif
 #endif
-
+#endif
 
 
 IMPLEMENT_PERSISTENT(CAdGame, true);
