@@ -1172,8 +1172,8 @@ bool CBObject::HandleMouseWheel(int Delta)
 
 
 //////////////////////////////////////////////////////////////////////////
-//HRESULT CBObject::UpdateSounds()
-//{
+HRESULT CBObject::UpdateSounds()
+{
 //	if(m_SoundEvent){
 //		if(m_SFX && !m_SFX->IsPlaying()){
 //			ApplyEvent(m_SoundEvent);
@@ -1183,8 +1183,8 @@ bool CBObject::HandleMouseWheel(int Delta)
 //
 //	if(m_SFX) UpdateOneSound(m_SFX);
 //
-//	return S_OK;
-//}
+	return S_OK;
+}
 
 //////////////////////////////////////////////////////////////////////////
 //HRESULT CBObject::UpdateOneSound(CBSound* Sound)
@@ -1202,13 +1202,14 @@ bool CBObject::HandleMouseWheel(int Delta)
 //}
 
 //////////////////////////////////////////////////////////////////////////
-//HRESULT CBObject::ResetSoundPan()
-//{
+HRESULT CBObject::ResetSoundPan()
+{
 //	if(!m_SFX) return S_OK;
 //	else{
 //		return m_SFX->SetPan(DSBPAN_CENTER);
 //	}
-//}
+	return 0;
+}
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -1258,8 +1259,8 @@ HRESULT CBObject::AfterMove()
 //}
 
 //////////////////////////////////////////////////////////////////////////
-//HRESULT CBObject::RenderModel()
-//{
+HRESULT CBObject::RenderModel()
+{
 //	CBRenderD3D* Rend = (CBRenderD3D*)Game->m_Renderer;
 //
 //	D3DXMATRIX ObjectMat;
@@ -1270,7 +1271,8 @@ HRESULT CBObject::AfterMove()
 //	if(m_Model) return m_Model->Render();
 //	else if(m_ModelX) return m_ModelX->Render();
 //	else return E_FAIL;
-//}
+	return E_FAIL;
+}
 
 //////////////////////////////////////////////////////////////////////////
 char* CBObject::GetAccessCaption()
