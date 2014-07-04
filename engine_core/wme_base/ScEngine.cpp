@@ -25,6 +25,8 @@ CScEngine::CScEngine(CBGame* inGame):CBBase(inGame)
 	m_CompilerDLL = LoadLibrary(CompilerPath);
 	if(m_CompilerDLL==NULL)
 	{
+		printf("Compiler DLL not found!!!\n");
+		/*
 		char ModuleName[MAX_PATH];
 		CBPlatform::GetModuleFileName(NULL, ModuleName, MAX_PATH);
 
@@ -34,6 +36,7 @@ CScEngine::CScEngine(CBGame* inGame):CBBase(inGame)
 		m_CompilerDLL = LoadLibrary(CompilerPath);
 
 		delete [] ExeDir;
+		*/
 	}
 	if(m_CompilerDLL!=NULL)
 	{
@@ -265,6 +268,7 @@ BYTE* CScEngine::GetCompiledScript(char *Filename, DWORD *OutSize, bool IgnoreCa
 	int i;
 
 	// is script in cache?
+	/*
 	if(!IgnoreCache)
 	{
 		for(i=0; i<MAX_CACHED_SCRIPTS; i++)
@@ -277,6 +281,7 @@ BYTE* CScEngine::GetCompiledScript(char *Filename, DWORD *OutSize, bool IgnoreCa
 			}
 		}
 	}
+	*/
 
 	// nope, load it
 	BYTE* CompBuffer;
@@ -332,6 +337,7 @@ BYTE* CScEngine::GetCompiledScript(char *Filename, DWORD *OutSize, bool IgnoreCa
 	BYTE* ret = NULL;
 
 	// add script to cache
+	/*
 	CScCachedScript* CachedScript = new CScCachedScript(Filename, CompBuffer, CompSize);
 	if(CachedScript)
 	{
@@ -357,6 +363,7 @@ BYTE* CScEngine::GetCompiledScript(char *Filename, DWORD *OutSize, bool IgnoreCa
 		ret = CachedScript->m_Buffer;
 		*OutSize = CachedScript->m_Size;
 	}
+	*/
 
 
 	// cleanup
@@ -407,6 +414,7 @@ HRESULT CScEngine::Tick()
 
 			case SCRIPT_SLEEPING:
 			{
+				/*
 				if(m_Scripts[i]->m_WaitFrozen)
 				{
 					if(m_Scripts[i]->m_WaitTime <= timeGetTime()) m_Scripts[i]->Run();
@@ -415,6 +423,7 @@ HRESULT CScEngine::Tick()
 				{
 					if(m_Scripts[i]->m_WaitTime <= Game->m_Timer) m_Scripts[i]->Run();
 				}
+				*/
 				break;
 			}
 
@@ -445,6 +454,7 @@ HRESULT CScEngine::Tick()
 
 
 	// execute scripts
+	/*
 	for(i=0; i<m_Scripts.GetSize(); i++)
 	{
 
@@ -479,6 +489,7 @@ HRESULT CScEngine::Tick()
 		}
 		m_CurrentScript = NULL;
 	}
+	*/
 
 	RemoveFinishedScripts();
 
@@ -890,7 +901,7 @@ void CScEngine::EnableProfiling()
 	// destroy old data, if any
 	m_ScriptTimes.clear();
 
-	m_ProfilingStartTime = timeGetTime();
+	// m_ProfilingStartTime = timeGetTime();
 	m_IsProfiling = true;
 }
 
@@ -908,6 +919,7 @@ void CScEngine::DisableProfiling()
 //////////////////////////////////////////////////////////////////////////
 void CScEngine::DumpStats()
 {
+	/*
 	DWORD totalTime = timeGetTime() - m_ProfilingStartTime;
 
 
@@ -931,4 +943,5 @@ void CScEngine::DumpStats()
 	{
 		Game->LOG(0, "  %-40s %fs (%f%%)", tit->second.c_str(), (float)tit->first / 1000, (float)tit->first / (float)totalTime * 100);
 	}
+	*/
 }

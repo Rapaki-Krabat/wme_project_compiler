@@ -2426,10 +2426,10 @@ HRESULT CAdGame::DisplayDebugInfo()
 //}
 //
 ////////////////////////////////////////////////////////////////////////////
-//HRESULT CAdGame::OnScriptShutdown(CScScript* Script)
-//{
+HRESULT CAdGame::OnScriptShutdown(CScScript* Script)
+{
 //	if(m_ResponseBox && m_ResponseBox->m_WaitingScript==Script)
 //		m_ResponseBox->m_WaitingScript = NULL;
 //
-//	return S_OK;
-//}
+	return S_OK;
+}

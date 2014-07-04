@@ -412,9 +412,9 @@ HRESULT CBFileManager::RegisterPackages()
 	}
 
 	char ExePath[MAX_PATH];
-	CBPlatform::GetModuleFileName(NULL, ExePath, MAX_PATH);
+	//CBPlatform::GetModuleFileName(NULL, ExePath, MAX_PATH);
 
-	RegisterPackage("", ExePath, true);
+	//RegisterPackage("", ExePath, true);
 
 
 	Game->LOG(0, "  Registered %d files in %d package(s)", m_Files.size(), m_Packages.GetSize());

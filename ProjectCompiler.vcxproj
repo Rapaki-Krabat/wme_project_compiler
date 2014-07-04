@@ -198,6 +198,8 @@
     <ClCompile Include="engine_core\wme_ad\AdGame.cpp" />
     <ClCompile Include="engine_core\wme_base\BBase.cpp" />
     <ClCompile Include="engine_core\wme_base\BDiskFile.cpp" />
+    <ClCompile Include="engine_core\wme_base\BDynBuffer.cpp" />
+    <ClCompile Include="engine_core\wme_base\BFile.cpp" />
     <ClCompile Include="engine_core\wme_base\BFileEntry.cpp" />
     <ClCompile Include="engine_core\wme_base\BFileManager.cpp" />
     <ClCompile Include="engine_core\wme_base\BGame.cpp" />
@@ -209,7 +211,9 @@
     <ClCompile Include="engine_core\wme_base\BResourceFile.cpp" />
     <ClCompile Include="engine_core\wme_base\BScriptable.cpp" />
     <ClCompile Include="engine_core\wme_base\BScriptHolder.cpp" />
+    <ClCompile Include="engine_core\wme_base\BStringTable.cpp" />
     <ClCompile Include="engine_core\wme_base\BStringUtil.cpp" />
+    <ClCompile Include="engine_core\wme_base\BTextUtils.cpp" />
     <ClCompile Include="engine_core\wme_base\ScEngine.cpp" />
     <ClCompile Include="engine_core\wme_base\ScScript.cpp" />
     <ClCompile Include="engine_core\wme_base\ScStack.cpp" />
@@ -235,6 +239,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MFCExt\DCGFDoc.cpp" />
     <ClCompile Include="MFCExt\DCGFStringTable.cpp" />
     <ClCompile Include="MFCExt\utils_mfc.cpp" />
     <ClCompile Include="NumEncoder.cpp">
@@ -266,6 +271,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D9|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="UtilIcon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EdGame.h" />

@@ -94,6 +94,7 @@ void CDCGFDoc::Serialize(CArchive& ar)
 //////////////////////////////////////////////////////////////////////////
 bool CDCGFDoc::QueryProjectRoot(CString Filename)
 {
+	/*
 	CFrameWnd* frame = ((CMDIFrameWnd*)AfxGetMainWnd())->GetActiveFrame();
 		
 	CRootDlg dlg;
@@ -113,6 +114,8 @@ bool CDCGFDoc::QueryProjectRoot(CString Filename)
 		return true;
 	}
 	else return false;
+	*/
+	return false;
 }
 
 
@@ -159,7 +162,7 @@ BOOL CDCGFDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	}
 
 	if(RootFound){
-		((CDCGFApp*)AfxGetApp())->AddProjectRoot(m_ProjectRoot);
+		// ((CDCGFApp*)AfxGetApp())->AddProjectRoot(m_ProjectRoot);
 		return TRUE;
 	}
 	else return QueryProjectRoot(lpszPathName);
