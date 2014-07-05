@@ -740,10 +740,8 @@ HRESULT CBFileManager::RestoreCurrentDir()
 	if(!m_BasePath) return S_OK;
 	else
 	{
-		printf("CHdir to %s.\n", m_BasePath);
 		if(!chdir(m_BasePath)) return S_OK;
 		else {
-			printf("CHdir fAIL\n");
 			return E_FAIL;
 		}
 	}

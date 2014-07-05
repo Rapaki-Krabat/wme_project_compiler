@@ -32,10 +32,8 @@ HRESULT CBDiskFile::Open(char* Filename)
 
 	char FullPath[MAX_PATH];
 
-	printf("Singe paths size=%d.", Game->m_FileManager->m_SinglePaths.GetSize());
 	for(int i=0; i<Game->m_FileManager->m_SinglePaths.GetSize(); i++)
 	{
-		printf("Single path %d=%s.\n", i, Game->m_FileManager->m_SinglePaths[i]);
 		sprintf(FullPath, "%s%s", Game->m_FileManager->m_SinglePaths[i], Filename);
 		m_File = fopen(FullPath, "rb");
 		if(m_File!=NULL) break;

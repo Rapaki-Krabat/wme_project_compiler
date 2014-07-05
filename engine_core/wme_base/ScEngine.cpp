@@ -342,6 +342,7 @@ BYTE* CScEngine::GetCompiledScript(char *Filename, DWORD *OutSize, bool IgnoreCa
 	{
 		int index;
 		DWORD MinTime = 0;
+		/*
 		for(int i=0; i<MAX_CACHED_SCRIPTS; i++)
 		{
 			if(m_CachedScripts[i]==NULL)
@@ -359,6 +360,7 @@ BYTE* CScEngine::GetCompiledScript(char *Filename, DWORD *OutSize, bool IgnoreCa
 		if(m_CachedScripts[index]!=NULL) delete m_CachedScripts[index];
 		m_CachedScripts[index] = CachedScript;
 
+		*/
 		ret = CachedScript->m_Buffer;
 		*OutSize = CachedScript->m_Size;
 	}

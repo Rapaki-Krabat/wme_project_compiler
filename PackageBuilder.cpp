@@ -427,7 +427,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		TFile* File = Package->m_Files[i];
 
 		m_ProcessedFiles++;
-		printf(CString(LOC("/str0121/File")) + ": " + File->Name);
+		printf(CString(LOC("/str0121/File")) + ": " + File->Name + "\n");
 		// dlg->m_Progress.SetPos(m_ProcessedFiles);
 		//dlg->Update();
 		/*
@@ -442,7 +442,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		FILE* entry = fopen(File->FullName, "rb");
 		if(!entry){
 			fclose(f);
-			printf(CString(LOC("/str0122/Cannot open file")) + " '" + File->FullName + "' " + LOC("/str0123/for reading"), File->Name);
+			printf(CString(LOC("/str0122/Cannot open file")) + " '" + File->FullName + "' " + LOC("/str0123/for reading\n"));
 			return false;
 		}
 		fseek(entry, 0, SEEK_END);
@@ -452,7 +452,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		if(!Buffer){
 			fclose(entry);
 			fclose(f);
-			printf(CString(LOC("/str0124/Cannot allocate memory for file")) + " '" + File->FullName + "'", File->Name);
+			printf(CString(LOC("/str0124/Cannot allocate memory for file")) + " '" + File->FullName + "'\n");
 			return false;
 		}
 
@@ -479,7 +479,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		// error applying filter?
 		if(Processed==CPackagerFilter::PROC_ERROR){
 			fclose(f);
-			printf(CString(LOC("/str0125/Error applying filter to file")) + " '" + File->Name + "'", File->Name);
+			printf(CString(LOC("/str0125/Error applying filter to file")) + " '" + File->Name + "'\n");
 			return false;
 		}
 

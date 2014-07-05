@@ -478,7 +478,7 @@ BOOL CProjectDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	SAFE_DELETE(m_Settings);
 	m_Settings = ::new CEdSettings(Game);
 	if(!m_Settings || FAILED(m_Settings->LoadFile("startup.settings"))){
-		printf(LOC("/str0047/Error loading the settings file."));
+		printf(LOC("/str0047/Error loading the settings file.\n"));
 		SAFE_DELETE(m_Settings);
 		return FALSE;
 	}
