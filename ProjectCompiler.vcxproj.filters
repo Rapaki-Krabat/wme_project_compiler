@@ -138,6 +138,12 @@
     <ClCompile Include="UtilIcon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="engine_core\wme_base\BPluginMgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine_core\wme_base\BPlugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EdGame.h">
@@ -234,6 +240,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MFCExt\templatedlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine_core\wme_base\BPluginMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

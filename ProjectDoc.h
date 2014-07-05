@@ -25,7 +25,7 @@ public:
 	CProjectDoc(const char* projectFile);
 protected: // create from serialization only
 	CProjectDoc();
-	DECLARE_DYNCREATE(CProjectDoc)
+	//DECLARE_DYNCREATE(CProjectDoc)
 
 // Attributes
 public:
@@ -118,7 +118,7 @@ protected:
 	afx_msg void OnProjectRun();
 	afx_msg void OnGenerateGdf();
 	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+	//DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

@@ -42,13 +42,13 @@ CBGame::CBGame():CBObject(this)
 	//m_FontStorage = NULL;
 	//m_Renderer = NULL;
 	//m_SoundMgr = NULL;
-	//m_FileManager = NULL;
+	m_FileManager = NULL;
 	//m_NetworkMgr = NULL;
 	//m_AccessMgr = NULL;
 	//m_TransMgr = NULL;
-	//m_PluginMgr = NULL;
+	m_PluginMgr = NULL;
 	//m_DebugMgr = NULL;
-	//m_ScEngine = NULL;
+	m_ScEngine = NULL;
 	//m_KeyboardState = NULL;
 	//
 	//m_MathClass = NULL;
@@ -100,7 +100,7 @@ CBGame::CBGame():CBObject(this)
 	//srand((unsigned)time(NULL));
 
 	//m_Registry = new CBRegistry(this);
-	//m_StringTable = new CBStringTable(this);
+	m_StringTable = new CBStringTable(this);
 
 	//for(int i=0; i<NUM_MUSIC_CHANNELS; i++){
 	//	m_Music[i] = NULL;
@@ -384,8 +384,8 @@ HRESULT CBGame::Initialize1()
 //	m_SoundMgr = new CBSoundMgr(this);
 //	if(m_SoundMgr==NULL) goto init_fail;
 //
-//	m_PluginMgr = new CBPluginMgr(this);
-//	if(m_PluginMgr==NULL) goto init_fail;
+	m_PluginMgr = new CBPluginMgr(this);
+	if(m_PluginMgr==NULL) goto init_fail;
 //
 //	m_DebugMgr = new CBDebugger(this);
 //	if(m_DebugMgr==NULL) goto init_fail;
@@ -433,7 +433,7 @@ init_fail:
 	if(m_ScEngine) delete m_ScEngine;
 //	if(m_VideoPlayer) delete m_VideoPlayer;
 	return E_FAIL;
-//}
+}
 //
 //
 ////////////////////////////////////////////////////////////////////////
@@ -447,8 +447,8 @@ init_fail:
 //
 //init_fail:
 //	if(m_Renderer) delete m_Renderer;
-	return E_FAIL;
-}
+//	return E_FAIL;
+//}
 
 
 //////////////////////////////////////////////////////////////////////
@@ -524,7 +524,13 @@ void CBGame::DEBUG_DebugDisable()
 //////////////////////////////////////////////////////////////////////
 void __cdecl CBGame::LOG(HRESULT res, LPSTR fmt, ...)
 {
-	if(!m_DEBUG_DebugMode || m_DEBUG_LogFile == NULL) return;
+	printf("GAME LOG format: %s.\n", fmt);
+	return;
+
+
+	// return;
+
+	// if(!m_DEBUG_DebugMode || m_DEBUG_LogFile == NULL) return;
 
 	char buff[512];
 	va_list va;
@@ -533,11 +539,13 @@ void __cdecl CBGame::LOG(HRESULT res, LPSTR fmt, ...)
 	vsprintf(buff, fmt, va);
 	va_end(va);
 
+	printf("Game log: %s.\n", buff);
+
 	// redirect to an engine's own callback
-	if(m_EngineLogCallback)
-	{
-		m_EngineLogCallback(buff, res, m_EngineLogCallbackData);
-	}
+	//if(m_EngineLogCallback)
+	//{
+	//	m_EngineLogCallback(buff, res, m_EngineLogCallbackData);
+	//}
 	//if(m_DebugMgr) m_DebugMgr->OnLog(res, buff);
 
 //	SYSTEMTIME st;

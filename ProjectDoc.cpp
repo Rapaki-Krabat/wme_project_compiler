@@ -35,6 +35,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CProjectDoc
 
+/*
 IMPLEMENT_DYNCREATE(CProjectDoc, CDCGFDoc)
 
 BEGIN_MESSAGE_MAP(CProjectDoc, CDCGFDoc)
@@ -44,6 +45,7 @@ BEGIN_MESSAGE_MAP(CProjectDoc, CDCGFDoc)
 	ON_COMMAND(ID_GENERATE_GDF, OnGenerateGdf)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+*/
 
 /////////////////////////////////////////////////////////////////////////////
 // CProjectDoc construction/destruction
@@ -317,7 +319,7 @@ BOOL CProjectDoc::OnSaveDocument(LPCTSTR lpszPathName)
 	delete buf;
 
 
-	SetModifiedFlag(Error);
+//	SetModifiedFlag(Error);
 
 	return CDCGFDoc::OnSaveDocument(lpszPathName);
 }
@@ -326,8 +328,10 @@ BOOL CProjectDoc::OnSaveDocument(LPCTSTR lpszPathName)
 //////////////////////////////////////////////////////////////////////////
 BOOL CProjectDoc::OnOpenDocument(LPCTSTR lpszPathName) 
 {
+	/*
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
+		*/
 	
 	Cleanup();
 	SetDefaults();
@@ -350,10 +354,9 @@ BOOL CProjectDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	else if(VerMajor == DCGF_VER_MAJOR && VerMinor == DCGF_VER_MINOR && VerBuild > DCGF_VER_BUILD) NewerVersion = true;
 
 	if(NewerVersion){
-		if(AfxMessageBox(LOC("/str1084/This project has been created in a newer version of WME. It is recommended that you upgrade before opening this file.\n\nDo you want to open this project anyway? (not recommended)"), MB_YESNO|MB_ICONQUESTION)!=IDYES) return FALSE;
+		printf(LOC("/str1084/This project has been created in a newer version of WME. It is recommended that you upgrade before opening this file.\n\nDo you want to open this project anyway? (not recommended)"), MB_YESNO|MB_ICONQUESTION);
+		return FALSE;
 	}
-	
-
 
 	// debug settings
 	m_DebugMode = GetPrivateProfileInt("Debug", "DebugMode", 1, lpszPathName)!=0;
@@ -438,11 +441,13 @@ BOOL CProjectDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	// load plugin settings
 	m_PluginList.RemoveAll();
 	int NumPlugins = GetPrivateProfileInt("Plugins", "NumPlugins", 0, lpszPathName);
+	printf("Number plugins found: %d.\n", NumPlugins);
 	for(i=0; i<NumPlugins; i++)
 	{
 		char str2[MAX_PATH];
 		sprintf(str2, "Plugin%d", i+1);
 		GetPrivateProfileString("Plugins", str2, "", str, MAX_PATH, lpszPathName);
+		printf("Plugin string: %s.\n", str2);
 		if(strcmp(str, "")!=0) m_PluginList.Add(CString(str));
 	}
 
@@ -466,15 +471,19 @@ BOOL CProjectDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	
 	// other settings
 	// Game->m_Registry->SetIniName((char*)lpszPathName);
-	Game->m_FileManager->SetBasePath((char*)LPCSTR(m_ProjectRoot));
+	//Game->m_FileManager->SetBasePath((char*)LPCSTR(m_ProjectRoot));
+	Game->m_FileManager->SetBasePath("O:\\K2\\game\\");
+
 
 	SAFE_DELETE(m_Settings);
 	m_Settings = ::new CEdSettings(Game);
 	if(!m_Settings || FAILED(m_Settings->LoadFile("startup.settings"))){
-		MessageBox(NULL, LOC("/str0047/Error loading the settings file."), LOC("/str1002/Error"), MB_ICONERROR|MB_OK);
+		printf(LOC("/str0047/Error loading the settings file."));
 		SAFE_DELETE(m_Settings);
 		return FALSE;
 	}
+
+	printf("OnOpenDocuemnt: Success!\n");
 	
 
 	return TRUE;
@@ -523,6 +532,7 @@ HRESULT CProjectDoc::SetProjectRoot(LPCSTR Filename)
 	char drive[_MAX_DRIVE];
 	char dir[_MAX_DIR];
 	_splitpath(Filename, drive, dir, NULL, NULL);
+	printf("Project root %s split into: %s : %s.\n", Filename, drive, dir);
 	m_ProjectRoot.Format("%s%s", drive, dir);
 
 	return S_OK;
@@ -598,7 +608,7 @@ bool CProjectDoc::CompilePackages(CPackage* SinglePackage)
 	}
 	*/
 
-	OnSaveDocument(GetPathName());
+//	OnSaveDocument(GetPathName());
 	bool Ret = builder.Compile(SinglePackage);
 
 	for(int i=0; i<m_Packages.GetSize(); i++)
@@ -715,9 +725,10 @@ void CProjectDoc::OnProjectRun()
 //////////////////////////////////////////////////////////////////////////
 CProjectView* CProjectDoc::GetView()
 {
-	POSITION pos = GetFirstViewPosition();
-	if(pos) return (CProjectView*)GetNextView(pos);
-	else return NULL;
+//	POSITION pos = GetFirstViewPosition();
+//	if(pos) return (CProjectView*)GetNextView(pos);
+//	else return NULL;
+	return NULL;
 }
 
 
@@ -759,7 +770,7 @@ void CProjectDoc::PrioritizePackage(CString Name)
 	CString List = "";
 	for(int i=0; i<m_Packages.GetSize(); i++) List += m_Packages[i]->m_Folder + ";";
 	
-	WritePrivateProfileString("Resource", "CustomPaths", List, GetPathName());
+//	WritePrivateProfileString("Resource", "CustomPaths", List, GetPathName());
 }
 
 

@@ -209,6 +209,8 @@
     <ClCompile Include="engine_core\wme_base\BPackage.cpp" />
     <ClCompile Include="engine_core\wme_base\BParser.cpp" />
     <ClCompile Include="engine_core\wme_base\BPkgFile.cpp" />
+    <ClCompile Include="engine_core\wme_base\BPlugin.cpp" />
+    <ClCompile Include="engine_core\wme_base\BPluginMgr.cpp" />
     <ClCompile Include="engine_core\wme_base\BResourceFile.cpp" />
     <ClCompile Include="engine_core\wme_base\BScriptable.cpp" />
     <ClCompile Include="engine_core\wme_base\BScriptHolder.cpp" />
@@ -278,6 +280,7 @@
     <ClInclude Include="EdGame.h" />
     <ClInclude Include="EdSettings.h" />
     <ClInclude Include="engine_core\wme_ad\dcgf_ad.h" />
+    <ClInclude Include="engine_core\wme_base\BPluginMgr.h" />
     <ClInclude Include="engine_core\wme_base\BTextUtils.h" />
     <ClInclude Include="engine_core\wme_base\coll_templ.h" />
     <ClInclude Include="engine_core\wme_base\dcgf.h" />

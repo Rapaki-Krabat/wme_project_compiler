@@ -314,6 +314,8 @@ HRESULT CBFileManager::InitPaths()
 	// single files paths	
 	size = TEMP_BUFFER_SIZE;
 //	Game->m_Registry->ReadString("Resource", "CustomPaths", temp, &size);
+	temp[0] = 0;
+	strcpy(temp, "pakcik0;pakcik1;pakcik2;pakcik3;pakcik4;pakcik5;");
 	str_start = temp;
 	len = strlen(temp);
 	for(i=0; i<=len; i++)
@@ -723,10 +725,10 @@ CBFile* CBFileManager::OpenFileRaw(char *Filename)
 
 	delete PkgFile;
 
-	CBResourceFile* ResFile = new CBResourceFile(Game);
-	if(SUCCEEDED(ResFile->Open(Filename))) return ResFile;
+//	CBResourceFile* ResFile = new CBResourceFile(Game);
+//	if(SUCCEEDED(ResFile->Open(Filename))) return ResFile;
 
-	delete ResFile;
+//	delete ResFile;
 
 	return NULL;
 }
@@ -738,8 +740,12 @@ HRESULT CBFileManager::RestoreCurrentDir()
 	if(!m_BasePath) return S_OK;
 	else
 	{
+		printf("CHdir to %s.\n", m_BasePath);
 		if(!chdir(m_BasePath)) return S_OK;
-		else return E_FAIL;
+		else {
+			printf("CHdir fAIL\n");
+			return E_FAIL;
+		}
 	}
 }
 

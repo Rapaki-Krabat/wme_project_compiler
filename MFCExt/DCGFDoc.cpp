@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDCGFDoc
 
-IMPLEMENT_DYNCREATE(CDCGFDoc, CDocument)
+// IMPLEMENT_DYNCREATE(CDCGFDoc, CDocument)
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -44,18 +44,18 @@ BOOL CDCGFDoc::OnNewDocument()
 {
 	if(!QueryProjectRoot()) return FALSE;
 
-	if (!CDocument::OnNewDocument())
-		return FALSE;
+//	if (!CDocument::OnNewDocument())
+//		return FALSE;
 	return TRUE;
 }
 
 
 
-BEGIN_MESSAGE_MAP(CDCGFDoc, CDocument)
+//BEGIN_MESSAGE_MAP(CDCGFDoc, CDocument)
 	//{{AFX_MSG_MAP(CDCGFDoc)
 		// NOTE - the ClassWizard will add and remove mapping macros here.
 	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
+//END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CDCGFDoc diagnostics
@@ -122,8 +122,8 @@ bool CDCGFDoc::QueryProjectRoot(CString Filename)
 //////////////////////////////////////////////////////////////////////////
 BOOL CDCGFDoc::OnOpenDocument(LPCTSTR lpszPathName) 
 {
-	if (!CDocument::OnOpenDocument(lpszPathName))
-		return FALSE;
+//	if (!CDocument::OnOpenDocument(lpszPathName))
+//		return FALSE;
 	
 	CStdioFile f;
 	CString line;

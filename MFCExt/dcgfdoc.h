@@ -17,11 +17,11 @@
 /////////////////////////////////////////////////////////////////////////////
 // CDCGFDoc document
 
-class CDCGFDoc : public CDocument
+class CDCGFDoc //: public CDocument
 {
 protected:
 	CDCGFDoc();           // protected constructor used by dynamic creation
-	DECLARE_DYNCREATE(CDCGFDoc)
+	//DECLARE_DYNCREATE(CDCGFDoc)
 
 // Attributes
 public:
@@ -56,7 +56,7 @@ protected:
 	//{{AFX_MSG(CDCGFDoc)
 		// NOTE - the ClassWizard will add and remove member functions here.
 	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+	//DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}
