@@ -31,6 +31,7 @@ public:
 	HRESULT RegisterPackages();
 	HRESULT InitPaths();
 	HRESULT ReloadPaths();
+	HRESULT SetCustomPaths(const char *customPath);
 	typedef enum{
 		PATH_PACKAGE, PATH_SINGLE
 	} TPathType;
@@ -50,8 +51,7 @@ public:
 	map<string, CBFileEntry*> m_Files;
 private:
 	HRESULT RegisterPackage(char* Path, char* Name, bool SearchSignature=false);	
-	map<string, CBFileEntry*>::iterator m_FilesIter;
-	
+	map<string, CBFileEntry*>::iterator m_FilesIter;	
 };
 
 #endif // !defined(AFX_BFILEMANAGER_H__46BF5841_1837_11D4_9F37_9067C7F29A3D__INCLUDED_)

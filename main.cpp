@@ -8,9 +8,9 @@ CProjectDoc *doc;
 CPackageBuilder *builder;
 
 
-int main(void)
+int main(int argc, char **argv)
 {
-	doc = new CProjectDoc("O:\\K2\\game\\K2.wpr");
+	doc = new CProjectDoc(argv[1]);
 	builder = new CPackageBuilder(doc);
 	
 	// compile all

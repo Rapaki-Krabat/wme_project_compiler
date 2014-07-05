@@ -301,6 +301,16 @@ HRESULT CBFileManager::ReloadPaths()
 
 
 #define TEMP_BUFFER_SIZE 32768
+
+char m_CustomPaths[TEMP_BUFFER_SIZE];
+
+HRESULT CBFileManager::SetCustomPaths(const char *customPath)
+{
+	m_CustomPaths[0] = 0;
+	strcpy(m_CustomPaths, customPath);
+	return 0;
+}
+
 //////////////////////////////////////////////////////////////////////////
 HRESULT CBFileManager::InitPaths()
 {
@@ -315,7 +325,7 @@ HRESULT CBFileManager::InitPaths()
 	size = TEMP_BUFFER_SIZE;
 //	Game->m_Registry->ReadString("Resource", "CustomPaths", temp, &size);
 	temp[0] = 0;
-	strcpy(temp, "pakcik0;pakcik1;pakcik2;pakcik3;pakcik4;pakcik5;");
+	strcpy(temp, m_CustomPaths);
 	str_start = temp;
 	len = strlen(temp);
 	for(i=0; i<=len; i++)

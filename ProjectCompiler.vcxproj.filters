@@ -245,6 +245,9 @@
     <ClInclude Include="engine_core\wme_base\BPluginMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="engine_core\wme_base\BFileManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\engine_core\wme_base\res\system_font.fnt" />

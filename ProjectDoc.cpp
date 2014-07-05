@@ -472,7 +472,21 @@ BOOL CProjectDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	// other settings
 	// Game->m_Registry->SetIniName((char*)lpszPathName);
 	//Game->m_FileManager->SetBasePath((char*)LPCSTR(m_ProjectRoot));
-	Game->m_FileManager->SetBasePath("O:\\K2\\game\\");
+
+	char drive[_MAX_DRIVE];
+	char dir[_MAX_DIR];
+	char total[_MAX_DRIVE + _MAX_DIR];
+	_splitpath(lpszPathName, drive, dir, NULL, NULL);
+	printf("Project root %s split into: %s : %s.\n", lpszPathName, drive, dir);
+	// m_ProjectRoot.Format("%s%s", drive, dir);
+
+	total[0] = 0;
+	strcat(total, drive);
+	strcat(total, dir);
+
+	printf("Complete root path: %s.\n", total);
+
+	Game->m_FileManager->SetBasePath(total);
 
 
 	SAFE_DELETE(m_Settings);
@@ -771,6 +785,7 @@ void CProjectDoc::PrioritizePackage(CString Name)
 	for(int i=0; i<m_Packages.GetSize(); i++) List += m_Packages[i]->m_Folder + ";";
 	
 //	WritePrivateProfileString("Resource", "CustomPaths", List, GetPathName());
+	Game->m_FileManager->SetCustomPaths(List);
 }
 
 
