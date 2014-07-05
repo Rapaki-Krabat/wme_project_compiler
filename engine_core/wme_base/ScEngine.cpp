@@ -337,13 +337,12 @@ BYTE* CScEngine::GetCompiledScript(char *Filename, DWORD *OutSize, bool IgnoreCa
 	BYTE* ret = NULL;
 
 	// add script to cache
-	/*
 	CScCachedScript* CachedScript = new CScCachedScript(Filename, CompBuffer, CompSize);
 	if(CachedScript)
 	{
 		int index;
-		DWORD MinTime = timeGetTime();
-		for(i=0; i<MAX_CACHED_SCRIPTS; i++)
+		DWORD MinTime = 0;
+		for(int i=0; i<MAX_CACHED_SCRIPTS; i++)
 		{
 			if(m_CachedScripts[i]==NULL)
 			{
@@ -363,8 +362,6 @@ BYTE* CScEngine::GetCompiledScript(char *Filename, DWORD *OutSize, bool IgnoreCa
 		ret = CachedScript->m_Buffer;
 		*OutSize = CachedScript->m_Size;
 	}
-	*/
-
 
 	// cleanup
 	delete [] Buffer;
