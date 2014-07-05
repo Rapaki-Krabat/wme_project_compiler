@@ -623,7 +623,8 @@ bool CProjectDoc::CompilePackages(CPackage* SinglePackage)
 	*/
 
 //	OnSaveDocument(GetPathName());
-	bool Ret = builder.Compile(SinglePackage);
+	// bool Ret = builder.Compile(SinglePackage);
+	bool Ret = true;
 
 	for(int i=0; i<m_Packages.GetSize(); i++)
 	{

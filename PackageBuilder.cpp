@@ -67,7 +67,7 @@ void CPackageBuilder::Cleanup()
 
 
 //////////////////////////////////////////////////////////////////////////
-bool CPackageBuilder::Compile(CPackage* SinglePackage)
+bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder)
 {
 	int i;
 	bool ret = true;
@@ -87,7 +87,8 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 	dlg.m_Progress.SetPos(0);
 	*/
 
-	CString OutputPath = m_Doc->m_PackOutputFolder;
+	//	CString OutputPath = m_Doc->m_PackOutputFolder;
+	CString OutputPath = CString(outputFolder);
 	if(OutputPath[OutputPath.GetLength()-1]!='\\') OutputPath+="\\";
 	if(PathIsRelative(OutputPath)){
 		char Temp[MAX_PATH];
