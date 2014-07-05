@@ -487,7 +487,7 @@ BOOL CProjectDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	printf("Complete root path: %s.\n", total);
 
 	Game->m_FileManager->SetBasePath(total);
-
+	PrioritizePackage("bla");
 
 	SAFE_DELETE(m_Settings);
 	m_Settings = ::new CEdSettings(Game);
@@ -688,21 +688,19 @@ CString CProjectDoc::GetWMEPath()
 	else ExeName = "wme.exe";
 
 	CString Path = GetRegString(HKEY_CURRENT_USER, DCGF_TOOLS_REG_PATH, "ToolsPath");
+	if (Path.GetLength() < 1) 
+	{
+		printf("WME path not found!!!\n");
+		return "";
+	}
 	if(Path[Path.GetLength()-1]!='\\') Path+="\\";
 	CString WmePath = Path + ExeName;
 	
 
 	CFileFind finder;
 	if(!finder.FindFile(WmePath)){
-		CString Filter = CString(LOC("/str0130/WME runtime")) + " (" + ExeName + ")|" + ExeName + "|" + LOC("/str1003/All Files") + " (*.*)|*.*||";
-		CFileDialog dlg(TRUE, NULL, NULL, OFN_HIDEREADONLY|OFN_ENABLESIZING|OFN_FILEMUSTEXIST|OFN_PATHMUSTEXIST|OFN_NOCHANGEDIR, Filter, AfxGetMainWnd());
-		dlg.m_ofn.lpstrInitialDir = Path;
-	
-		if(dlg.DoModal()==IDOK){
-			SetRegString(HKEY_CURRENT_USER, DCGF_TOOLS_REG_PATH, "ToolsPath", GetPath(dlg.GetPathName()));
-			return dlg.GetPathName();
-		}
-		else return "";
+		printf("WME path not found!!!\n");
+		return "";
 	}
 	else return WmePath;
 }
@@ -785,6 +783,7 @@ void CProjectDoc::PrioritizePackage(CString Name)
 	for(int i=0; i<m_Packages.GetSize(); i++) List += m_Packages[i]->m_Folder + ";";
 	
 //	WritePrivateProfileString("Resource", "CustomPaths", List, GetPathName());
+	printf("Setting custom paths for file manager to: '%s'\n", List);
 	Game->m_FileManager->SetCustomPaths(List);
 }
 

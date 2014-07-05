@@ -118,6 +118,8 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 	GetVersionEx((OSVERSIONINFO*) &osvi);
 	IsNT = (osvi.dwPlatformId==VER_PLATFORM_WIN32_NT);
 
+	printf("IsNT=%s.\n", (IsNT == true) ? "TRUE" : "FALSE");
+
 	if(!SinglePackage)
 	{
 		// copy exe
@@ -161,35 +163,39 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 			if(GetExt(NewSetName).CompareNoCase("EXE")!=0) NewSetName += ".exe";
 
 			CString ToolsPath = GetRegString(HKEY_CURRENT_USER, DCGF_TOOLS_REG_PATH, "ToolsPath");
-			if(ToolsPath[ToolsPath.GetLength()-1]!='\\') ToolsPath+="\\";
-			ToolsPath+="settings.exe";
+			if (ToolsPath.GetLength() < 1) {
+				printf("Tools path not found!\n");
+			} else {
+				if(ToolsPath[ToolsPath.GetLength()-1]!='\\') ToolsPath+="\\";
+				ToolsPath+="settings.exe";
 
-			if(!::CopyFile(ToolsPath, NewSetName, FALSE))
-			{
-				printf(LOC("/str1162/Error copying settings.exe to the output folder"));
-			}
-			else if(m_Doc->m_PackChangeIconSet)
-			{
-				// change icon
-				if(!IsNT)
+				if(!::CopyFile(ToolsPath, NewSetName, FALSE))
 				{
-					printf(LOC("/str0149/Icon changing is not supported on this Windows version"));
+					printf(LOC("/str1162/Error copying settings.exe to the output folder"));
 				}
-				else
+				else if(m_Doc->m_PackChangeIconSet)
 				{
-					CString IconName = m_Doc->m_PackIconNameSet;
-					if(PathIsRelative(IconName)){
-						char Temp[MAX_PATH];
-						if(PathCanonicalize(Temp, m_Doc->m_ProjectRoot + IconName)) IconName = CString(Temp);
+					// change icon
+					if(!IsNT)
+					{
+						printf(LOC("/str0149/Icon changing is not supported on this Windows version"));
 					}
+					else
+					{
+						CString IconName = m_Doc->m_PackIconNameSet;
+						if(PathIsRelative(IconName)){
+							char Temp[MAX_PATH];
+							if(PathCanonicalize(Temp, m_Doc->m_ProjectRoot + IconName)) IconName = CString(Temp);
+						}
 
-					HANDLE h = BeginUpdateResource(NewSetName, FALSE);
-					if(h){
-						if(!AddIconToRes(h, IconName, 1, 101))printf(LOC("/str0150/Error changing icon"));
-						EndUpdateResource(h, FALSE);
+						HANDLE h = BeginUpdateResource(NewSetName, FALSE);
+						if(h){
+							if(!AddIconToRes(h, IconName, 1, 101))printf(LOC("/str0150/Error changing icon"));
+							EndUpdateResource(h, FALSE);
+						}
+						else printf("/str0150/Error changing icon");
 					}
-					else printf("/str0150/Error changing icon");
-				}
+				}	
 			}
 		}
 
@@ -199,12 +205,16 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage)
 			CString TargetFile = OutputPath + "d3dx9_34.dll";
 
 			CString ToolsPath = GetRegString(HKEY_CURRENT_USER, DCGF_TOOLS_REG_PATH, "ToolsPath");
-			if(ToolsPath[ToolsPath.GetLength()-1]!='\\') ToolsPath+="\\";
-			ToolsPath+="d3dx9_34.dll";
+			if (ToolsPath.GetLength() < 1) {
+				printf("Tools path not found!\n");
+			} else {
+				if(ToolsPath[ToolsPath.GetLength()-1]!='\\') ToolsPath+="\\";
+				ToolsPath+="d3dx9_34.dll";
 
-			if(!::CopyFile(ToolsPath, TargetFile, FALSE))
-			{
-				printf(LOC("/str1185/Error copying D3DX library to the output folder"));
+				if(!::CopyFile(ToolsPath, TargetFile, FALSE))
+				{
+					printf(LOC("/str1185/Error copying D3DX library to the output folder"));
+				}
 			}
 		}
 
