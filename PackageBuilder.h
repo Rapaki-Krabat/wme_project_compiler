@@ -51,7 +51,7 @@ public:
 	bool GetAllFiles(TPackage* Package, CString Path);
 	int m_TotalFiles;
 	int m_ProcessedFiles;
-	bool Compile(CPackage* SinglePackage, char *outputFolder);
+	bool Compile(CPackage* SinglePackage, char *outputFolder, char *toolsFolder, bool addCrashLib);
 	CPackageBuilder(CProjectDoc* Doc);
 	virtual ~CPackageBuilder();
 	CProjectDoc* m_Doc;

@@ -67,7 +67,7 @@ void CPackageBuilder::Cleanup()
 
 
 //////////////////////////////////////////////////////////////////////////
-bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder)
+bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char *toolsFolder, bool addCrashLib)
 {
 	int i;
 	bool ret = true;
@@ -96,10 +96,10 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder)
 	}
 
 	// prepare output
-	printf(LOC("/str0108/Preparing output folder..."));
+	printf(LOC("/str0108/Preparing output folder...\n"));
 	// dlg.Update();
 	if(MakePath(OutputPath)==""){
-		printf(CString(LOC("/str0109/Cannot create output folder")) + " '" + OutputPath + "'");
+		printf(CString(LOC("/str0109/Cannot create output folder")) + " '" + OutputPath + "'\n");
 		ret = false;
 		goto finish;
 	}
@@ -109,7 +109,7 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder)
 	// prepare packages/files
 	Cleanup();
 	
-	printf(LOC("/str0110/Preparing build..."));
+	printf(LOC("/str0110/Preparing build...\n"));
 	//dlg.Update();	
 
 	bool IsNT = false;
@@ -123,20 +123,20 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder)
 
 	if(!SinglePackage)
 	{
-		// copy exe
+		// copy WMELITE exe
 		if(m_Doc->m_PackCopyExe){
 			NewExeName = OutputPath + m_Doc->m_PackExeName;
 			if(GetExt(NewExeName).CompareNoCase("EXE")!=0) NewExeName += ".exe";
 
-			if(!::CopyFile(m_Doc->GetWMEPath(), NewExeName, FALSE)){
-				printf(LOC("/str0148/Error copying the engine runtime to the output folder"));
+			if(!::CopyFile(CString(toolsFolder) + "\\wme_D3D9.exe", NewExeName, FALSE)){
+				printf(LOC("/str0148/Error copying the engine runtime to the output folder\n"));
 			}
 			else if(m_Doc->m_PackChangeIcon)
 			{
 				// change icon
 				if(!IsNT)
 				{
-					printf(LOC("/str0149/Icon changing is not supported on this Windows version"));
+					printf(LOC("/str0149/Icon changing is not supported on this Windows version\n"));
 				}
 				else{
 
@@ -149,10 +149,44 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder)
 
 					HANDLE h = BeginUpdateResource(NewExeName, FALSE);
 					if(h){
-						if(!AddIconToRes(h, IconName, 1, 101))printf(LOC("/str0150/Error changing icon"));
+						if(!AddIconToRes(h, IconName, 1, 101))printf(LOC("/str0150/Error changing icon\n"));
 						EndUpdateResource(h, FALSE);
 					}
-					else printf("/str0150/Error changing icon");
+					else printf("/str0150/Error changing icon\n");
+				}
+			}
+		}
+
+		// copy WME exe as 2nd option
+		if(m_Doc->m_PackCopyExe){
+			NewExeName = OutputPath + "alternate" + m_Doc->m_PackExeName;
+			if(GetExt(NewExeName).CompareNoCase("EXE")!=0) NewExeName += ".exe";
+
+			if(!::CopyFile(CString(toolsFolder) + "\\wme.exe", NewExeName, FALSE)){
+				printf(LOC("/str0148/Error copying the engine runtime to the output folder\n"));
+			}
+			else if(m_Doc->m_PackChangeIcon)
+			{
+				// change icon
+				if(!IsNT)
+				{
+					printf(LOC("/str0149/Icon changing is not supported on this Windows version\n"));
+				}
+				else{
+
+					CString IconName = m_Doc->m_PackIconName;
+					if(PathIsRelative(IconName)){
+						char Temp[MAX_PATH];
+						if(PathCanonicalize(Temp, m_Doc->m_ProjectRoot + IconName)) IconName = CString(Temp);
+					}
+
+
+					HANDLE h = BeginUpdateResource(NewExeName, FALSE);
+					if(h){
+						if(!AddIconToRes(h, IconName, 1, 101))printf(LOC("/str0150/Error changing icon\n"));
+						EndUpdateResource(h, FALSE);
+					}
+					else printf("/str0150/Error changing icon\n");
 				}
 			}
 		}
@@ -163,7 +197,7 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder)
 			CString NewSetName = OutputPath + m_Doc->m_PackSetName;
 			if(GetExt(NewSetName).CompareNoCase("EXE")!=0) NewSetName += ".exe";
 
-			CString ToolsPath = GetRegString(HKEY_CURRENT_USER, DCGF_TOOLS_REG_PATH, "ToolsPath");
+			CString ToolsPath = toolsFolder;
 			if (ToolsPath.GetLength() < 1) {
 				printf("Tools path not found!\n");
 			} else {
@@ -172,14 +206,14 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder)
 
 				if(!::CopyFile(ToolsPath, NewSetName, FALSE))
 				{
-					printf(LOC("/str1162/Error copying settings.exe to the output folder"));
+					printf(LOC("/str1162/Error copying settings.exe to the output folder\n"));
 				}
 				else if(m_Doc->m_PackChangeIconSet)
 				{
 					// change icon
 					if(!IsNT)
 					{
-						printf(LOC("/str0149/Icon changing is not supported on this Windows version"));
+						printf(LOC("/str0149/Icon changing is not supported on this Windows version\n"));
 					}
 					else
 					{
@@ -191,10 +225,10 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder)
 
 						HANDLE h = BeginUpdateResource(NewSetName, FALSE);
 						if(h){
-							if(!AddIconToRes(h, IconName, 1, 101))printf(LOC("/str0150/Error changing icon"));
+							if(!AddIconToRes(h, IconName, 1, 101))printf(LOC("/str0150/Error changing icon\n"));
 							EndUpdateResource(h, FALSE);
 						}
-						else printf("/str0150/Error changing icon");
+						else printf("/str0150/Error changing icon\n");
 					}
 				}	
 			}
@@ -245,26 +279,26 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder)
 					if(TRUE==::CopyFile(Plugin->m_DllPath, OutputPath + ShortName, FALSE))
 					{
 						PluginFound = true;
-						printf(LOC("/str1124/Copying plugin") + CString(" ") + ShortName);
+						printf(LOC("/str1124/Copying plugin") + CString(" ") + ShortName + "\n");
 					}
 					break;
 				}
 			}
-			if(!PluginFound)printf(LOC("/str1125/Error copying plugin") + CString(" ") + m_Doc->m_PluginList[i]);
+			if(!PluginFound)printf(LOC("/str1125/Error copying plugin") + CString(" ") + m_Doc->m_PluginList[i] + "\n");
 		}
 
 		// debugging stuff
-		if(m_Doc->m_PackAddCrashLib)
+		if(addCrashLib)
 		{
 			CString TargetFile = OutputPath + "wme_report.dll";
 
-			CString ToolsPath = GetRegString(HKEY_CURRENT_USER, DCGF_TOOLS_REG_PATH, "ToolsPath");
+			CString ToolsPath = toolsFolder;
 			if(ToolsPath[ToolsPath.GetLength()-1]!='\\') ToolsPath+="\\";
 			ToolsPath+="wme_report.dll";
 
 			if(!::CopyFile(ToolsPath, TargetFile, FALSE))
 			{
-				printf(LOC("/str1176/Error copying wme_report.dll to the output folder"));
+				printf(LOC("/str1176/Error copying wme_report.dll to the output folder\n"));
 			}
 		}
 		if(m_Doc->m_PackAddDebugMode || m_Doc->m_PackAddFpsDisplay)
@@ -295,7 +329,7 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder)
 		GetAllFiles(package, package->FullName);
 		if(package->m_Files.GetSize()>0) m_Packages.Add(package);
 		else{
-			printf(CString(LOC("/str0111/Package")) + " '" + package->Name + "': " + LOC("/str0112/no files to add"));
+			printf(CString(LOC("/str0111/Package")) + " '" + package->Name + "': " + LOC("/str0112/no files to add\n"));
 			delete package;
 		}
 	}
@@ -308,7 +342,7 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder)
 	*/
 	
 	if(m_Packages.GetSize()==0){
-		printf(LOC("/str0114/All packages are empty."));
+		printf(LOC("/str0114/All packages are empty.\n"));
 		goto finish;
 	}
 
@@ -346,7 +380,7 @@ finish:
 	Cleanup();
 
 	if(!ret) DeleteAllPAckages(OutputPath, SinglePackage);
-	else printf(LOC("/str0115/Packages created successfuly"));
+	else printf(LOC("/str0115/Packages created successfuly\n"));
 	MessageBeep(ret?MB_OK:MB_ICONERROR);
 
 	return ret;
