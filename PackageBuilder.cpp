@@ -149,10 +149,10 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char 
 
 					HANDLE h = BeginUpdateResource(NewExeName, FALSE);
 					if(h){
-						if(!AddIconToRes(h, IconName, 1, 101))printf(LOC("/str0150/Error changing icon\n"));
+						if(!AddIconToRes(h, IconName, 1, 101))printf("/str0150/Error changing icon - function call failed, icon file '%s'\n", IconName);
 						EndUpdateResource(h, FALSE);
 					}
-					else printf("/str0150/Error changing icon\n");
+					else printf("/str0150/Error changing icon - no handle to '%s'\n", NewExeName);
 				}
 			}
 		}
@@ -183,10 +183,10 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char 
 
 					HANDLE h = BeginUpdateResource(NewExeName, FALSE);
 					if(h){
-						if(!AddIconToRes(h, IconName, 1, 101))printf(LOC("/str0150/Error changing icon\n"));
+						if(!AddIconToRes(h, IconName, 1, 101))printf("/str0150/Error changing icon - function call failed, icon file '%s'\n", IconName);
 						EndUpdateResource(h, FALSE);
 					}
-					else printf("/str0150/Error changing icon\n");
+					else printf("/str0150/Error changing icon, no handle to '%s'\n", NewExeName);
 				}
 			}
 		}
@@ -225,10 +225,10 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char 
 
 						HANDLE h = BeginUpdateResource(NewSetName, FALSE);
 						if(h){
-							if(!AddIconToRes(h, IconName, 1, 101))printf(LOC("/str0150/Error changing icon\n"));
+							if(!AddIconToRes(h, IconName, 1, 101))printf("/str0150/Error changing icon - function call failed, icon file '%s'\n", IconName);
 							EndUpdateResource(h, FALSE);
 						}
-						else printf("/str0150/Error changing icon\n");
+						else printf("/str0150/Error changing icon - no handle to '%s'\n", NewSetName);
 					}
 				}	
 			}
