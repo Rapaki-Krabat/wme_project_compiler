@@ -67,7 +67,7 @@ void CPackageBuilder::Cleanup()
 
 
 //////////////////////////////////////////////////////////////////////////
-bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char *toolsFolder, bool addCrashLib)
+bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char *toolsFolder, bool addCrashLib, bool enableLogWriting)
 {
 	int i;
 	bool ret = true;
@@ -301,13 +301,15 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char 
 				printf(LOC("/str1176/Error copying wme_report.dll to the output folder\n"));
 			}
 		}
-		if(m_Doc->m_PackAddDebugMode || m_Doc->m_PackAddFpsDisplay)
+		if(m_Doc->m_PackAddDebugMode || m_Doc->m_PackAddFpsDisplay || enableLogWriting)
 		{
 			CString IniName = OutputPath + "wme.ini";
 			if(m_Doc->m_PackAddFpsDisplay)
 				WritePrivateProfileString("Debug", "ShowFPS", "1", IniName);
 			if(m_Doc->m_PackAddDebugMode)
 				WritePrivateProfileString("Debug", "DebugMode", "1", IniName);
+			if (enableLogWriting)
+				WritePrivateProfileString("Debug", "LogWriteMode", "1", IniName);
 		}
 	} // SinglePackage
 
