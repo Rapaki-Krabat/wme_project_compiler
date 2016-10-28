@@ -15,7 +15,7 @@
 #include "zlib.h"
 #include "UtilIcon.h"
 #include "Package.h"
-
+#include <algorithm>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -67,7 +67,7 @@ void CPackageBuilder::Cleanup()
 
 
 //////////////////////////////////////////////////////////////////////////
-bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char *toolsFolder, bool addCrashLib, bool enableLogWriting)
+bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char *toolsFolder, bool addCrashLib, bool enableLogWriting, int build_number)
 {
 	int i;
 	bool ret = true;
@@ -353,7 +353,7 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char 
 
 	// build packages
 	for(i=0; i<m_Packages.GetSize(); i++){		
-		ret = CreatePackage(m_Packages[i], NULL/* &dlg */, OutputPath);
+		ret = CreatePackage(m_Packages[i], NULL/* &dlg */, OutputPath, build_number);
 		if(!ret) break;
 
 		if(m_Doc->m_PackCopyExe && m_Doc->m_BindPackage==m_Packages[i]->Name){
@@ -423,9 +423,18 @@ bool CPackageBuilder::GetAllFiles(TPackage *Package, CString Path)
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
+bool CPackageBuilder::PackageFileSortFunction(const TFile *first, const TFile *second)
+{
+	if (first->FullName < second->FullName)
+	{
+		return true;
+	}
+	return false;
+}
 
 //////////////////////////////////////////////////////////////////////////
-bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg, CString OutputPath)
+bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg, CString OutputPath, int build_number)
 {
 	DWORD dw;
 	int i;
@@ -456,7 +465,16 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 	hdr.Priority = Package->Priority;
 	hdr.CD = Package->CD;
 	hdr.MasterIndex = false;
-	_time32(&hdr.CreationTime);
+	if (build_number != 0)
+	{
+		printf("Repeatable build with number=%d.\n", build_number);
+		hdr.CreationTime = build_number;
+	}
+	else
+	{
+		_time32(&hdr.CreationTime);
+		printf("Non-repeatable build with time stamp=%d.\n", hdr.CreationTime);
+	}
 	memset(hdr.Desc, 0, 100);
 	memcpy(&hdr.Desc, LPCSTR(Package->Description), min(99, Package->Description.GetLength()));
 	hdr.NumDirs = 1;
@@ -468,6 +486,9 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 
 	// process files
 	DWORD PackageOffset = ftell(f);
+
+	// sort files according to their path & name to have repeatable builds
+	std::sort(Package->m_Files.GetData(), Package->m_Files.GetData() + Package->m_Files.GetSize(), PackageFileSortFunction);
 
 	DWORD NumFilesWritten = 0;
 	for(i=0; i<Package->m_Files.GetSize(); i++){
