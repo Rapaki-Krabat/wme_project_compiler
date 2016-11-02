@@ -48,7 +48,7 @@ public:
 	bool CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg, CString OutputPath, int build_number);
 	bool CreateMasterPackage(void* /*CCompileDlg*/ dlg, CString OutputPath);
 	void Cleanup();
-	bool GetAllFiles(TPackage* Package, CString Path);
+	bool GetAllFiles(TPackage* Package, CString Path, int build_number);
 	int m_TotalFiles;
 	int m_ProcessedFiles;
 	bool Compile(CPackage* SinglePackage, char *outputFolder, char *toolsFolder, bool addCrashLib, bool enableLogWriting, int build_number);

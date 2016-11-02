@@ -328,7 +328,7 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char 
 		package->GameVersion = m_Doc->m_PackGameVersion;
 		package->FullName = m_Doc->m_ProjectRoot + m_Doc->m_Packages[i]->m_Folder + "\\";
 
-		GetAllFiles(package, package->FullName);
+		GetAllFiles(package, package->FullName, build_number);
 		if(package->m_Files.GetSize()>0) m_Packages.Add(package);
 		else{
 			printf(CString(LOC("/str0111/Package")) + " '" + package->Name + "': " + LOC("/str0112/no files to add\n"));
@@ -389,7 +389,7 @@ finish:
 }
 
 //////////////////////////////////////////////////////////////////////////
-bool CPackageBuilder::GetAllFiles(TPackage *Package, CString Path)
+bool CPackageBuilder::GetAllFiles(TPackage *Package, CString Path, int build_number)
 {
 	if(Path[Path.GetLength()-1]!='\\') Path+="\\";
 
@@ -399,7 +399,7 @@ bool CPackageBuilder::GetAllFiles(TPackage *Package, CString Path)
 		working = finder.FindNextFile();
 		if(finder.IsDots()) continue;
 
-		if(finder.IsDirectory()) GetAllFiles(Package, Path + finder.GetFileName() + "\\");
+		if(finder.IsDirectory()) GetAllFiles(Package, Path + finder.GetFileName() + "\\", build_number);
 		else{
 			m_TotalFiles++;
 			TFile* file = new TFile;
@@ -412,9 +412,16 @@ bool CPackageBuilder::GetAllFiles(TPackage *Package, CString Path)
 			file->Name = file->FullName.Right(file->FullName.GetLength() - Package->FullName.GetLength());
 			file->Valid = true;
 
-			CTime time;
-			finder.GetLastWriteTime(time);
-			file->TimeDate1 = time.GetTime();
+			if (build_number == 0)
+			{
+				CTime time;
+				finder.GetLastWriteTime(time);
+				file->TimeDate1 = time.GetTime();
+			}
+			else
+			{
+				file->TimeDate1 = (DWORD) build_number;
+			}
 			file->TimeDate2 = 0;
 
 			Package->m_Files.Add(file);
