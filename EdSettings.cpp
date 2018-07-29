@@ -54,7 +54,7 @@ CEdSettings::~CEdSettings()
 //////////////////////////////////////////////////////////////////////////
 HRESULT CEdSettings::LoadFile(char * Filename)
 {
-	printf("Try to read file: %s.\n", Filename);
+	printf("Try to read file: '%s'.\n", Filename);
 	BYTE* Buffer = Game->m_FileManager->ReadWholeFile(Filename);
 	if(Buffer==NULL){
 		Game->LOG(0, "CEdSettings::LoadFile failed for file '%s'", Filename);

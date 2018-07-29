@@ -94,9 +94,15 @@ BYTE* CBFileManager::ReadWholeFile(char * Filename, DWORD* Size, bool MustExist)
 
 	BYTE* buffer=NULL;
 	
+	char fullfilename[512];
+	DWORD ffnlength;
+
+	ffnlength = GetFullPathNameA(Filename, 512, fullfilename, NULL);
+
 	CBFile* File = OpenFile(Filename);
 	if(!File)
 	{
+		printf("Full file name: %s\n", fullfilename);
 		if(MustExist) Game->LOG(0, "Error opening file '%s'", Filename);
 		return NULL;
 	}
@@ -333,6 +339,7 @@ HRESULT CBFileManager::InitPaths()
 		if(temp[i]==';') temp[i]='\0';
 		if(temp[i]=='\0')
 		{
+			printf("Adding single path '%s'.\n", str_start);
 			AddPath(PATH_SINGLE, str_start);
 			str_start = temp + i + 1;
 		}
@@ -352,6 +359,7 @@ HRESULT CBFileManager::InitPaths()
 		if(temp[i]==';') temp[i]='\0';
 		if(temp[i]=='\0')
 		{
+			printf("Adding package path '%s'.\n", str_start);
 			AddPath(PATH_PACKAGE, str_start);
 			str_start = temp + i + 1;
 		}
@@ -761,7 +769,16 @@ HRESULT CBFileManager::RestoreCurrentDir()
 //////////////////////////////////////////////////////////////////////////
 HRESULT CBFileManager::SetBasePath(char *Path)
 {
+	char fullfilename[512];
+	DWORD ffnlength;
+
 	Cleanup();
+
+	printf("Setting new base path to: '%s'.\n", Path);
+
+	ffnlength = GetFullPathNameA(Path, 512, fullfilename, NULL);
+
+	printf("Absolute base path is '%s'.\n", fullfilename);
 
 	if(Path)
 	{
