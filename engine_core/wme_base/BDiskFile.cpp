@@ -36,7 +36,7 @@ HRESULT CBDiskFile::Open(char* Filename)
 	{
 		sprintf(FullPath, "%s%s", Game->m_FileManager->m_SinglePaths[i], Filename);
 
-		printf("Try to open file here: '%s'.\n", FullPath);
+		// printf("Try to open file here: '%s'.\n", FullPath);
 
 		m_File = fopen(FullPath, "rb");
 		if(m_File!=NULL) break;

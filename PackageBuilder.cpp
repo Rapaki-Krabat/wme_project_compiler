@@ -92,11 +92,13 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char 
 	if(OutputPath[OutputPath.GetLength()-1]!='\\') OutputPath+="\\";
 	if(PathIsRelative(OutputPath)){
 		char Temp[MAX_PATH];
+		printf("Path to canonicalize: '%s' + '%s'.\n", m_Doc->m_ProjectRoot, OutputPath);
 		if(PathCanonicalize(Temp, m_Doc->m_ProjectRoot + OutputPath)) OutputPath = CString(Temp);
+		printf("Path after canonicalize: '%s'.\n", OutputPath);
 	}
 
 	// prepare output
-	printf(LOC("/str0108/Preparing output folder...\n"));
+	printf("/str0108/Preparing output folder '%s' ...\n", OutputPath);
 	// dlg.Update();
 	if(MakePath(OutputPath)==""){
 		printf(CString(LOC("/str0109/Cannot create output folder")) + " '" + OutputPath + "'\n");
@@ -456,6 +458,13 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 	printf(CString(LOC("/str0117/Package")) + ": " + Package->Name);
 	m_Doc->AddInfo(CString(LOC("/str0118/Creating package")) + " '" + Package->Name + "'");
 	CString Filename = OutputPath + Package->Name + "." + PACKAGE_EXTENSION;
+
+	char fullfilename[512];
+	DWORD ffnlength;
+
+	ffnlength = GetFullPathNameA(Filename, 512, fullfilename, NULL);
+	printf("Filename for writing full path '%s'.\n", fullfilename);
+
 	FILE* f = fopen(Filename, "wb");
 	if(!f){
 		printf(CString(LOC("/str0119/Error opening file")) + " '" + Filename + "' " + LOC("/str0120/for writing"));
