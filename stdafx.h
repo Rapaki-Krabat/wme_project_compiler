@@ -15,7 +15,7 @@
 #pragma warning (disable: 4786) // symbols longer than 255 chars (STL)
 
 #ifndef WINVER
-#define WINVER 0x0500
+#define WINVER 0x0501
 #endif
 
 
