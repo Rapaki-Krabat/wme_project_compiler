@@ -4,7 +4,7 @@
 
 //#include "StdAfx.h"
 #include "dcgf.h"
-#include ".\btextutils.h"
+#include ".\BTextUtils.h"
 
 
 //////////////////////////////////////////////////////////////////////////

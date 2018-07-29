@@ -6,7 +6,7 @@
 // #include "ProjectMan.h"
 #include "ProjectDoc.h"
 #include "PackagerFilter.h"
-#include "./MFCExt/utils_mfc.h"
+#include "utils_mfc.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

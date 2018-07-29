@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "../StdAfx.h"
+#include "stdafx.h"
 
 #define LOC(String) (CDCGFStringTable::GetString(String))
 #define LOCWIN(Window) (CDCGFStringTable::LocWindow(Window))

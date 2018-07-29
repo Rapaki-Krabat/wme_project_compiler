@@ -4,7 +4,7 @@
 
 
 #pragma once
-#include "bbase.h"
+#include "BBase.h"
 
 class CBNamedObject : public CBBase
 {

@@ -85,32 +85,32 @@ typedef enum TSeek{
 	SEEK_TO_BEGIN   = SEEK_SET,
 	SEEK_TO_CURRENT = SEEK_CUR,
 	SEEK_TO_END     = SEEK_END
-};
+} TSeekImpl;
 
 typedef enum TSoundType{
 	SOUND_SFX, SOUND_MUSIC, SOUND_SPEECH
-};
+} TSoundTypeImpl;
 
 typedef enum TVideoMode{
 	VIDEO_WINDOW, VIDEO_FULLSCREEN, VIDEO_ANY
-};
+} TVideoModeImpl;
 
 
 typedef enum TVideoPlayback{
 	VID_PLAY_POS=0,
 	VID_PLAY_STRETCH=1,
 	VID_PLAY_CENTER=2
-};
+} TVideoPlaybackImpl;
 
 
 typedef enum TMouseEvent{
 	MOUSE_CLICK, MOUSE_RELEASE, MOUSE_DBLCLICK
-};
+} TMouseEventImpl;
 
 
 typedef enum TMouseButton{
 	MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE
-};
+} TMouseButtonImpl;
 
 
 typedef enum {

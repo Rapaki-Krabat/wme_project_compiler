@@ -2,7 +2,7 @@
 #include "DCGFApp.h"
 #include "DCGFStringTable.h"
 #include "utils_mfc.h"
-#include "../engine_core/wme_ad/dcgf_ad.h"
+#include "engine_core/wme_ad/dcgf_ad.h"
 
 
 

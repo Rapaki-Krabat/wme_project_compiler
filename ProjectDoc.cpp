@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 // #include "ProjectMan.h"
-#include "Resource.h"
+#include "resource.h"
 #include <algorithm>
 
 #include "./engine_core/wme_ad/dcgf_ad.h"
@@ -19,7 +19,7 @@
 #include "FilterUncompressed.h"
 #include "FilterCopy.h"
 // #include "./MFCExt/TemplateDlg.h"
-#include "./MFCExt/utils_mfc.h"
+#include "utils_mfc.h"
 
 #include "PackageBuilder.h"
 

@@ -6,7 +6,7 @@
 // #include "ProjectMan.h"
 #include "EdSettings.h"
 
-#include "../engine_core/wme_base/BParser.h"
+#include "engine_core/wme_base/BParser.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

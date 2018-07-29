@@ -8,9 +8,9 @@
 //
 
 #ifdef DCGF_ADVENTURE
-	#include "../engine_core/wme_ad/dcgf_ad.h"
+	#include "engine_core/wme_ad/dcgf_ad.h"
 #else
-	#include "../engine_core/wme_base/dcgf.h"
+	#include "engine_core/wme_base/dcgf.h"
 #endif
 
 

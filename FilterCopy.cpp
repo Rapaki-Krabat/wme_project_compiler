@@ -1,6 +1,6 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "FilterCopy.h"
-#include "./MFCExt/utils_mfc.h"
+#include "utils_mfc.h"
 
 //////////////////////////////////////////////////////////////////////////
 CFilterCopy::CFilterCopy(CProjectDoc* Doc):CPackagerFilter(Doc)

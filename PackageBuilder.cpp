@@ -9,7 +9,7 @@
 #include "ProjectDoc.h"
 #include "PackagerFilter.h"
 // #include "CompileDlg.h"
-#include "./MFCExt/utils_mfc.h"
+#include "utils_mfc.h"
 #include <Shlwapi.h>
 #include "./engine_core/wme_base/dcpackage.h"
 #include "zlib.h"

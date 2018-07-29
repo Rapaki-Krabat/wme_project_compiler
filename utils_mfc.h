@@ -4,7 +4,7 @@
 #define DCGF_TOOLS_REG_PATH "SOFTWARE\\DEAD:CODE\\Wintermute Tools\\Settings"
 
 
-#include "../engine_core/wme_base/dcgf.h"
+#include "engine_core/wme_base/dcgf.h"
 
 bool UpdateIntEdit(CWnd* Owner, CEdit* Edit, int* Var);
 CString GetRelativeFilename(CBGame *Game, CString InitFile, CString Filter, CString& Dir, CWnd* Parent=NULL, bool AllowCreate=false);

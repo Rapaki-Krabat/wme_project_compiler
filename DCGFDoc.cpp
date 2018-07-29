@@ -3,7 +3,7 @@
 
 //#include "stdafx.h"
 #include "DCGFApp.h"
-#include "DCGFDoc.h"
+#include "dcgfdoc.h"
 // #include "RootDlg.h"
 #include <Shlwapi.h>
 #include <direct.h>
