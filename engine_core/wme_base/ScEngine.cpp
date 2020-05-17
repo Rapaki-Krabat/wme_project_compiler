@@ -9,7 +9,9 @@
 #include "BStringUtil.h"
 #include <algorithm>
 
-
+extern "C" {
+#include "main.h"
+}
 
 IMPLEMENT_PERSISTENT(CScEngine, true);
 
@@ -22,6 +24,7 @@ CScEngine::CScEngine(CBGame* inGame):CBBase(inGame)
 	char CompilerPath[MAX_PATH];
 	strcpy(CompilerPath, COMPILER_DLL);
 
+#if 0
 	m_CompilerDLL = LoadLibrary(CompilerPath);
 	if(m_CompilerDLL==NULL)
 	{
@@ -69,6 +72,17 @@ CScEngine::CScEngine(CBGame* inGame):CBBase(inGame)
 		}
 	}
 	else m_CompilerAvailable = false;
+#else
+	ExtCompileBuffer  = CompileBuffer;
+	ExtCompileFile    = CompileFile;
+	ExtReleaseBuffer  = ReleaseBuffer;
+	ExtSetCallbacks   = SetCallbacks;
+	ExtDefineFunction = DefineFunction;
+	ExtDefineVariable = DefineVariable;
+	
+	m_CompilerDLL = NULL;
+	m_CompilerAvailable = true;
+#endif
 
 
 	if(m_CompilerAvailable) Game->LOG(0, "  Script compiler bound successfuly");
