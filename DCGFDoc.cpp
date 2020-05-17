@@ -63,12 +63,14 @@ BOOL CDCGFDoc::OnNewDocument()
 #ifdef _DEBUG
 void CDCGFDoc::AssertValid() const
 {
-	CDocument::AssertValid();
+	printf("CDCGFDoc::AssertValid() --> stub\n");
+	// CDocument::AssertValid();
 }
 
 void CDCGFDoc::Dump(CDumpContext& dc) const
 {
-	CDocument::Dump(dc);
+	printf("CDCGFDoc::Dump(CDumpContext& dc) --> stub\n");
+	// CDocument::Dump(dc);
 }
 #endif //_DEBUG
 

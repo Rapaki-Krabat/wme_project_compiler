@@ -112,7 +112,7 @@
       <AdditionalIncludeDirectories>$(IntDir);..\engine_core\wme_base;..\MFCExt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>htmlhelp.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>htmlhelp.lib;Wininet.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>libci.lib;libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -146,7 +146,7 @@
       <AdditionalIncludeDirectories>$(IntDir);..\engine_core\wme_base;..\MFCExt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>htmlhelp.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>htmlhelp.lib;Wininet.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>libci.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -181,7 +181,7 @@
       <AdditionalIncludeDirectories>$(IntDir);..\engine_core\wme_base;..\MFCExt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>htmlhelp.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>htmlhelp.lib;Wininet.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>libci.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -292,6 +292,14 @@
     <None Include="res\system_font.fnt" />
     <None Include="..\engine_core\wme_base\res\wpt.sprite" />
     <None Include="res\wpt.sprite" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="external_lib\compiler\compiler\compiler.vcxproj">
+      <Project>{a9672b91-eae5-4fb8-8df6-e5a91e9c672d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="external_lib\zlib\zlib\zlib.vcxproj">
+      <Project>{3706df52-9206-4930-a11d-d4c57526c71f}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

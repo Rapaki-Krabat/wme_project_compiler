@@ -8,10 +8,12 @@
 #include <direct.h>
 #include "BFileManager.h"
 
+#if 0
 #if _DEBUG
 	#pragma comment(lib, "zlib_d.lib")
 #else
 	#pragma comment(lib, "zlib.lib")
+#endif
 #endif
 
 
