@@ -1507,6 +1507,7 @@ DWORD CScScript::Call_cdecl(const void* args, size_t sz, DWORD func, bool* Stack
 	DWORD rc;				// here's our return value...
 	DWORD OrigESP;
 	bool StkCorrupt = false;
+#if 0
 	__asm
 	{
 		mov   OrigESP,esp
@@ -1527,6 +1528,7 @@ finish:
 	}
 
 	if(StackCorrupt) *StackCorrupt = StkCorrupt;
+#endif
 	return rc;
 }
 
@@ -1539,6 +1541,7 @@ DWORD CScScript::Call_stdcall(const void* args, size_t sz, DWORD func, bool* Sta
 	DWORD OrigESP;
 	bool StkCorrupt = false;
 
+#if 0
 	__asm
 	{
 		mov   OrigESP,esp
@@ -1558,20 +1561,25 @@ finish:
 	}
 
 	if(StackCorrupt) *StackCorrupt = StkCorrupt;
+#endif
 	return rc;
 }
 
 
 //////////////////////////////////////////////////////////////////////////
-__declspec (naked) DWORD CScScript::GetST0(void)
+// __declspec (naked) DWORD CScScript::GetST0(void)
+DWORD CScScript::GetST0(void)
 {
 	DWORD f;				// temp var
+#if 0
 	__asm
 	{
 		fstp dword ptr [f]		// pop ST0 into f
 		mov eax, dword ptr [f]	// copy into eax
 		ret 					// done
 	}
+#endif
+	return f;
 }
 
 
@@ -1579,10 +1587,12 @@ __declspec (naked) DWORD CScScript::GetST0(void)
 double CScScript::GetST0Double(void)
 {
 	double d;				// temp var
+#if 0
 	__asm
 	{
 		fstp qword ptr [d]	// get ST0 into d
 	}
+#endif
 	return d;
 }
 
