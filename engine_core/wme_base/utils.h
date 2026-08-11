@@ -11,18 +11,18 @@ class CBGame;
 class CBUtils
 {
 public:
-	static int ClosestColor (BYTE r, BYTE g, BYTE b, PALETTEENTRY* entries, int num_entries);
+	// static int ClosestColor (BYTE r, BYTE g, BYTE b, PALETTEENTRY* entries, int num_entries);
 	static void Clip(int *DestX, int *DestY, RECT *SrcRect, RECT *DestRect);
 	static void Swap(int *a, int *b);
 //	static DWORD RGBtoNative(DDPIXELFORMAT pf, BYTE red, BYTE green, BYTE blue, DWORD* num_bytes=NULL);
 	static bool StrBeginsI(const char* String, const char* Fragment);
 	static float NormalizeAngle(float Angle);
-	static DWORD COLORREF2D3D(COLORREF Color);
-	static COLORREF D3D2COLORREF(DWORD Color);
-	static void GetWindowsVersion(char* str);
+	// static DWORD COLORREF2D3D(COLORREF Color);
+	// static COLORREF D3D2COLORREF(DWORD Color);
+	// static void GetWindowsVersion(char* str);
 
 	static void CreatePath(char* Path, bool PathOnly=false);
-	static HRESULT GetDXVersion(DWORD* pdwDirectXVersion, TCHAR* strDirectXVersion, int cchDirectXVersion);
+	// static HRESULT GetDXVersion(DWORD* pdwDirectXVersion, TCHAR* strDirectXVersion, int cchDirectXVersion);
 
 	static void DebugMessage(HWND hWnd, const char* Text);
 	static char* SetString(char** String, char* Value);
@@ -34,8 +34,8 @@ public:
 	static float RandomFloat(float From, float To);
 	static float RandomAngle(float From, float To);
 
-	static bool IsWinNT();
-	static bool IsKeyDown(int VKey);
+	// static bool IsWinNT();
+	// static bool IsKeyDown(int VKey);
 
 	static int GetArgCount(const char* CmdLine);
 	static bool GetArg(int Num, const char* CmdLine, char* Buf);

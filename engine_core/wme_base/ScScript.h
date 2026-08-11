@@ -15,6 +15,8 @@
 #include "wme_plugin.h"
 #include "wme_debugger.h"
 
+#define __cdecl
+
 class CScEngine;
 class CScScript : public CBBase, public IWmeScript, public IWmeDebugScript
 {
@@ -47,7 +49,7 @@ public:
 	DWORD m_TimeSlice;
 	DECLARE_PERSISTENT(CScScript, CBBase);
 	void AfterLoad();
-	void __cdecl CScScript::RuntimeError(LPSTR fmt, ...);
+	void __cdecl RuntimeError(LPSTR fmt, ...);
 	HRESULT Run();
 	HRESULT Finish(bool IncludingThreads = false);
 	HRESULT Sleep(DWORD Duration);

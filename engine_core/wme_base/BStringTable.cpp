@@ -236,7 +236,7 @@ HRESULT CBStringTable::LocalizeWindow(HWND Window)
 	return EnumChildWindows(Window, LocWinCallback, (LPARAM)this)==TRUE?S_OK:E_FAIL;
 }
 
-
+#if 0
 //////////////////////////////////////////////////////////////////////////
 BOOL CBStringTable::LocWinCallback(HWND hwnd, LPARAM lParam)
 {
@@ -254,3 +254,4 @@ BOOL CBStringTable::LocWinCallback(HWND hwnd, LPARAM lParam)
 	return TRUE;
 }
 
+#endif

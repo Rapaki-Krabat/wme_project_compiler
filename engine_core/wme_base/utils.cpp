@@ -21,6 +21,7 @@ static inline unsigned Sqr (int x)
 
 
 //////////////////////////////////////////////////////////////////////
+#if 0
 int CBUtils::ClosestColor (BYTE r, BYTE g, BYTE b, PALETTEENTRY* entries, int num_entries)
 {
 	int closest_idx = -1;
@@ -38,7 +39,7 @@ int CBUtils::ClosestColor (BYTE r, BYTE g, BYTE b, PALETTEENTRY* entries, int nu
 	}
 	return closest_idx;
 }
-
+#endif
 
 //////////////////////////////////////////////////////////////////////////////////
 void CBUtils::Clip(int *DestX, int *DestY, RECT *SrcRect, RECT *DestRect)
@@ -125,6 +126,7 @@ float CBUtils::NormalizeAngle(float Angle)
 	return Angle;
 }
 
+#if 0
 //////////////////////////////////////////////////////////////////////////
 DWORD CBUtils::COLORREF2D3D(COLORREF Color)
 {
@@ -146,8 +148,9 @@ COLORREF CBUtils::D3D2COLORREF(DWORD Color)
 
 	return RGB(r, g, b);
 }
+#endif
 
-
+#if 0
 //////////////////////////////////////////////////////////////////////////
 void CBUtils::GetWindowsVersion(char* str)
 {
@@ -220,6 +223,7 @@ void CBUtils::GetWindowsVersion(char* str)
 	}
 }
 
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 void CBUtils::CreatePath(char* Path, bool PathOnly)

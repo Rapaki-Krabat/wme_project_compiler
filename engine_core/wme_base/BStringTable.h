@@ -16,7 +16,7 @@
 class CBStringTable : public CBBase  
 {
 public:
-	static BOOL CALLBACK LocWinCallback(HWND hwnd, LPARAM lParam);
+	// static BOOL CALLBACK LocWinCallback(HWND hwnd, LPARAM lParam);
 	HRESULT LocalizeWindow(HWND Window);
 	const char* ExpandStatic(const char* String, bool ForceExpand=false);
 	HRESULT LoadFile(char* Filename, bool DeleteAll=true);
