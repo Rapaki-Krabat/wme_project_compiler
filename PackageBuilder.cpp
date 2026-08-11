@@ -16,6 +16,7 @@
 // #include "UtilIcon.h"
 #include "Package.h"
 #include <algorithm>
+#include <cstring>
 
 #ifdef _DEBUG
 #undef THIS_FILE
