@@ -2,7 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+// #include "stdafx.h"
 // #include "ProjectMan.h"
 #include "Package.h"
 
@@ -39,20 +39,27 @@ CPackage::~CPackage()
 HRESULT CPackage::LoadSettings(CString Filename, int ID)
 {
 	CString section;
-	section.Format("Package%d", ID);
+	// section.Format("Package%d", ID);
 
-	char str[MAX_PATH];
+	CString str;
 
-	GetPrivateProfileString(section, "Folder", "", str, MAX_PATH, Filename);
-	if(strcmp(str, "")==0) return E_FAIL;
-	m_Folder = CString(str);
+	
+	
+	//GetPrivateProfileString(section, "Folder", "", str, MAX_PATH, Filename);
+	str = "Folder";
+	//if(strcmp(str, "")==0) return E_FAIL;
+	m_Folder = str;
 
-	GetPrivateProfileString(section, "Description", "", str, 100, Filename);
-	m_Description = CString(str);
+	// GetPrivateProfileString(section, "Description", "", str, 100, Filename);
+	str = "Description";
+	m_Description = str;
 
-	m_Primary = GetPrivateProfileInt(section, "Primary", 0, Filename)!=0;
-	m_CD = GetPrivateProfileInt(section, "CD", 0, Filename);
-	m_Priority = GetPrivateProfileInt(section, "Priority", 0, Filename);
+	// m_Primary = GetPrivateProfileInt(section, "Primary", 0, Filename)!=0;
+	m_Primary = 0;
+	// m_CD = GetPrivateProfileInt(section, "CD", 0, Filename);
+	m_CD = 0;
+	// m_Priority = GetPrivateProfileInt(section, "Priority", 0, Filename);
+	m_Priority = 0;
 
 
 	return S_OK;
@@ -65,8 +72,8 @@ HRESULT CPackage::SaveSettings(FILE *File, int ID)
 	if(!File) return E_FAIL;
 
 	fprintf(File, "[Package%d]\n", ID);
-	fprintf(File, "Folder=%s\n", m_Folder);
-	fprintf(File, "Description=%s\n", m_Description);
+	fprintf(File, "Folder=%s\n", m_Folder.c_str());
+	fprintf(File, "Description=%s\n", m_Description.c_str());
 	fprintf(File, "Primary=%d\n", m_Primary?1:0);
 	fprintf(File, "CD=%d\n", m_CD);
 	fprintf(File, "Priority=%d\n", m_Priority);

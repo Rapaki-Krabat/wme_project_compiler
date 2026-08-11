@@ -9,6 +9,10 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "CString.h"
+#include "stdio.h"
+#include "wintypes.h"
+
 class CPackage  
 {
 public:

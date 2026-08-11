@@ -14,7 +14,7 @@
 #include "Package.h"
 #include "PackagerFilter.h"
 #include "EdSettings.h"
-#include <afxtempl.h>
+// #include <afxtempl.h>
 
 class CPackagerFilter;
 class CProjectView;

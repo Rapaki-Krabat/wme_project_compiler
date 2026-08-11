@@ -9,10 +9,11 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "afxtempl.h"
+#include "wintypes.h"
+#include "coll_templ.h"
 #include "Package.h"
 
-class CProjectDoc;
+// class CProjectDoc;
 class CCompileDlg;
 
 class CPackageBuilder  
@@ -40,7 +41,7 @@ public:
 		BYTE CD;
 		int GameVersion;
 		CString Description;
-		CArray<TFile*, TFile*> m_Files;
+		CBArray<TFile*, TFile*> m_Files;
 	} TPackage;
 
 	static CString Copyright;
@@ -51,12 +52,12 @@ public:
 	bool GetAllFiles(TPackage* Package, CString Path, int build_number);
 	int m_TotalFiles;
 	int m_ProcessedFiles;
-	bool Compile(CPackage* SinglePackage, char *outputFolder, char *toolsFolder, bool addCrashLib, bool enableLogWriting, int build_number);
-	CPackageBuilder(CProjectDoc* Doc);
+	bool Compile(const char *inputFolder, const char *outputFolder, const char *outputName, int build_number);
+	CPackageBuilder();
 	virtual ~CPackageBuilder();
-	CProjectDoc* m_Doc;
-	CArray<TPackage*, TPackage*> m_Packages;
-	void WriteString(FILE* f, const char* str, BYTE xor=0);
+	// CProjectDoc* m_Doc;
+	CBArray<TPackage*, TPackage*> m_Packages;
+	void WriteString(FILE* f, const char* str, BYTE xor_val=0);
 	bool AddGDF(CString ExeName);
 	static bool PackageFileSortFunction(const TFile *first, const TFile *second);
 };

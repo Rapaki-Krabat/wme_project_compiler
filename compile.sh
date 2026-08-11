@@ -6,6 +6,7 @@ OPTIONS=-O2
 rm -rf *.o
 
 g++ -o main.o           -c main.cpp           $OPTIONS -fPIC -Wall -Wextra || exit;
+g++ -o Package.o        -c Package.cpp        $OPTIONS -fPIC -Wall -Wextra -Wno-write-strings || exit;
 g++ -o PackageBuilder.o -c PackageBuilder.cpp $OPTIONS -fPIC -Wall -Wextra || exit;
 
 echo "Success"

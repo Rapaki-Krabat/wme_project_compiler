@@ -2,15 +2,15 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+// #include "stdafx.h"
 // #include "projectman.h"
 #include "PackageBuilder.h"
 
-#include "ProjectDoc.h"
+// #include "ProjectDoc.h"
 #include "PackagerFilter.h"
 // #include "CompileDlg.h"
-#include "utils_mfc.h"
-#include <Shlwapi.h>
+// #include "utils_mfc.h"
+// #include <Shlwapi.h>
 #include "./engine_core/wme_base/dcpackage.h"
 #include "zlib.h"
 #include "UtilIcon.h"
@@ -29,7 +29,7 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CString CPackageBuilder::Copyright = "    (Wintermute Engine © DEAD:CODE 2013)";
+CString CPackageBuilder::Copyright = "    (Wintermute Engine Â© DEAD:CODE 2013)";
 
 
 CPackageBuilder::CPackageBuilder(CProjectDoc* Doc)
@@ -738,7 +738,7 @@ bool CPackageBuilder::CreateMasterPackage(void* /*CCompileDlg*/ dlg, CString Out
 
 
 //////////////////////////////////////////////////////////////////////////
-void CPackageBuilder::WriteString(FILE* f, const char* str, BYTE xor)
+void CPackageBuilder::WriteString(FILE* f, const char* str, BYTE xor_val)
 {
 	BYTE b;
 	if(str){		
@@ -746,7 +746,7 @@ void CPackageBuilder::WriteString(FILE* f, const char* str, BYTE xor)
 		BYTE* str_xor = new BYTE[b];
 		strcpy((char*)str_xor, str);
 
-		for(int i=0; i<b; i++) str_xor[i] ^= xor;
+		for(int i=0; i<b; i++) str_xor[i] ^= xor_val;
 		fwrite(&b, 1, 1, f);
 		fwrite(str_xor, b, 1, f);
 
