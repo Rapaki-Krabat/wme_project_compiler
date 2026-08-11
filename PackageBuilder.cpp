@@ -449,11 +449,19 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 	int i;
 
 	// initialize filters
-	printf(LOC("/str0116/Initializing filters..."));
+	printf(LOC("/str0116/Initializing filters...\n"));
 	//dlg->m_Title2.SetWindowText("");
 	//dlg->Update();
-	for(i=0; i<m_Doc->m_Filters.GetSize(); i++) m_Doc->m_Filters[i]->Initialize(Package);
-
+	for (i = 0; i < m_Doc->m_Filters.GetSize(); i++)
+	{
+		printf("Filter: %s\n", m_Doc->m_Filters[i]->GetSection().GetString());
+		m_Doc->m_Filters[i]->Initialize(Package);
+		printf("Active: %d\n", m_Doc->m_Filters[i]->m_Active);
+		for (int k = 0; k < m_Doc->m_Filters[i]->m_Masks.GetSize(); k++)
+		{
+			printf("Mask: %s\n", m_Doc->m_Filters[i]->m_Masks[k].GetString());
+		}
+	}
 
 	printf(CString(LOC("/str0117/Package")) + ": " + Package->Name);
 	m_Doc->AddInfo(CString(LOC("/str0118/Creating package")) + " '" + Package->Name + "'");

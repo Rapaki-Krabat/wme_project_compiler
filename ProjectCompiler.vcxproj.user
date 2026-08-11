@@ -8,4 +8,9 @@
     <LocalDebuggerCommandArguments>O:\K2\game\K2.wpr</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LocalDebuggerCommandArguments>..\wme_amulets_daniel\wme_amu.wpr output\  ..\wme_amulets_daniel\wmetools\</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerCommandArgumentsHistory> ../../../wme_amulets_daniel/wme_amu.wpr output/  ../../../wme_amulets_daniel/wmetools/| ../../wme_amulets_daniel/wme_amu.wpr output/  ../../wme_amulets_daniel/wmetools/| ..\..\..\wme_amulets_daniel\wme_amu.wpr output\  ..\..\..\wme_amulets_daniel\wmetools\| ..\..\wme_amulets_daniel\wme_amu.wpr output\  ..\..\wme_amulets_daniel\wmetools\|..\wme_amulets_daniel\wme_amu.wpr output\  ..\wme_amulets_daniel\wmetools\|</LocalDebuggerCommandArgumentsHistory>
+  </PropertyGroup>
 </Project>
