@@ -13,6 +13,8 @@
 #include "BBase.h"
 #include "wme_debugger.h"
 
+#define __stdcall
+
 typedef BYTE* (*DLL_COMPILE_BUFFER)(BYTE* Buffer, char* Source, DWORD BufferSize, DWORD* CompiledSize);
 typedef BYTE* (*DLL_COMPILE_FILE)(char* Filename, DWORD* CompiledSize);
 typedef void  (*DLL_RELEASE_BUFFER)(unsigned char* Buffer);

@@ -107,8 +107,6 @@ typedef enum{
 } TElementType;
 
 
-#if 0
-
 // compiler interface
 typedef BYTE* (WINAPI DLL_LOAD_FILE)  (void* Data, char* Filename, DWORD* Size);
 typedef void  (WINAPI DLL_CLOSE_FILE) (void* Data, BYTE* Buffer);
@@ -121,7 +119,5 @@ typedef struct{
 	DLL_ADD_ERROR* Dll_AddError;
 	DLL_PARSE_ELEMENT* Dll_ParseElement;
 } CALLBACKS;
-
-#endif
 
 #endif
