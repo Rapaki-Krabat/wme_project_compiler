@@ -378,6 +378,23 @@ bool CPackageBuilder::Compile(const char *inputFolder, const char *outputFolder,
 
 	// dlg.m_Progress.SetRange32(0, m_TotalFiles);
 
+	// load filter settings (we adjusted defaults to what was specified in project files)
+	CFilterExclude* FilterExclude = new CFilterExclude();
+	//FilterExclude->LoadSettings(lpszPathName);
+	m_Filters.Add(FilterExclude);
+	
+	CFilterUncompressed* FilterUncompressed = new CFilterUncompressed();
+	//FilterUncompressed->LoadSettings(lpszPathName);
+	m_Filters.Add(FilterUncompressed);
+
+	CFilterScript* FilterScript = new CFilterScript();
+	//FilterScript->LoadSettings(lpszPathName);
+	m_Filters.Add(FilterScript);
+
+	CFilterCopy* FilterCopy = new CFilterCopy();
+	//FilterCopy->LoadSettings(lpszPathName);
+	m_Filters.Add(FilterCopy);
+
 	// build packages
 	for(i=0; i<m_Packages.GetSize(); i++){		
 		ret = CreatePackage(m_Packages[i], NULL/* &dlg */, CString(const_cast<char*>(outputFolder)), build_number);
@@ -477,7 +494,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 	printf(LOC("/str0116/Initializing filters..."));
 	//dlg->m_Title2.SetWindowText("");
 	//dlg->Update();
-	for(i=0; i<m_Doc->m_Filters.GetSize(); i++) m_Doc->m_Filters[i]->Initialize(Package);
+	for(i = 0; i < m_Filters.GetSize(); i++) m_Doc->m_Filters[i]->Initialize(Package);
 
 
 	printf(CString(LOC("/str0117/Package")) + ": " + Package->Name);

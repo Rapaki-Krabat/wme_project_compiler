@@ -2,9 +2,9 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+// #include "stdafx.h"
 // #include "ProjectMan.h"
-#include "ProjectDoc.h"
+// #include "ProjectDoc.h"
 #include "FilterScript.h"
 #include "utils_mfc.h"
 
@@ -22,7 +22,7 @@ static char THIS_FILE[]=__FILE__;
 
 
 //////////////////////////////////////////////////////////////////////////
-CFilterScript::CFilterScript(CProjectDoc* Doc):CPackagerFilter(Doc)
+CFilterScript::CFilterScript():CPackagerFilter()
 {
 	m_Type = FILTER_SCRIPT;
 	DefaultSettings();

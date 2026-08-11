@@ -2,7 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+// #include "stdafx.h"
 // #include "ProjectMan.h"
 #include "FilterUncompressed.h"
 
@@ -17,7 +17,7 @@ static char THIS_FILE[]=__FILE__;
 //////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////
-CFilterUncompressed::CFilterUncompressed(CProjectDoc* Doc):CPackagerFilter(Doc)
+CFilterUncompressed::CFilterUncompressed():CPackagerFilter()
 {
 	m_Type = FILTER_UNCOMPRESS;
 	DefaultSettings();
@@ -42,6 +42,8 @@ HRESULT CFilterUncompressed::DefaultSettings()
 	m_Masks.Add("*.wav");
 	m_Masks.Add("*.ogg");
 	m_Masks.Add("*.ogv");
+	m_Masks.Add("*.png");
+	m_Masks.Add("*.ttf"); // TBD don't know if packaging font files actually works
 
 	return S_OK;
 }

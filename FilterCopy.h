@@ -4,7 +4,7 @@
 class CFilterCopy :	public CPackagerFilter
 {
 public:
-	CFilterCopy(CProjectDoc* Doc);
+	CFilterCopy();
 	virtual ~CFilterCopy(void);
 
 	virtual CString GetSection();

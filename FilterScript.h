@@ -21,7 +21,7 @@ public:
 	CAdGame* m_Game;
 	virtual CString GetSection();
 	virtual HRESULT DefaultSettings();
-	CFilterScript(CProjectDoc* Doc);
+	CFilterScript();
 	virtual ~CFilterScript();
 	virtual CPackagerFilter::TProcessedType ProcessFile(CString FullFilename, CString Filename, CString OutputPath, CString& NewFilename, BYTE* Buffer, DWORD Size, BYTE** NewBuffer, DWORD* NewSize);
 };

@@ -1,9 +1,9 @@
-#include "stdafx.h"
+// #include "stdafx.h"
 #include "FilterCopy.h"
 #include "utils_mfc.h"
 
 //////////////////////////////////////////////////////////////////////////
-CFilterCopy::CFilterCopy(CProjectDoc* Doc):CPackagerFilter(Doc)
+CFilterCopy::CFilterCopy():CPackagerFilter()
 {
 	m_Type = FILTER_COPY;
 	DefaultSettings();
@@ -22,7 +22,6 @@ HRESULT CFilterCopy::DefaultSettings()
 
 	m_Active = true;
 
-	m_Masks.Add("*.ttf");
 	m_Masks.Add("*.avi");
 
 	return S_OK;

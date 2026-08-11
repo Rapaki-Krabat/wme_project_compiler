@@ -14,7 +14,7 @@
 class CFilterExclude : public CPackagerFilter  
 {
 public:
-	CFilterExclude(CProjectDoc* Doc);
+	CFilterExclude();
 	virtual ~CFilterExclude();
 	virtual CString GetSection();
 	virtual HRESULT DefaultSettings();

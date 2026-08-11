@@ -2,7 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+// #include "stdafx.h"
 // #include "ProjectMan.h"
 #include "FilterExclude.h"
 
@@ -18,7 +18,7 @@ static char THIS_FILE[]=__FILE__;
 
 
 //////////////////////////////////////////////////////////////////////////
-CFilterExclude::CFilterExclude(CProjectDoc* Doc):CPackagerFilter(Doc)
+CFilterExclude::CFilterExclude():CPackagerFilter()
 {
 	m_Type = FILTER_EXCLUDE;
 	DefaultSettings();
@@ -40,8 +40,9 @@ HRESULT CFilterExclude::DefaultSettings()
 
 	m_Active = true;
 
-	m_Masks.Add("*.tmp");
+	m_Masks.Add("*.dci");
 	m_Masks.Add("*.bak");
+	m_Masks.Add("*.tmp");
 	m_Masks.Add("*.inc");
 
 	return S_OK;

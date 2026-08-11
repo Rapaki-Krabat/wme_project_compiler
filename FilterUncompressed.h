@@ -14,7 +14,7 @@
 class CFilterUncompressed : public CPackagerFilter  
 {
 public:
-	CFilterUncompressed(CProjectDoc* Doc);
+	CFilterUncompressed();
 	virtual ~CFilterUncompressed();
 	virtual CString GetSection();
 	virtual HRESULT DefaultSettings();

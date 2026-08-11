@@ -15,6 +15,7 @@
 
 // class CProjectDoc;
 class CCompileDlg;
+class CPackagerFilter; 
 
 class CPackageBuilder  
 {
@@ -57,6 +58,7 @@ public:
 	virtual ~CPackageBuilder();
 	// CProjectDoc* m_Doc;
 	CBArray<TPackage*, TPackage*> m_Packages;
+	CBArray<CPackagerFilter*, CPackagerFilter*> m_Filters;
 	void WriteString(FILE* f, const char* str, BYTE xor_val=0);
 	// bool AddGDF(CString ExeName);
 	static bool PackageFileSortFunction(const TFile *first, const TFile *second);
