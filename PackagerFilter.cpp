@@ -2,9 +2,9 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+// #include "stdafx.h"
 // #include "ProjectMan.h"
-#include "ProjectDoc.h"
+// #include "ProjectDoc.h"
 #include "PackagerFilter.h"
 #include "utils_mfc.h"
 
@@ -19,9 +19,9 @@ static char THIS_FILE[]=__FILE__;
 //////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////
-CPackagerFilter::CPackagerFilter(CProjectDoc* Doc)
+CPackagerFilter::CPackagerFilter()
 {
-	m_Document = Doc;
+	// m_Document = Doc;
 	DefaultSettings();
 	m_Type = FILTER_NONE;
 }
@@ -42,7 +42,9 @@ HRESULT CPackagerFilter::LoadSettings(CString Filename)
 	char str[MAX_PATH];
 	int i;
 
+	printf("CPackagerFilter::LoadSettings --> stub\n");
 	
+	/*
 	GetPrivateProfileString(section, "Mask", "***", str, MAX_PATH, Filename);
 	if(stricmp(str, "***")!=0)
 	{
@@ -54,6 +56,7 @@ HRESULT CPackagerFilter::LoadSettings(CString Filename)
 	}
 
 	m_Active = GetPrivateProfileInt(section, "Active", 1, Filename)!=0;
+	*/
 
 
 	return S_OK;
@@ -82,11 +85,11 @@ HRESULT CPackagerFilter::SaveSettings(FILE *File)
 {
 	if(!File) return E_FAIL;
 
-	fprintf(File, "[%s]\n", GetSection());
+	fprintf(File, "[%s]\n", GetSection().c_str());
 	fprintf(File, "Active=%d\n", m_Active?1:0);
 	fprintf(File, "Mask=");
 	for(int i=0; i<m_Masks.GetSize(); i++){
-		fprintf(File, m_Masks[i]);
+		fprintf(File, "%s", m_Masks[i].c_str());
 		if(i<m_Masks.GetSize()-1) fprintf(File, ";");
 	}
 	fprintf(File, "\n");
@@ -109,7 +112,7 @@ CPackagerFilter::TProcessedType CPackagerFilter::ProcessFile(CString FullFilenam
 bool CPackagerFilter::FilenameMatches(CString Filename)
 {
 	for(int i=0; i<m_Masks.GetSize(); i++){
-		if(ComparePattern(m_Masks[i], Filename)) return true;
+		if(ComparePattern(m_Masks[i].c_str(), Filename.c_str())) return true;
 	}
 	return false;
 }

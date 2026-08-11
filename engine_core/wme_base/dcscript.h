@@ -7,7 +7,7 @@
 #define _DCSCRIPT_H_
 
 
-#include <windows.h>
+// #include <windows.h>
 
 #define SCRIPT_MAGIC   0xDEC0ADDE
 #define SCRIPT_VERSION 0x0102
@@ -107,6 +107,7 @@ typedef enum{
 } TElementType;
 
 
+#if 0
 
 // compiler interface
 typedef BYTE* (WINAPI DLL_LOAD_FILE)  (void* Data, char* Filename, DWORD* Size);
@@ -120,5 +121,7 @@ typedef struct{
 	DLL_ADD_ERROR* Dll_AddError;
 	DLL_PARSE_ELEMENT* Dll_ParseElement;
 } CALLBACKS;
+
+#endif
 
 #endif

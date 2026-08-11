@@ -10,6 +10,8 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
+#include "wintypes.h"
+
 #include "engine_core/wme_base/wme_plugin.h"
 
 //class CBSprite;

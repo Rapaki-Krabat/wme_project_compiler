@@ -29,6 +29,8 @@ int main(int argc, char **argv)
 
 	printf("Repeatable build number: %d.\n", build_number);
 
+	printf("TBD: m_Primary, m_Priority\n");
+	
 	builder = new CPackageBuilder();
 	
 	// compile one single package

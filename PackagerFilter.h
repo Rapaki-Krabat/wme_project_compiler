@@ -10,13 +10,13 @@
 #endif // _MSC_VER > 1000
 
 #include "PackageBuilder.h"
-class CProjectDoc;
+// class CProjectDoc;
 
 class CPackagerFilter  
 {
 public:
 	virtual bool Initialize(CPackageBuilder::TPackage* Package);
-	CProjectDoc* m_Document;
+	// CProjectDoc* m_Document;
 	bool FilenameMatches(CString Filename);
 	typedef enum{
 		PROC_ERROR, PROC_IGNORE, PROC_USE_ORIGINAL, PROC_USE_BUFFER, PROC_USE_ORIGINAL_UNCOMPRESSED, PROC_USE_BUFFER_UNCOMPRESSED
@@ -31,9 +31,9 @@ public:
 	virtual CString GetSection();
 	virtual HRESULT DefaultSettings();
 	virtual HRESULT LoadSettings(CString Filename);
-	CPackagerFilter(CProjectDoc* Doc);
+	CPackagerFilter();
 	virtual ~CPackagerFilter();
-	CStringArray m_Masks;
+	CBArray<CString,CString> m_Masks;
 	bool m_Active;
 };
 

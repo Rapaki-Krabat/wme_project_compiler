@@ -63,7 +63,7 @@
 
 #endif
 
-#include "PlatformWin.h"
+// #include "PlatformWin.h"
 
 #include <stdio.h>
 
@@ -102,13 +102,13 @@ using namespace std;
 #include "utils.h"
 #include "BTextUtils.h"
 
-#include "coll_templ.h"
+// #include "coll_templ.h"
 
-class CBPersistMgr;
+//class CBPersistMgr;
 
 // persistence support
-typedef void* (WINAPI *PERSISTBUILD)(void);
-typedef HRESULT (WINAPI *PERSISTLOAD)(void*, CBPersistMgr*);
+//typedef void* (WINAPI *PERSISTBUILD)(void);
+//typedef HRESULT (WINAPI *PERSISTLOAD)(void*, CBPersistMgr*);
 
 #if 0
 

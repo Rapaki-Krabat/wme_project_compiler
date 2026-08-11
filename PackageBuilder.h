@@ -45,9 +45,9 @@ public:
 	} TPackage;
 
 	static CString Copyright;
-	void DeleteAllPAckages(CString Path, CPackage* SinglePackage);
+	// void DeleteAllPAckages(CString Path, CPackage* SinglePackage);
 	bool CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg, CString OutputPath, int build_number);
-	bool CreateMasterPackage(void* /*CCompileDlg*/ dlg, CString OutputPath);
+	// bool CreateMasterPackage(void* /*CCompileDlg*/ dlg, CString OutputPath);
 	void Cleanup();
 	bool GetAllFiles(TPackage* Package, CString Path, int build_number);
 	int m_TotalFiles;
@@ -58,7 +58,7 @@ public:
 	// CProjectDoc* m_Doc;
 	CBArray<TPackage*, TPackage*> m_Packages;
 	void WriteString(FILE* f, const char* str, BYTE xor_val=0);
-	bool AddGDF(CString ExeName);
+	// bool AddGDF(CString ExeName);
 	static bool PackageFileSortFunction(const TFile *first, const TFile *second);
 };
 

@@ -4,7 +4,9 @@
 #define DCGF_TOOLS_REG_PATH "SOFTWARE\\DEAD:CODE\\Wintermute Tools\\Settings"
 
 
-#include "engine_core/wme_base/dcgf.h"
+// #include "engine_core/wme_base/dcgf.h"
+
+#if 0
 
 bool UpdateIntEdit(CWnd* Owner, CEdit* Edit, int* Var);
 CString GetRelativeFilename(CBGame *Game, CString InitFile, CString Filter, CString& Dir, CWnd* Parent=NULL, bool AllowCreate=false);
@@ -22,12 +24,17 @@ CString GetPath(CString Filename);
 CString GetFName(CString Filename);
 CString GetRelativePath(CBGame* Game, CString Filename);
 CString GetAbsolutePath(CString Base, CString RelPath);
+#endif
+
 int ComparePattern(const char* pattern, const char* string);
+
+#if 0
 CString GetRegString(HKEY hKey, CString Path, CString Key, CString Init="");
 bool RegKeyExists(HKEY hKey, CString Path);
 int GetRegInt(HKEY hKey, CString Path, CString Key, int Init=-1);
 bool SetRegString(HKEY hKey, CString Path, CString Key, CString Value);
 bool SetRegInt(HKEY hKey, CString Path, CString Key, int Value);
 bool DelRegKey(HKEY hKey, CString Path, CString Key);
+#endif
 
 #endif // _UTILS_MFC_H_

@@ -1,10 +1,13 @@
 //#include "stdafx.h"
-#include "DCGFApp.h"
-#include "DCGFStringTable.h"
+//#include "DCGFApp.h"
+//#include "DCGFStringTable.h"
 #include "utils_mfc.h"
-#include "engine_core/wme_ad/dcgf_ad.h"
+#include "wintypes.h"
+#include <cstring>
+#include <ctype.h>
+// #include "engine_core/wme_ad/dcgf_ad.h"
 
-
+#if 0
 
 //////////////////////////////////////////////////////////////////////////
 bool UpdateIntEdit(CWnd* Owner, CEdit* Edit, int* Var){
@@ -325,7 +328,7 @@ CString GetAbsolutePath(CString Base, CString RelPath)
 	return Result;	
 }
 
-
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 int ComparePattern(const char* pattern, const char* string)
@@ -361,7 +364,7 @@ int ComparePattern(const char* pattern, const char* string)
           {
             string=dot;
             if (strpbrk(pattern,"*?[")==NULL && strchr(string+1,'.')==NULL)
-              return(stricmp(pattern+1,string+1)==0);
+              return(strcasecmp(pattern+1,string+1)==0);
           }
         }
 
@@ -371,14 +374,18 @@ int ComparePattern(const char* pattern, const char* string)
         return(FALSE);
       default:
         if (patternc != stringc)
+        {
           if (patternc=='.' && stringc==0)
             return(ComparePattern(pattern,string));
           else
             return(FALSE);
+        }
         break;
     }
   }
 }
+
+#if 0
 
 //////////////////////////////////////////////////////////////////////////
 bool RegKeyExists(HKEY hKey, CString Path)
@@ -476,3 +483,5 @@ bool DelRegKey(HKEY hKey, CString Path, CString Key)
 
 	return (lr==ERROR_SUCCESS);
 }
+
+#endif

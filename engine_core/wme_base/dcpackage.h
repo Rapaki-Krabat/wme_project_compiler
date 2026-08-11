@@ -12,6 +12,7 @@
 #define PACKAGE_VERSION   0x00000200
 #define PACKAGE_EXTENSION "dcp"
 
+#include "wintypes.h"
 #include <time.h>
 
 typedef struct{
@@ -22,7 +23,11 @@ typedef struct{
 	BYTE Priority;
 	BYTE CD;
 	bool MasterIndex;
+#if defined(__WIN32__) && !defined(__MINGW32__)
 	__time32_t CreationTime;
+#else
+	time_t CreationTime;
+#endif
 	char Desc[100];
 	DWORD NumDirs;
 }TPackageHeader;

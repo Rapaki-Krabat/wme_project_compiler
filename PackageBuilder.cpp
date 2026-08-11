@@ -13,7 +13,7 @@
 // #include <Shlwapi.h>
 #include "./engine_core/wme_base/dcpackage.h"
 #include "zlib.h"
-#include "UtilIcon.h"
+// #include "UtilIcon.h"
 #include "Package.h"
 #include <algorithm>
 
@@ -32,9 +32,9 @@ static char THIS_FILE[]=__FILE__;
 CString CPackageBuilder::Copyright = "    (Wintermute Engine © DEAD:CODE 2013)";
 
 
-CPackageBuilder::CPackageBuilder(CProjectDoc* Doc)
+CPackageBuilder::CPackageBuilder()
 {
-	m_Doc = Doc;
+	// m_Doc = Doc;
 	m_TotalFiles = 0;
 	m_ProcessedFiles = 0;
 }
@@ -67,7 +67,8 @@ void CPackageBuilder::Cleanup()
 
 
 //////////////////////////////////////////////////////////////////////////
-bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char *toolsFolder, bool addCrashLib, bool enableLogWriting, int build_number)
+bool CPackageBuilder::Compile(const char *inputFolder, const char *outputFolder, const char *outputName, int build_number)
+// bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char *toolsFolder, bool addCrashLib, bool enableLogWriting, int build_number)
 {
 	int i;
 	bool ret = true;
@@ -88,6 +89,7 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char 
 	*/
 
 	//	CString OutputPath = m_Doc->m_PackOutputFolder;
+#if 0	
 	CString OutputPath = CString(outputFolder);
 	if(OutputPath[OutputPath.GetLength()-1]!='\\') OutputPath+="\\";
 	if(PathIsRelative(OutputPath)){
@@ -105,8 +107,9 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char 
 		ret = false;
 		goto finish;
 	}
+#endif
 
-	DeleteAllPAckages(OutputPath, SinglePackage);
+	// DeleteAllPAckages(OutputPath, SinglePackage);
 
 	// prepare packages/files
 	Cleanup();
@@ -115,14 +118,18 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char 
 	//dlg.Update();	
 
 	bool IsNT = false;
+
+#if 0
 	OSVERSIONINFO osvi;
 	ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
 	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 	GetVersionEx((OSVERSIONINFO*) &osvi);
 	IsNT = (osvi.dwPlatformId==VER_PLATFORM_WIN32_NT);
+#endif
 
 	printf("IsNT=%s.\n", (IsNT == true) ? "TRUE" : "FALSE");
 
+#if 0
 	if(!SinglePackage)
 	{
 		// copy WMELITE exe
@@ -314,8 +321,10 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char 
 				WritePrivateProfileString("Debug", "LogWriteMode", "1", IniName);
 		}
 	} // SinglePackage
+	
+#endif
 
-
+#if 0
 	// get packages
 	for(i=0; i<m_Doc->m_Packages.GetSize(); i++)
 	{
@@ -337,6 +346,21 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char 
 			delete package;
 		}
 	}
+#else
+	TPackage* package = new TPackage;
+	package->Name = CString(const_cast<char*>(outputName));
+	package->CD = 0;
+	package->Priority = 0; // TBD
+	package->Description = Copyright;
+	package->GameVersion = 0; // TBD
+	package->FullName = CString(const_cast<char*>(inputFolder));
+	GetAllFiles(package, package->FullName, build_number);
+	if(package->m_Files.GetSize()>0) m_Packages.Add(package);
+	else{
+		printf("%s: no files to add\n", (package->Name).c_str());
+		delete package;
+	}
+#endif
 
 	/*
 	if(dlg.m_CloseRequest){
@@ -355,12 +379,12 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char 
 
 	// build packages
 	for(i=0; i<m_Packages.GetSize(); i++){		
-		ret = CreatePackage(m_Packages[i], NULL/* &dlg */, OutputPath, build_number);
+		ret = CreatePackage(m_Packages[i], NULL/* &dlg */, CString(const_cast<char*>(outputFolder)), build_number);
 		if(!ret) break;
 
-		if(m_Doc->m_PackCopyExe && m_Doc->m_BindPackage==m_Packages[i]->Name){
-			AppendFiles(NewExeName, OutputPath + m_Packages[i]->Name + "." + PACKAGE_EXTENSION);
-		}
+		//if(m_Doc->m_PackCopyExe && m_Doc->m_BindPackage==m_Packages[i]->Name){
+		//	AppendFiles(NewExeName, OutputPath + m_Packages[i]->Name + "." + PACKAGE_EXTENSION);
+		//}
 
 		/*
 		if(dlg.m_CloseRequest){
@@ -371,8 +395,8 @@ bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char 
 	}
 
 	// build master index
-	if(ret && m_Doc->m_PackBuildMasterIndex)
-		ret = CreateMasterPackage(NULL/*&dlg */, OutputPath);
+//	if(ret && m_Doc->m_PackBuildMasterIndex)
+//		ret = CreateMasterPackage(NULL/*&dlg */, OutputPath);
 
 
 
@@ -383,9 +407,9 @@ finish:
 	//AfxGetMainWnd()->EnableWindow(TRUE);
 	Cleanup();
 
-	if(!ret) DeleteAllPAckages(OutputPath, SinglePackage);
+	if(!ret) printf("Package build ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"); // DeleteAllPAckages(CString(const_cast<char*>(outputFolder)), SinglePackage);
 	else printf(LOC("/str0115/Packages created successfuly\n"));
-	MessageBeep(ret?MB_OK:MB_ICONERROR);
+	// MessageBeep(ret?MB_OK:MB_ICONERROR);
 
 	return ret;
 }
@@ -665,6 +689,8 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 	return true;
 }
 
+#if 0
+
 #define MASTER_NAME "master"
 //////////////////////////////////////////////////////////////////////////
 bool CPackageBuilder::CreateMasterPackage(void* /*CCompileDlg*/ dlg, CString OutputPath)
@@ -736,6 +762,7 @@ bool CPackageBuilder::CreateMasterPackage(void* /*CCompileDlg*/ dlg, CString Out
 
 }
 
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 void CPackageBuilder::WriteString(FILE* f, const char* str, BYTE xor_val)
@@ -760,6 +787,7 @@ void CPackageBuilder::WriteString(FILE* f, const char* str, BYTE xor_val)
 
 
 //////////////////////////////////////////////////////////////////////////
+#if 0
 void CPackageBuilder::DeleteAllPAckages(CString Path, CPackage* SinglePackage)
 {
 	CFileFind finder;
@@ -781,7 +809,7 @@ void CPackageBuilder::DeleteAllPAckages(CString Path, CPackage* SinglePackage)
 	DeleteFile(Path + "wme_report.dll");
 	DeleteFile(Path + "wme.ini");
 }
-
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 bool CPackageBuilder::AppendFiles(CString File1, CString File2)
@@ -816,6 +844,9 @@ bool CPackageBuilder::AppendFiles(CString File1, CString File2)
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+#if 0
+
 bool CPackageBuilder::AddGDF(CString ExeName)
 {
 	CString GdfFile;
@@ -890,3 +921,5 @@ bool CPackageBuilder::AddGDF(CString ExeName)
 
 	return false;
 }
+
+#endif
