@@ -4,7 +4,7 @@
 
 //#include "StdAfx.h"
 #include "dcgf.h"
-#include ".\BNamedObject.h"
+#include "BNamedObject.h"
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -4,8 +4,8 @@
 
 
 #include "dcgf.h"
-#include <io.h>
-#include ".\BPluginMgr.h"
+// #include <io.h>
+#include "BPluginMgr.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -30,6 +30,7 @@ CBPluginMgr::~CBPluginMgr(void)
 	m_IsDisposing = false;
 }
 
+#if 0
 
 //////////////////////////////////////////////////////////////////////////
 HRESULT CBPluginMgr::RegisterPlugins()
@@ -128,6 +129,9 @@ HRESULT CBPluginMgr::RegisterPlugin(char* Path, char* Filename)
 
 	return S_OK;
 }
+
+#endif
+
 
 //////////////////////////////////////////////////////////////////////////
 HRESULT CBPluginMgr::RegisterClasses()

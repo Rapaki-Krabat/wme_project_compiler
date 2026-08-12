@@ -1734,7 +1734,7 @@ HRESULT CAdGame::EndDlgBranch(char *BranchName, char *ScriptName, char *EventNam
 	int StartIndex = -1;
 	int i;
 	for(i=m_DlgPendingBranches.GetSize()-1; i>=0; i--){
-		if(stricmp(Name, m_DlgPendingBranches[i])==0){
+		if(strcasecmp(Name, m_DlgPendingBranches[i])==0){
 			StartIndex = i;
 			break;
 		}
@@ -2079,7 +2079,7 @@ HRESULT CAdGame::AddSpeechDir(char* Dir)
 
 	for(int i=0; i<m_SpeechDirs.GetSize(); i++)
 	{
-		if(stricmp(m_SpeechDirs[i], Temp)==0)
+		if(strcasecmp(m_SpeechDirs[i], Temp)==0)
 		{
 			delete [] Temp;
 			return S_OK;
@@ -2104,7 +2104,7 @@ HRESULT CAdGame::RemoveSpeechDir(char* Dir)
 	bool Found = false;
 	for(int i=0; i<m_SpeechDirs.GetSize(); i++)
 	{
-		if(stricmp(m_SpeechDirs[i], Temp)==0)
+		if(strcasecmp(m_SpeechDirs[i], Temp)==0)
 		{
 			delete [] m_SpeechDirs[i];
 			m_SpeechDirs.RemoveAt(i);

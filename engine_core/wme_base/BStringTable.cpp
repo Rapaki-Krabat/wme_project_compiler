@@ -30,7 +30,7 @@ HRESULT CBStringTable::AddString(const char *Key, const char *Val, bool ReportDu
 {
 	if(Key==NULL || Val==NULL) return E_FAIL;
 	
-	if(stricmp(Key, "@right-to-left")==0)
+	if(strcasecmp(Key, "@right-to-left")==0)
 	{
 		Game->m_TextRTL = true;
 		return S_OK;
@@ -39,7 +39,7 @@ HRESULT CBStringTable::AddString(const char *Key, const char *Val, bool ReportDu
 	string final_key = Key;
 	//if(!final_key.empty()) _strlwr(final_key.begin());
 	//if(!final_key.empty()) _strlwr(final_key->pointer);
-	transform (final_key.begin(), final_key.end(), final_key.begin(), tolower);
+	//transform (final_key.begin(), final_key.end(), final_key.begin(), tolower);
 
 	m_StringsIter = m_Strings.find(final_key);
 	if(m_StringsIter != m_Strings.end() && ReportDuplicities) Game->LOG(0, "  Warning: Duplicate definition of string '%s'.", final_key.c_str());
@@ -60,7 +60,7 @@ char* CBStringTable::GetKey(const char* Str)
 	char* key = new char[value-Str];
 	strncpy(key, Str+1, value-Str-1);
 	key[value-Str-1] = '\0';
-	_strlwr(key);
+	// _strlwr(key);
 
 	char* new_str;
 
@@ -100,7 +100,7 @@ void CBStringTable::Expand(char** Str, bool ForceExpand)
 	char* key = new char[value-*Str];
 	strncpy(key, *Str+1, value-*Str-1);
 	key[value-*Str-1] = '\0';
-	_strlwr(key);
+	// _strlwr(key);
 
 	value++;
 
@@ -137,7 +137,7 @@ const char* CBStringTable::ExpandStatic(const char *String, bool ForceExpand)
 	char* key = new char[value-String];
 	strncpy(key, String+1, value-String-1);
 	key[value-String-1] = '\0';
-	_strlwr(key);
+	// _strlwr(key);
 
 	value++;
 
@@ -225,6 +225,8 @@ HRESULT CBStringTable::LoadFile(char *Filename, bool ClearOld)
 	return S_OK;
 }
 
+#if 0
+
 
 #define WIN_TEXT_BUFFER_LENGTH 16384
 //////////////////////////////////////////////////////////////////////////
@@ -236,7 +238,6 @@ HRESULT CBStringTable::LocalizeWindow(HWND Window)
 	return EnumChildWindows(Window, LocWinCallback, (LPARAM)this)==TRUE?S_OK:E_FAIL;
 }
 
-#if 0
 //////////////////////////////////////////////////////////////////////////
 BOOL CBStringTable::LocWinCallback(HWND hwnd, LPARAM lParam)
 {

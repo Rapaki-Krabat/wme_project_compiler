@@ -56,7 +56,7 @@ long CBParser::GetObject(char** buf, TokenDesc* tokens, char** name, char** data
 	// for now just use brute force.  Improve later.
 	while (tokens->id != 0)
 	{
-		if (!_strnicmp (tokens->token, *buf, strlen (tokens->token)))
+		if (!strncasecmp (tokens->token, *buf, strlen (tokens->token)))
 		{
 			// here we could be matching PART of a string
 			// we could detect this here or the token list
@@ -69,7 +69,7 @@ long CBParser::GetObject(char** buf, TokenDesc* tokens, char** name, char** data
 	{
 		char *p = strchr (*buf, '\n');
 		if (p && p>*buf){
-			strncpy (m_LastOffender, *buf, min(255, p-*buf));
+			strncpy (m_LastOffender, *buf, std::min(255, (int) (p-*buf)));
 		}
 		else strcpy(m_LastOffender, "");
 
@@ -327,8 +327,8 @@ int CBParser::ScanStr(const char * in, const char * format, ...)
 					const char* in2 = in + strspn (in, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 					int l = (int)(in2-in);
 
-					*a = (bool)(!_strnicmp (in, "yes", l) || !_strnicmp (in, "true", l) || !_strnicmp (in, "on", l) ||
-						!_strnicmp (in, "1", l));
+					*a = (bool)(!strncasecmp (in, "yes", l) || !strncasecmp (in, "true", l) || !strncasecmp (in, "on", l) ||
+						!strncasecmp (in, "1", l));
 
 
 					in = in2 + strspn (in2, " \t\n\f");

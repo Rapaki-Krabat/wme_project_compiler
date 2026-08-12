@@ -57,11 +57,27 @@ g++ -o BFileManager.o       -c engine_core/wme_base/BFileManager.cpp        $OPT
 echo "BFileManager.o"
 g++ -o utils.o              -c engine_core/wme_base/utils.cpp             $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
 echo "utils.o"
+g++ -o BParser.o            -c engine_core/wme_base/BParser.cpp           $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
+echo "BParser.o"
+g++ -o BDynBuffer.o         -c engine_core/wme_base/BDynBuffer.cpp        $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
+echo "BDynBuffer.o"
+g++ -o BNamedObject.o         -c engine_core/wme_base/BNamedObject.cpp        $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
+echo "BNamedObject.o"
+g++ -o BStringTable.o         -c engine_core/wme_base/BStringTable.cpp        $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
+echo "BStringTable.o"
+g++ -o AdGame.o         -c engine_core/wme_ad/AdGame.cpp        $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
+echo "AdGame.o"
+g++ -o BPluginMgr.o         -c engine_core/wme_base/BPluginMgr.cpp        $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
+echo "BPluginMgr.o"
+# g++ -o BTextUtils.o         -c engine_core/wme_base/BTextUtils.cpp        $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
+# echo "BTextUtils.o"
 
 g++ -o packagebuilder -lz -ldcscomp -Lexternal_lib/compiler \
 main.o Package.o utils_mfc.o  PackagerFilter.o   FilterExclude.o FilterUncompressed.o PlatformSDL.o FilterScript.o FilterCopy.o PackageBuilder.o  ScEngine.o BBase.o BGame.o \
-ScValue.o  ScScript.o    ScStack.o BObject.o  BScriptable.o   BScriptHolder.o FileOperations.o DirectoryOperations.o BFileManager.o StringUtil.o ConvertUTF.o PathUtil.o utils.o
+ScValue.o  ScScript.o    ScStack.o BObject.o  BScriptable.o   BScriptHolder.o FileOperations.o DirectoryOperations.o BFileManager.o StringUtil.o ConvertUTF.o PathUtil.o utils.o \
+BParser.o BDynBuffer.o BNamedObject.o BStringTable.o AdGame.o BPluginMgr.o 
 
+#  BTextUtils.o
 
 echo "Success"
 

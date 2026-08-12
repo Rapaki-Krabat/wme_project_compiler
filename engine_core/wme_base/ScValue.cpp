@@ -6,6 +6,7 @@
 //#include "StdAfx.h"
 #include "dcgf.h"
 #include "ScValue.h"
+#include "StringUtil.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -136,10 +137,20 @@ CScValue* CScValue::GetProp(char *Name)
 {
 	if(m_Type==VAL_VARIABLE_REF) return m_ValRef->GetProp(Name);
 
-	if(m_Type==VAL_STRING && strcmp(Name, "Length")==0){
-		//Game->m_ScValue->SetInt(strlen(m_ValString));
+	if(m_Type==VAL_STRING && strcmp(Name, "Length")==0)
+	{
 		Game->m_ScValue->m_Type = VAL_INT;
-		Game->m_ScValue->SetInt(CBTextUtils::GetTextLength(Game->m_TextEncoding, (BYTE*)m_ValString));
+
+		if (Game->m_TextEncoding == TEXT_ANSI)
+		{
+			Game->m_ScValue->SetInt(((int) strlen(m_ValString)));
+		}
+		else
+		{
+			WideString wstr = StringUtil::Utf8ToWide(m_ValString);
+			Game->m_ScValue->SetInt(((int) wstr.length()));
+		}
+		
 		return Game->m_ScValue;
 	}
 
