@@ -1,46 +1,64 @@
-// This file is part of Wintermute Engine
-// For conditions of distribution and use, see copyright notice in license.txt
-// http://dead-code.org/redir.php?target=wme
+/*
+This file is part of WME Lite.
+http://dead-code.org/redir.php?target=wmelite
 
+Copyright (c) 2011 Jan Nedoma
 
-#if !defined(AFX_BFILEMANAGER_H__46BF5841_1837_11D4_9F37_9067C7F29A3D__INCLUDED_)
-#define AFX_BFILEMANAGER_H__46BF5841_1837_11D4_9F37_9067C7F29A3D__INCLUDED_
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-#include <map>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+#ifndef __WmeBFileManager_H__
+#define __WmeBFileManager_H__
+
+#ifdef __WINRT__
+	#include <unordered_map>
+#else
+	#include <map>
+#endif
 #include "coll_templ.h"
+#include "FileOperations.h"
 
 class CBFileManager:CBBase
 {
 public:	
-	bool FindPackageSignature(FILE* f, DWORD* Offset);
+	bool FindPackageSignature(generic_file_ops *ops, FILEHANDLE f, DWORD* Offset);
 	HRESULT Cleanup();
 	HRESULT SetBasePath(char* Path);
 	HRESULT RestoreCurrentDir();
 	char* m_BasePath;
 	bool GetFullPath(char* Filename, char* Fullname);
-	CBFile* OpenFileRaw(char* Filename);
+	CBFile* OpenFileRaw(const char* Filename);
 	HRESULT CloseFile(CBFile* File);
-	CBFile* OpenFile(char* Filename, bool AbsPathWarning=true);
-	CBFileEntry* GetPackageEntry(char* Filename);
-	FILE* OpenSingleFile(char* Name);
-	FILE* OpenPackage(char* Name);
-	HRESULT RegisterPackages();
+	CBFile* OpenFile(const char* Filename, bool AbsPathWarning=true);
+	CBFileEntry* GetPackageEntry(const char* Filename);
+	FILEHANDLE OpenSingleFile(char* Name);
+	FILEHANDLE OpenPackage(char* Name, generic_file_ops **ops);
+	HRESULT RegisterPackages();	
 	HRESULT InitPaths();
 	HRESULT ReloadPaths();
-	HRESULT SetCustomPaths(const char *customPath);
 	typedef enum{
 		PATH_PACKAGE, PATH_SINGLE
 	} TPathType;
-	HRESULT AddPath(TPathType Type, char* Path);
+	HRESULT AddPath(TPathType Type, const char* Path);
 	HRESULT RequestCD(int CD, char* PackageFile, char* Filename);
-	HRESULT SaveFile(char* Filename, BYTE* Buffer, DWORD BufferSize, bool Compressed=false, BYTE* PrefixBuffer=NULL, DWORD PrefixSize=0);
-	void MakeRelativePath(char* Path);
-	bool MakeAbsolutePath(char* RelPath, char* AbsPath, int BufSize);
-	BYTE* ReadWholeFile(char* Filename, DWORD* Size=NULL, bool MustExist=true);
+	HRESULT SaveFile(char* Filename, BYTE* Buffer, DWORD BufferSize, bool Compressed=false, const char* PrefixBuffer=NULL, DWORD PrefixSize=0);
+	BYTE* ReadWholeFile(const char* Filename, DWORD* Size=NULL, bool MustExist=true, bool testOldFile=false);
 	CBFileManager(CBGame* inGame=NULL);
 	virtual ~CBFileManager();
 	CBArray<char*, char*> m_SinglePaths;
@@ -48,10 +66,20 @@ public:
 	CBArray<CBPackage*, CBPackage*> m_Packages;
 	CBArray<CBFile*, CBFile*> m_OpenFiles;
 
+#ifdef __WINRT__
+	unordered_map<string, CBFileEntry*> m_Files;
+#else
 	map<string, CBFileEntry*> m_Files;
+#endif
 private:
-	HRESULT RegisterPackage(char* Path, char* Name, bool SearchSignature=false);	
-	map<string, CBFileEntry*>::iterator m_FilesIter;	
+	HRESULT RegisterPackage(const AnsiString& path, const AnsiString& name, bool searchSignature = false);
+#ifdef __WINRT__
+	unordered_map<string, CBFileEntry*>::iterator m_FilesIter;
+#else
+	map<string, CBFileEntry*>::iterator m_FilesIter;
+#endif
+	bool IsValidPackage(const AnsiString& fileName) const;
+	generic_file_ops *ops;
 };
 
-#endif // !defined(AFX_BFILEMANAGER_H__46BF5841_1837_11D4_9F37_9067C7F29A3D__INCLUDED_)
+#endif

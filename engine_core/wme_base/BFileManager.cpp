@@ -1,21 +1,57 @@
-// This file is part of Wintermute Engine
-// For conditions of distribution and use, see copyright notice in license.txt
-// http://dead-code.org/redir.php?target=wme
+/*
+This file is part of WME Lite.
+http://dead-code.org/redir.php?target=wmelite
 
-//#include "StdAfx.h"
+Copyright (c) 2011 Jan Nedoma
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
 #include "dcgf.h"
-#include <io.h>
-#include <direct.h>
 #include "BFileManager.h"
+#include "StringUtil.h"
+#include "PathUtil.h"
 
-#if 0
+#if defined(__WIN32__) || defined(__WINRT__)
+#	include <direct.h>
+#   include <io.h>
+#else
+#	include <unistd.h>
+#   include <errno.h>
+#endif
+
+#ifdef __APPLE__
+#	include <CoreFoundation/CoreFoundation.h>
+#endif
+
+#ifdef __ANDROID__
+#	include "android/android.h"
+#	include <android/log.h>
+#endif
+
+#ifndef __WINRT__
 #if _DEBUG
 	#pragma comment(lib, "zlib_d.lib")
 #else
 	#pragma comment(lib, "zlib.lib")
 #endif
 #endif
-
 
 extern "C"
 {
@@ -72,14 +108,14 @@ HRESULT CBFileManager::Cleanup()
 	for(i=0; i<m_OpenFiles.GetSize(); i++)
 	{
 		m_OpenFiles[i]->Close();
-		delete [] m_OpenFiles[i];
+		delete m_OpenFiles[i];
 	}
 	m_OpenFiles.RemoveAll();
 
 
 	// delete packages
 	for(i=0; i<m_Packages.GetSize(); i++)
-		delete [] m_Packages[i];
+		delete m_Packages[i];
 	m_Packages.RemoveAll();
 
 	SAFE_DELETE_ARRAY(m_BasePath);
@@ -91,20 +127,42 @@ HRESULT CBFileManager::Cleanup()
 
 #define MAX_FILE_SIZE 10000000
 //////////////////////////////////////////////////////////////////////
-BYTE* CBFileManager::ReadWholeFile(char * Filename, DWORD* Size, bool MustExist)
+BYTE* CBFileManager::ReadWholeFile(const char* Filename, DWORD* Size, bool MustExist, bool testOldFile)
 {
+	int tmpRes;
 
 	BYTE* buffer=NULL;
 	
-	char fullfilename[512];
-	DWORD ffnlength;
+	ops = PathUtil::GetFileAccessMethod(Filename);
 
-	ffnlength = GetFullPathNameA(Filename, 512, fullfilename, NULL);
+	// restore an older file if the current one does not exist (unsuccessful save operation)
+	if (testOldFile == true)
+	{
+		tmpRes = ops->file_exists(Filename);
+
+		Game->LOG(0, "Load(1): Check file %s existance result=%d.", Filename, tmpRes);
+
+		// file does not exist, so try to restore a possible older version
+		if (tmpRes != 0)
+		{
+			char *oldFile = new char[strlen(Filename) + 5];
+			if (oldFile != NULL)
+			{
+				strcpy(oldFile, Filename);
+				strcat(oldFile, ".old");
+
+				// rename the possible old version to the current version
+				tmpRes = ops->file_rename(oldFile, Filename);
+				Game->LOG(0, "Load(2): Rename old file %s to file %s result=%d.", oldFile, Filename, tmpRes);
+
+				delete[] oldFile;
+			}
+		}
+	}
 
 	CBFile* File = OpenFile(Filename);
 	if(!File)
 	{
-		printf("Full file name: %s\n", fullfilename);
 		if(MustExist) Game->LOG(0, "Error opening file '%s'", Filename);
 		return NULL;
 	}
@@ -142,79 +200,64 @@ BYTE* CBFileManager::ReadWholeFile(char * Filename, DWORD* Size, bool MustExist)
 }
 
 
-//////////////////////////////////////////////////////////////////////
-void CBFileManager::MakeRelativePath(char* Path)
-{
-	RestoreCurrentDir();
-
-	char OrigPath[MAX_PATH];
-	char FullPath[MAX_PATH];
-	strcpy(OrigPath, Path);
-
-	_strlwr(Path);
-	for(int i=0; i<m_SinglePaths.GetSize(); i++)
-	{
-		if(!_fullpath(FullPath, m_SinglePaths[i], MAX_PATH)) continue;
-		_strlwr(FullPath);
-		if(strstr(Path, FullPath)!=NULL)
-		{
-			memmove(Path, OrigPath + strlen(FullPath), strlen(OrigPath) - strlen(FullPath) + 1);
-			return;
-		}
-	}
-	//Path[0] = '\0';
-}
-
-
 //////////////////////////////////////////////////////////////////////////
-bool CBFileManager::MakeAbsolutePath(char* RelPath, char* AbsPath, int BufSize)
+HRESULT CBFileManager::SaveFile(char *Filename, BYTE *Buffer, DWORD BufferSize, bool Compressed, const char* PrefixBuffer, DWORD PrefixSize)
 {
-	RestoreCurrentDir();
+	int tmpRes;
+	size_t tmpFwrite;
 
-	char TempBuf[MAX_PATH];
-	for(int i=0; i<m_SinglePaths.GetSize(); i++)
-	{
-		if(strlen(m_SinglePaths[i]) + strlen(RelPath) + 1 <= MAX_PATH)
-		{
-			strcpy(TempBuf, m_SinglePaths[i]);
-			strcat(TempBuf, RelPath);
+	ops = PathUtil::GetFileAccessMethod(Filename);
 
-			if(!_fullpath(AbsPath, TempBuf, BufSize)) continue;
-
-			FILE* f = fopen(AbsPath, "rb");
-			if(f)
-			{
-				fclose(f);
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-//////////////////////////////////////////////////////////////////////////
-HRESULT CBFileManager::SaveFile(char *Filename, BYTE *Buffer, DWORD BufferSize, bool Compressed, BYTE* PrefixBuffer, DWORD PrefixSize)
-{
 	RestoreCurrentDir();
 
 	CBUtils::CreatePath(Filename, false);
 	
-	FILE* f = fopen(Filename, "wb");
+	// create strings for new and old file
+	char *tmpFile = new char[strlen(Filename) + 5];
+	if (tmpFile == NULL)
+	{
+		return E_FAIL;
+	}
+	strcpy(tmpFile, Filename);
+	strcat(tmpFile, ".tmp");
+
+	char *oldFile = new char[strlen(Filename) + 5];
+	if (oldFile == NULL)
+	{
+		delete[] tmpFile;
+		return E_FAIL;
+	}
+	strcpy(oldFile, Filename);
+	strcat(oldFile, ".old");
+
+	// delete the old .tmp file
+	tmpRes = ops->file_remove(tmpFile);
+	Game->LOG(0, "Save(1): Remove .tmp file %s result=%d.", tmpFile, tmpRes);
+
+	FILEHANDLE f = ops->file_open(tmpFile, "wb");
 	if(!f)
 	{
 		Game->LOG(0, "Error opening file '%s' for writing.", Filename);
+		delete[] tmpFile;
+		delete[] oldFile;
 		return E_FAIL;
 	}
 
+	// track errors during fwrite
+	tmpRes = 0;
+
 	if(PrefixBuffer && PrefixSize)
 	{
-		fwrite(PrefixBuffer, PrefixSize, 1, f);
+		tmpFwrite = ops->file_write(PrefixBuffer, PrefixSize, f);
+		if (tmpFwrite != PrefixSize) tmpRes = 1;
 	}
+
+	BYTE* CompBuffer = NULL;
 
 	if(Compressed)
 	{
 		DWORD CompSize = BufferSize + (BufferSize / 100) + 12; // 1% extra space
-		BYTE* CompBuffer = new BYTE[CompSize];
+		CompBuffer = new BYTE[CompSize];
 		if(!CompBuffer)
 		{
 			Game->LOG(0, "Error allocating compression buffer while saving '%s'", Filename);
@@ -222,34 +265,117 @@ HRESULT CBFileManager::SaveFile(char *Filename, BYTE *Buffer, DWORD BufferSize, 
 		}
 		else
 		{
-			if(compress(CompBuffer, &CompSize, Buffer, BufferSize)==Z_OK)
+			int compStatus;
+
+			// 64-bit safety
+			uLongf SafeCompSize;
+			uLongf SafeBufferSize;
+
+			SafeCompSize   = CompSize;
+			SafeBufferSize = BufferSize;
+
+			compStatus = compress(CompBuffer, &SafeCompSize, Buffer, SafeBufferSize);
+
+			CompSize   = (DWORD) SafeCompSize;
+			BufferSize = (DWORD) SafeBufferSize;
+
+			// Game->LOG(0, "Compression result: status=%d Size %d compressed to %d", compStatus, BufferSize, CompSize);
+
+			if (compStatus == Z_OK)
 			{
 				DWORD magic = DCGF_MAGIC;
-				fwrite(&magic, sizeof(DWORD), 1, f);
+				tmpFwrite = ops->file_write((const char*) &magic, sizeof(DWORD), f);
+				if (tmpFwrite != sizeof(DWORD)) tmpRes = 1;
+
 				magic = COMPRESSED_FILE_MAGIC;
-				fwrite(&magic, sizeof(DWORD), 1, f);
+				tmpFwrite = ops->file_write((const char*) &magic, sizeof(DWORD), f);
+				if (tmpFwrite != sizeof(DWORD)) tmpRes = 1;
 
 				DWORD DataOffset = 5*sizeof(DWORD);
-				fwrite(&DataOffset, sizeof(DWORD), 1, f);
+				tmpFwrite = ops->file_write((const char*) &DataOffset, sizeof(DWORD), f);
+				if (tmpFwrite != sizeof(DWORD)) tmpRes = 1;
 
-				fwrite(&CompSize, sizeof(DWORD), 1, f);
-				fwrite(&BufferSize, sizeof(DWORD), 1, f);
+				tmpFwrite = ops->file_write((const char*) &CompSize, sizeof(DWORD), f);
+				if (tmpFwrite != sizeof(DWORD)) tmpRes = 1;
 
-				fwrite(CompBuffer, CompSize, 1, f);
+				tmpFwrite = ops->file_write((const char*) &BufferSize, sizeof(DWORD), f);
+				if (tmpFwrite != sizeof(DWORD)) tmpRes = 1;
+
+				tmpFwrite = ops->file_write((const char*) CompBuffer, CompSize, f);
+				if (tmpFwrite != CompSize) tmpRes = 1;
 			}
 			else
 			{
-				Game->LOG(0, "Error compressing data while saving '%s'", Filename);
+				Game->LOG(0, "Error %d compressing data while saving '%s'", compStatus, Filename);
 				Compressed = false;
 			}
 
-			delete [] CompBuffer;
 		}
 	}
 	
-	if(!Compressed) fwrite(Buffer, BufferSize, 1, f);
+	if (!Compressed)
+	{
+		tmpFwrite = ops->file_write((const char*) Buffer, BufferSize, f);
+		if (tmpFwrite != BufferSize) tmpRes = 1;
+	}
 
-	fclose(f);
+	// Game->LOG(0, "Compressed=%s, file write status=%d resulting file size=%d", (Compressed) ? "TRUE" : "FALSE", tmpRes, ftell(f));
+
+	// flush data (shouldn't hurt)
+	int flush_status;
+	flush_status = ops->file_flush(f);
+	if (flush_status != 0)
+	{
+		Game->LOG(0, "Save(1,25): flush file failed, errno=%d", flush_status);
+	}
+	else
+	{
+		Game->LOG(0, "Save(1,25): flush file");
+	}
+
+	ops->file_close(f);
+
+	// delete the buffer only after save & flush is done
+	if (CompBuffer != NULL) delete [] CompBuffer;
+
+	Game->LOG(0, "Save(2): Wrote file %s status=%d.", tmpFile, tmpRes);
+	
+	// rather not use a file that had write errors...
+	if (tmpRes != 0)
+	{
+		Game->LOG(0, "Error writing file '%s'.", Filename);
+		delete[] tmpFile;
+		delete[] oldFile;
+		return E_FAIL;
+	}
+
+	// delete an existing .old file from a previous save operation
+	tmpRes = ops->file_remove(oldFile);
+	Game->LOG(0, "Save(3): Remove .old file %s result=%d.", oldFile, tmpRes);
+
+	// move existing file to .old file
+	tmpRes = ops->file_rename(Filename, oldFile);
+	Game->LOG(0, "Save(4): Move file %s to .old file %s result=%d.", Filename, oldFile, tmpRes);
+
+	// move .tmp file to final file
+	tmpRes = ops->file_rename(tmpFile, Filename);
+	Game->LOG(0, "Save(5): Move .tmp file %s to file %s result=%d.", tmpFile, Filename, tmpRes);
+
+	delete[] tmpFile;
+	delete[] oldFile;
+
+#if 0
+	// sync the underlying directory
+	if (!CBUtils::FlushContainingDirectory(Filename))
+	{
+		Game->LOG(0, "Save(6): Flush containing directory FAILED");
+	}
+	else
+	{
+		Game->LOG(0, "Save(6): Flush containing directory");
+	}
+	
+#endif
 
 	return S_OK;
 }
@@ -270,18 +396,15 @@ HRESULT CBFileManager::RequestCD(int CD, char *PackageFile, char *Filename)
 
 
 //////////////////////////////////////////////////////////////////////////
-HRESULT CBFileManager::AddPath(TPathType Type, char *Path)
+HRESULT CBFileManager::AddPath(TPathType Type, const char *Path)
 {
 	if(Path==NULL || strlen(Path) < 1) return E_FAIL;
 
-	bool slashed = (Path[strlen(Path)-1] == '\\' || Path[strlen(Path)-1] == '/');
+	AnsiString slashedPath = PathUtil::AppendSlashToPlainDir(Path);
+	const char *cpath = slashedPath.c_str();
 
-	char* buffer = new char [strlen(Path) + 1 + (slashed?0:1)];
-	if(buffer==NULL) return E_FAIL;
-
-	strcpy(buffer, Path);
-	if(!slashed) strcat(buffer, "\\");
-	_strlwr(buffer);
+	char *buffer = new char [strlen(cpath) + 1];
+	strcpy(buffer, cpath);
 
 	switch(Type)
 	{
@@ -309,82 +432,91 @@ HRESULT CBFileManager::ReloadPaths()
 
 
 #define TEMP_BUFFER_SIZE 32768
-
-char m_CustomPaths[TEMP_BUFFER_SIZE];
-
-HRESULT CBFileManager::SetCustomPaths(const char *customPath)
-{
-	m_CustomPaths[0] = 0;
-	strcpy(m_CustomPaths, customPath);
-	return 0;
-}
-
 //////////////////////////////////////////////////////////////////////////
 HRESULT CBFileManager::InitPaths()
 {
 	RestoreCurrentDir();
 
-	char* temp = new char[TEMP_BUFFER_SIZE];
-	DWORD size, len;
-	int i;
-	char* str_start;
+	AnsiString pathList;
+	int numPaths = 0;
 
 	// single files paths	
-	size = TEMP_BUFFER_SIZE;
-//	Game->m_Registry->ReadString("Resource", "CustomPaths", temp, &size);
-	temp[0] = 0;
-	strcpy(temp, m_CustomPaths);
-	str_start = temp;
-	len = strlen(temp);
-	for(i=0; i<=len; i++)
+	//pathList = Game->m_Registry->ReadString("Resource", "CustomPaths", "");
+	//numPaths = CBUtils::StrNumEntries(pathList.c_str(), ';');
+
+	for(int i = 0; i < numPaths; i++)
 	{
-		if(temp[i]==';') temp[i]='\0';
-		if(temp[i]=='\0')
+		char* path = CBUtils::StrEntry(i, pathList.c_str(), ';');
+		if(path && strlen(path) > 0)
 		{
-			printf("Adding single path '%s'.\n", str_start);
-			AddPath(PATH_SINGLE, str_start);
-			str_start = temp + i + 1;
+			AddPath(PATH_SINGLE, path);
 		}
+		SAFE_DELETE_ARRAY(path);
 	}
 	AddPath(PATH_SINGLE, ".\\");
 
 
 	// package files paths
-	AddPath(PATH_PACKAGE, ".\\");
+	AddPath(PATH_PACKAGE, "./");
 
-	size = TEMP_BUFFER_SIZE;
-//	Game->m_Registry->ReadString("Resource", "PackagePaths", temp, &size);
-	str_start = temp;
-	len = strlen(temp);
-	for(i=0; i<=len; i++)
+#ifdef __APPLE__
+	// search .app path and Resources dir in the bundle
+	CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+	CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef, kCFURLPOSIXPathStyle);
+	const char* pathPtr = CFStringGetCStringPtr(macPath, CFStringGetSystemEncoding());
+	
+#ifdef __IPHONE__
+	AddPath(PATH_PACKAGE, pathPtr);
+	AddPath(PATH_SINGLE, pathPtr);	
+#else
+	char bundlePath[MAX_PATH];
+
+	sprintf(bundlePath, "%s/../", pathPtr);	
+	AddPath(PATH_PACKAGE, bundlePath);
+	AddPath(PATH_SINGLE, bundlePath);
+
+	sprintf(bundlePath, "%s/Contents/Resources/", pathPtr);	
+	AddPath(PATH_PACKAGE, bundlePath);
+	AddPath(PATH_SINGLE, bundlePath);
+
+
+	CFRelease(appUrlRef);
+	CFRelease(macPath);
+#endif
+#elif __ANDROID__
+	char androidPath[1024];
+	android_getGamePackagePath(androidPath, 1024);
+	AddPath(PATH_PACKAGE, androidPath);
+	android_getGamePackagePatchPath(androidPath, 1024);
+	if (strnlen(androidPath, 1024) > 0)
 	{
-		if(temp[i]==';') temp[i]='\0';
-		if(temp[i]=='\0')
+		// patch path might not exist
+		AddPath(PATH_PACKAGE, androidPath);
+	}
+	android_getGameFilePath(androidPath, 1024);
+	AddPath(PATH_SINGLE, androidPath);
+#endif
+
+#ifdef __WINRT__
+	AddPath(PATH_PACKAGE, "./Assets");
+	AddPath(PATH_SINGLE, "./Assets");
+#endif
+
+	//pathList = Game->m_Registry->ReadString("Resource", "PackagePaths", "");
+	//numPaths = CBUtils::StrNumEntries(pathList.c_str(), ';');
+	numPaths = 0;
+	
+	for(int i = 0; i < numPaths; i++)
+	{
+		char* path = CBUtils::StrEntry(i, pathList.c_str(), ';');
+		if(path && strlen(path) > 0)
 		{
-			printf("Adding package path '%s'.\n", str_start);
-			AddPath(PATH_PACKAGE, str_start);
-			str_start = temp + i + 1;
+			AddPath(PATH_PACKAGE, path);
 		}
+		SAFE_DELETE_ARRAY(path);
 	}
 	AddPath(PATH_PACKAGE, "data");
-/*
-	// CD paths
-	char drive[4];
-	drive[1] = ':';
-	drive[2] = '\\';
-	drive[3] = 0;
-	for (char ch = 'A'; ch <= 'Z'; ch++)
-	{
-		drive[0] = ch;
-		if(GetDriveType(drive) == DRIVE_CDROM)
-		{
-			AddPath(PATH_PACKAGE, drive);
-			sprintf(temp, "%sdata\\", drive);
-			AddPath(PATH_PACKAGE, temp);
-		}
-	}
-*/
-	delete [] temp;
+
 	return S_OK;
 }
 
@@ -392,112 +524,110 @@ HRESULT CBFileManager::InitPaths()
 //////////////////////////////////////////////////////////////////////////
 HRESULT CBFileManager::RegisterPackages()
 {
+	generic_directory_ops *dir_ops;
 	RestoreCurrentDir();
 
 	Game->LOG(0, "Scanning packages...");
+	
+	for (int i = 0; i < m_PackagePaths.GetSize(); i++)
+	{
+		AnsiString fullPath = PathUtil::GetAbsolutePath(m_PackagePaths[i]);
+		if (!PathUtil::DirectoryExists(fullPath.c_str())) continue;
 
-	char FullPath[MAX_PATH+1];
-	char Mask[MAX_PATH+1];
-//	char drive[_MAX_DRIVE+1];
+		dir_ops = PathUtil::GetDirectoryAccessMethod(fullPath);
+		AnsiString mask = AnsiString("*.") + AnsiString(dir_ops->dir_get_package_extension());
 
-	for(int i=0; i<m_PackagePaths.GetSize(); i++){
-		_fullpath(FullPath, m_PackagePaths[i], MAX_PATH);
-		if(FullPath==NULL) continue; // invalid path
-/*
-		// only scan fixed disks
-		_splitpath(FullPath, drive, NULL, NULL, NULL);
-		drive[2] = '\\';
-		drive[3] = '\0';
-		if(GetDriveType(drive)!=DRIVE_FIXED) continue;
-*/
-		sprintf(Mask, "%s*.%s", FullPath, PACKAGE_EXTENSION);
+		AnsiStringList files;
+		PathUtil::GetFilesInDirectory(fullPath, mask, files);
 
-		struct _finddata_t find_file;
-		long hFile;
-
-		// scan files
-		if((hFile = _findfirst(Mask, &find_file )) != -1L)
+		for (AnsiStringList::iterator it = files.begin(); it != files.end(); ++it)
 		{
-			if(!(find_file.attrib & _A_SUBDIR))
-			{
-				RegisterPackage(FullPath, find_file.name);
-			}
-			while(_findnext(hFile, &find_file) == 0)
-			{
-				if(!(find_file.attrib & _A_SUBDIR))
-				{
-					RegisterPackage(FullPath, find_file.name);
-				}
-			}
-			_findclose( hFile );
+			if (!IsValidPackage(PathUtil::Combine(fullPath, (*it)))) continue;
+			RegisterPackage(fullPath.c_str(), (*it).c_str());
 		}
 	}
-
-//	char ExePath[MAX_PATH];
-	//CBPlatform::GetModuleFileName(NULL, ExePath, MAX_PATH);
-
-	//RegisterPackage("", ExePath, true);
-
-
 	Game->LOG(0, "  Registered %d files in %d package(s)", m_Files.size(), m_Packages.GetSize());
 
 	return S_OK;
 }
 
+#if 0
 
 //////////////////////////////////////////////////////////////////////////
-HRESULT CBFileManager::RegisterPackage(char* Path, char *Name, bool SearchSignature)
+HRESULT CBFileManager::RegisterPackage(const AnsiString& path, const AnsiString& name, bool searchSignature)
 {
-	char Filename[MAX_PATH];
-	sprintf(Filename, "%s%s", Path, Name);
+    AnsiString fileName = PathUtil::Combine(path, name);
 
-	FILE* f = fopen(Filename, "rb");
+    generic_file_ops *ops = PathUtil::GetFileAccessMethod(fileName);
+
+	FILEHANDLE f = ops->file_open(fileName.c_str(), "rb");
 	if(!f)
 	{
-		Game->LOG(0, "  Error opening package file '%s'. Ignoring.", Filename);
+		Game->LOG(0, "  Error opening package file '%s'. Ignoring.", fileName.c_str());
 		return S_OK;
 	}
 
 	DWORD AbosulteOffset = 0;
 	bool BoundToExe = false;
 
-	if(SearchSignature)
+	if(searchSignature)
 	{
 		DWORD Offset;
-		if(!FindPackageSignature(f, &Offset))
+		if(!FindPackageSignature(ops, f, &Offset))
 		{
-			fclose(f);
+			ops->file_close(f);
 			return S_OK;
 		}
 		else
 		{
-			fseek(f, Offset, SEEK_SET);
+			ops->file_seek(f, Offset, SEEK_SET);
 			AbosulteOffset = Offset;
 			BoundToExe = true;
 		}
 	}
 
 	TPackageHeader hdr;
-	fread(&hdr, sizeof(TPackageHeader), 1, f);
+  
+	BYTE tmptmp;
+
+	// don't read in the whole struct at once, the sizeof(TPackageHeader) 
+	// result differs between 32 and 64 bit!
+	ops->file_read((char *) (&hdr.Magic1)        , sizeof(DWORD), f);
+	ops->file_read((char *) (&hdr.Magic2)        , sizeof(DWORD), f);
+	ops->file_read((char *) (&hdr.PackageVersion), sizeof(DWORD), f);
+	ops->file_read((char *) (&hdr.GameVersion)   , sizeof(DWORD), f);
+
+	ops->file_read((char *) (&hdr.Priority)   , sizeof(BYTE), f);
+	ops->file_read((char *) (&hdr.CD)         , sizeof(BYTE), f);
+	ops->file_read((char *) (&hdr.MasterIndex), sizeof(BYTE), f);
+	ops->file_read((char *) (&tmptmp)         , sizeof(BYTE), f);
+#ifdef __WIN32__
+	ops->file_read((char *) (&hdr.CreationTime), sizeof(DWORD), f);
+#else
+	ops->file_read((char *) (&hdr.CreationTime), sizeof(DWORD), f);
+#endif
+	ops->file_read((char *) (&hdr.Desc)   ,           100, f);
+	ops->file_read((char *) (&hdr.NumDirs), sizeof(DWORD), f);
+ 
 	if(hdr.Magic1 != PACKAGE_MAGIC_1 || hdr.Magic2 != PACKAGE_MAGIC_2 || hdr.PackageVersion > PACKAGE_VERSION)
 	{
-		Game->LOG(0, "  Invalid header in package file '%s'. Ignoring.", Filename);
-		fclose(f);
+		Game->LOG(0, "  Invalid header in package file '%s'. Ignoring.", fileName.c_str());
+		ops->file_close(f);
 		return S_OK;
 	}
 
 	if(hdr.PackageVersion != PACKAGE_VERSION)
 	{
-		Game->LOG(0, "  Warning: package file '%s' is outdated.", Filename);
+		Game->LOG(0, "  Warning: package file '%s' is outdated.", fileName.c_str());
 	}
 
 	// new in v2
 	if(hdr.PackageVersion==PACKAGE_VERSION)
 	{
 		DWORD DirOffset;
-		fread(&DirOffset, sizeof(DWORD), 1, f);
+		ops->file_read((char *) (&DirOffset), sizeof(DWORD), f);
 		DirOffset+=AbosulteOffset;
-		fseek(f, DirOffset, SEEK_SET);
+		ops->file_seek(f, DirOffset, SEEK_SET);
 	}
 
 	for(int i=0; i<hdr.NumDirs; i++)
@@ -509,10 +639,20 @@ HRESULT CBFileManager::RegisterPackage(char* Path, char *Name, bool SearchSignat
 
 		// read package info
 		BYTE NameLength;
-		fread(&NameLength, sizeof(BYTE), 1, f);
-		pkg->m_Name = new char[NameLength];
-		fread(pkg->m_Name, NameLength, 1, f);
-		fread(&pkg->m_CD, sizeof(BYTE), 1, f);
+		ops->file_read((char *) (&NameLength), sizeof(BYTE), f);
+		pkg->m_InternalName = new char[NameLength];
+		ops->file_read(pkg->m_InternalName, NameLength, f);
+		// the m_Name shall be filled with the real filename instead
+		// because that one can differ from the stored name
+		AnsiString fileNameWithoutExt = PathUtil::GetFileNameWithoutExtension(name);
+		pkg->m_Name = new char[fileNameWithoutExt.length() + 1];
+		pkg->m_Name[fileNameWithoutExt.length()] = 0;
+		strncpy((char *) (pkg->m_Name), fileNameWithoutExt.c_str(), fileNameWithoutExt.length());
+
+		Game->LOG(0, "Package internal name=%s", pkg->m_InternalName);
+		Game->LOG(0, "Package file name=%s", pkg->m_Name);
+
+		ops->file_read((char *) (&pkg->m_CD), sizeof(BYTE), f);
 		pkg->m_Priority = hdr.Priority;
 
 		if(!hdr.MasterIndex) pkg->m_CD = 0; // override CD to fixed disk
@@ -521,17 +661,22 @@ HRESULT CBFileManager::RegisterPackage(char* Path, char *Name, bool SearchSignat
 
 		// read file entries
 		DWORD NumFiles;
-		fread(&NumFiles, sizeof(DWORD), 1, f);
+		ops->file_read((char *) (&NumFiles), sizeof(DWORD), f);
+
+#ifdef __WINRT__
+		// might help to index files in the package faster
+		m_Files.reserve(m_Files.size() + NumFiles);
+#endif
 
 		for(int j=0; j<NumFiles; j++)
 		{
 			char* Name;
 			DWORD Offset, Length, CompLength, Flags, TimeDate1, TimeDate2;
 
-			fread(&NameLength, sizeof(BYTE), 1, f);
+			ops->file_read((char *) (&NameLength), sizeof(BYTE), f);
 			Name = new char[NameLength];
-			fread(Name, NameLength, 1, f);
-			
+			ops->file_read(Name, NameLength, f);
+		
 			// v2 - xor name
 			if(hdr.PackageVersion==PACKAGE_VERSION)
 			{
@@ -540,19 +685,31 @@ HRESULT CBFileManager::RegisterPackage(char* Path, char *Name, bool SearchSignat
 					((BYTE*)Name)[k] ^= 'D';
 				}
 			}
-			strupr(Name);
 
-			fread(&Offset, sizeof(DWORD), 1, f);
+			// some old version of ProjectMan writes invalid directory entries
+			// so at least prevent strupr from corrupting memory
+			Name[NameLength - 1] = '\0';
+
+
+			CBPlatform::strupr(Name);
+
+			ops->file_read((char *) (&Offset), sizeof(DWORD), f);
 			Offset+=AbosulteOffset;
-			fread(&Length, sizeof(DWORD), 1, f);
-			fread(&CompLength, sizeof(DWORD), 1, f);
-			fread(&Flags, sizeof(DWORD), 1, f);
+			ops->file_read((char *) (&Length), sizeof(DWORD), f);
+			ops->file_read((char *) (&CompLength), sizeof(DWORD), f);
+			ops->file_read((char *) (&Flags), sizeof(DWORD), f);
 
 			if(hdr.PackageVersion==PACKAGE_VERSION)
 			{
-				fread(&TimeDate1, sizeof(DWORD), 1, f);
-				fread(&TimeDate2, sizeof(DWORD), 1, f);
+				ops->file_read((char *) (&TimeDate1), sizeof(DWORD), f);
+				ops->file_read((char *) (&TimeDate2), sizeof(DWORD), f);
 			}
+
+			/*
+			__android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app",
+					"File %s off=%d len=%d complen=%d flags=%d time1=%d time2=%d",
+					Name, Offset, Length, CompLength, Flags, TimeDate1, TimeDate2);
+					*/
 
 			m_FilesIter = m_Files.find(Name);
 			if (m_FilesIter == m_Files.end())
@@ -583,24 +740,42 @@ HRESULT CBFileManager::RegisterPackage(char* Path, char *Name, bool SearchSignat
 	}
 
 
-	fclose(f);
+	ops->file_close(f);
 
 	return S_OK;
 }
 
+//////////////////////////////////////////////////////////////////////////
+bool CBFileManager::IsValidPackage(const AnsiString& fileName) const
+{
+	AnsiString plainName = PathUtil::GetFileNameWithoutExtension(fileName);
+
+	// check for device-type specific packages
+	if (StringUtil::StartsWith(plainName, "xdevice_", true))
+	{				
+		return StringUtil::CompareNoCase(plainName, "xdevice_" + Game->GetDeviceType());
+	}
+	return true;
+}
+
+#endif
 
 //////////////////////////////////////////////////////////////////////////
-FILE* CBFileManager::OpenPackage(char *Name)
+FILEHANDLE CBFileManager::OpenPackage(char *Name, generic_file_ops **ops)
 {
 	RestoreCurrentDir();
 
-	FILE* ret = NULL;
+	FILEHANDLE ret = NULL;
 	char Filename[MAX_PATH];
+	generic_directory_ops *dir_ops;
 
 	for(int i=0; i<m_PackagePaths.GetSize(); i++)
 	{
-		sprintf(Filename, "%s%s.%s", m_PackagePaths[i], Name, PACKAGE_EXTENSION);
-		ret = fopen(Filename, "rb");
+		dir_ops = PathUtil::GetDirectoryAccessMethod(m_PackagePaths[i]);
+		sprintf(Filename, "%s%s.%s", m_PackagePaths[i], Name, dir_ops->dir_get_package_extension());
+		// Game->LOG(0, "Package file name to open: %s", Filename);
+		*ops = PathUtil::GetFileAccessMethod(Filename);
+		ret = (*ops)->file_open(Filename, "rb");
 		if(ret!=NULL) return ret;
 	}
 	return NULL;
@@ -608,22 +783,25 @@ FILE* CBFileManager::OpenPackage(char *Name)
 
 
 //////////////////////////////////////////////////////////////////////////
-FILE* CBFileManager::OpenSingleFile(char* Name)
+FILEHANDLE CBFileManager::OpenSingleFile(char* Name)
 {
 	RestoreCurrentDir();
 
-	FILE* ret = NULL;
+	FILEHANDLE ret = NULL;
 	char Filename[MAX_PATH];
+	generic_file_ops *ops;
 
 	for(int i=0; i<m_SinglePaths.GetSize(); i++)
 	{
 		sprintf(Filename, "%s%s", m_SinglePaths[i], Name);
-		ret = fopen(Filename, "rb");
+		ops = PathUtil::GetFileAccessMethod(Filename);
+		ret = ops->file_open(Filename, "rb");
 		if(ret!=NULL) return ret;
 	}
 
 	// didn't find in search paths, try to open directly
-	return fopen(Name, "rb");
+	ops = PathUtil::GetFileAccessMethod(Name);
+	return ops->file_open(Name, "rb");
 }
 
 
@@ -632,16 +810,18 @@ bool CBFileManager::GetFullPath(char *Filename, char *Fullname)
 {
 	RestoreCurrentDir();
 
-	FILE* f = NULL;
+	FILEHANDLE f = NULL;
 	bool found = false;
+	generic_file_ops *ops;
 
 	for(int i=0; i<m_SinglePaths.GetSize(); i++)
 	{
 		sprintf(Fullname, "%s%s", m_SinglePaths[i], Filename);
-		f = fopen(Fullname, "rb");
+		ops = PathUtil::GetFileAccessMethod(Fullname);
+		f = ops->file_open(Fullname, "rb");
 		if(f)
 		{
-			fclose(f);
+			ops->file_close(f);
 			found = true;
 			break;
 		}
@@ -649,10 +829,11 @@ bool CBFileManager::GetFullPath(char *Filename, char *Fullname)
 
 	if(!found)
 	{
-		f = fopen(Filename, "rb");
+		ops = PathUtil::GetFileAccessMethod(Filename);
+		f = ops->file_open(Filename, "rb");
 		if(f)
 		{
-			fclose(f);
+			ops->file_close(f);
 			found = true;
 			strcpy(Fullname, Filename);
 		}
@@ -661,13 +842,14 @@ bool CBFileManager::GetFullPath(char *Filename, char *Fullname)
 	return found;
 }
 
+#if 0
 
 //////////////////////////////////////////////////////////////////////////
-CBFileEntry* CBFileManager::GetPackageEntry(char *Filename)
+CBFileEntry* CBFileManager::GetPackageEntry(const char *Filename)
 {
 	char* upc_name = new char[strlen(Filename)+1];
 	strcpy(upc_name, Filename);
-	strupr(upc_name);
+	CBPlatform::strupr(upc_name);
 
 	CBFileEntry* ret=NULL;
 	m_FilesIter = m_Files.find(upc_name);
@@ -678,12 +860,14 @@ CBFileEntry* CBFileManager::GetPackageEntry(char *Filename)
 	return ret;
 }
 
+#endif
 
 //////////////////////////////////////////////////////////////////////////
-CBFile* CBFileManager::OpenFile(char *Filename, bool AbsPathWarning)
+CBFile* CBFileManager::OpenFile(const char *Filename, bool AbsPathWarning)
 {
-	if(strcmp(Filename, "")==0) return NULL;
-
+	if (strcmp(Filename, "") == 0) return NULL;
+	//Game->LOG(0, "open file: %s", Filename);
+#ifdef __WIN32__
 	if(Game->m_DEBUG_DebugMode && Game->m_DEBUG_AbsolutePathWarning && AbsPathWarning)
 	{
 		char Drive[_MAX_DRIVE];
@@ -693,6 +877,7 @@ CBFile* CBFileManager::OpenFile(char *Filename, bool AbsPathWarning)
 			Game->LOG(0, "WARNING: Referencing absolute path '%s'. The game will NOT work on another computer.", Filename);
 		}
 	}
+#endif
 
 	CBFile* File = OpenFileRaw(Filename);
 	if(File) m_OpenFiles.Add(File);
@@ -716,14 +901,14 @@ HRESULT CBFileManager::CloseFile(CBFile *File)
 	return E_FAIL;
 }
 
+#if 0
 
 //////////////////////////////////////////////////////////////////////////
-CBFile* CBFileManager::OpenFileRaw(char *Filename)
+CBFile* CBFileManager::OpenFileRaw(const char *Filename)
 {
 	RestoreCurrentDir();
 
-	/*
-	if(strnicmp(Filename, "savegame:", 9)==0)
+	if(CBPlatform::strnicmp(Filename, "savegame:", 9)==0)
 	{
 		CBSaveThumbFile* SaveThumbFile = new CBSaveThumbFile(Game);
 		if(SUCCEEDED(SaveThumbFile->Open(Filename))) return SaveThumbFile;
@@ -733,7 +918,6 @@ CBFile* CBFileManager::OpenFileRaw(char *Filename)
 			return NULL;
 		}
 	}
-	*/
 
 	CBDiskFile* DiskFile = new CBDiskFile(Game);
 	if(SUCCEEDED(DiskFile->Open(Filename))) return DiskFile;
@@ -745,14 +929,15 @@ CBFile* CBFileManager::OpenFileRaw(char *Filename)
 
 	delete PkgFile;
 
-//	CBResourceFile* ResFile = new CBResourceFile(Game);
-//	if(SUCCEEDED(ResFile->Open(Filename))) return ResFile;
+	CBResourceFile* ResFile = new CBResourceFile(Game);
+	if(SUCCEEDED(ResFile->Open(Filename))) return ResFile;
 
-//	delete ResFile;
+	delete ResFile;
 
 	return NULL;
 }
 
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 HRESULT CBFileManager::RestoreCurrentDir()
@@ -760,10 +945,12 @@ HRESULT CBFileManager::RestoreCurrentDir()
 	if(!m_BasePath) return S_OK;
 	else
 	{
+#ifdef __WINRT__
+		if(!_chdir(m_BasePath)) return S_OK;
+#else
 		if(!chdir(m_BasePath)) return S_OK;
-		else {
-			return E_FAIL;
-		}
+#endif
+		else return E_FAIL;
 	}
 }
 
@@ -771,16 +958,7 @@ HRESULT CBFileManager::RestoreCurrentDir()
 //////////////////////////////////////////////////////////////////////////
 HRESULT CBFileManager::SetBasePath(char *Path)
 {
-	char fullfilename[512];
-	DWORD ffnlength;
-
 	Cleanup();
-
-	printf("Setting new base path to: '%s'.\n", Path);
-
-	ffnlength = GetFullPathNameA(Path, 512, fullfilename, NULL);
-
-	printf("Absolute base path is '%s'.\n", fullfilename);
 
 	if(Path)
 	{
@@ -796,7 +974,7 @@ HRESULT CBFileManager::SetBasePath(char *Path)
 
 
 //////////////////////////////////////////////////////////////////////////
-bool CBFileManager::FindPackageSignature(FILE *f, DWORD *Offset)
+bool CBFileManager::FindPackageSignature(generic_file_ops *ops, FILEHANDLE f, DWORD *Offset)
 {
 	BYTE buf[32768];
 	
@@ -804,8 +982,8 @@ bool CBFileManager::FindPackageSignature(FILE *f, DWORD *Offset)
 	((DWORD*)Signature)[0] = PACKAGE_MAGIC_1;
 	((DWORD*)Signature)[1] = PACKAGE_MAGIC_2;
 
-	fseek(f, 0, SEEK_END);
-	DWORD FileSize = ftell(f);
+	ops->file_seek(f, 0, SEEK_END);
+	DWORD FileSize = ((DWORD) ops->file_tell(f));
 
 	int StartPos = 1024*1024;
 	
@@ -813,9 +991,9 @@ bool CBFileManager::FindPackageSignature(FILE *f, DWORD *Offset)
 
 	while(BytesRead<FileSize-16)
 	{
-		int ToRead = min(32768, FileSize - BytesRead);
-		fseek(f, StartPos, SEEK_SET);
-		int ActuallyRead = fread(buf, 1, ToRead, f);
+		int ToRead = std::min(32768, (int) FileSize - BytesRead);
+		ops->file_seek(f, StartPos, SEEK_SET);
+		int ActuallyRead = ((int) ops->file_read((char *) buf, ToRead, f));
 		if(ActuallyRead != ToRead) return false;
 
 		for (int i = 0; i<ToRead-8; i++)

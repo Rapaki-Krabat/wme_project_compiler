@@ -43,10 +43,23 @@ g++ -o BScriptable.o        -c engine_core/wme_base/BScriptable.cpp         $OPT
 echo "BScriptable.o"
 g++ -o BScriptHolder.o      -c engine_core/wme_base/BScriptHolder.cpp       $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
 echo "BScriptHolder.o"
+gcc -o DirectoryOperations.o -c DirectoryOperations.c $OPTIONS -fPIC -Wall -Wextra || exit;
+echo "DirectoryOperations.o"
+gcc -o FileOperations.o      -c FileOperations.c      $OPTIONS -fPIC -Wall -Wextra || exit;
+echo "FileOperations.o"
+gcc -o ConvertUTF.o          -c ConvertUTF.c          $OPTIONS -fPIC -Wall -Wextra || exit;
+echo "ConvertUTF.o"
+g++ -o PathUtil.o         -c PathUtil.cpp         $OPTIONS -fPIC -Wall -Wextra -I. -Iengine_core/wme_base/ -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
+echo "PathUtil.o"
+g++ -o StringUtil.o         -c StringUtil.cpp         $OPTIONS -fPIC -Wall -Wextra -I. -Iengine_core/wme_base/ -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
+echo "StringUtil.o"
+g++ -o BFileManager.o       -c engine_core/wme_base/BFileManager.cpp        $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
+echo "BFileManager.o"
 
 g++ -o packagebuilder -lz -ldcscomp -Lexternal_lib/compiler \
 main.o Package.o utils_mfc.o  PackagerFilter.o   FilterExclude.o FilterUncompressed.o PlatformSDL.o FilterScript.o FilterCopy.o PackageBuilder.o  ScEngine.o BBase.o BGame.o \
-ScValue.o  ScScript.o    ScStack.o BObject.o  BScriptable.o   BScriptHolder.o
+ScValue.o  ScScript.o    ScStack.o BObject.o  BScriptable.o   BScriptHolder.o FileOperations.o DirectoryOperations.o BFileManager.o StringUtil.o ConvertUTF.o PathUtil.o
+
 
 echo "Success"
 
