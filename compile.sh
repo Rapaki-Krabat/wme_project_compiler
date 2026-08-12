@@ -55,10 +55,12 @@ g++ -o StringUtil.o         -c StringUtil.cpp         $OPTIONS -fPIC -Wall -Wext
 echo "StringUtil.o"
 g++ -o BFileManager.o       -c engine_core/wme_base/BFileManager.cpp        $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
 echo "BFileManager.o"
+g++ -o utils.o              -c engine_core/wme_base/utils.cpp             $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
+echo "utils.o"
 
 g++ -o packagebuilder -lz -ldcscomp -Lexternal_lib/compiler \
 main.o Package.o utils_mfc.o  PackagerFilter.o   FilterExclude.o FilterUncompressed.o PlatformSDL.o FilterScript.o FilterCopy.o PackageBuilder.o  ScEngine.o BBase.o BGame.o \
-ScValue.o  ScScript.o    ScStack.o BObject.o  BScriptable.o   BScriptHolder.o FileOperations.o DirectoryOperations.o BFileManager.o StringUtil.o ConvertUTF.o PathUtil.o
+ScValue.o  ScScript.o    ScStack.o BObject.o  BScriptable.o   BScriptHolder.o FileOperations.o DirectoryOperations.o BFileManager.o StringUtil.o ConvertUTF.o PathUtil.o utils.o
 
 
 echo "Success"

@@ -86,8 +86,10 @@ public:
 	static BOOL ShowWindow(HWND hWnd, int nCmdShow);
 	static bool DeleteFile(const char* lpFileName);
 	static bool CopyFile(const char* from, const char* to, bool failIfExists);
+#endif	
 	static bool CreateDirectory(const char* path);
 	static bool FlushDirectory(const char* path);
+#if 0	
 	static HWND SetCapture(HWND hWnd);
 	static BOOL ReleaseCapture();
 	static BOOL SetForegroundWindow(HWND hWnd);
@@ -103,13 +105,16 @@ public:
 	static BOOL EqualRect(LPRECT rect1, LPRECT rect2);
 	static int  DistanceRectMiddle(LPRECT lprc, POINT p);
 
+#endif
 
 	// string functions
 	static int stricmp(const char* str1, const char* str2);
 	static int strnicmp(const char* str1, const char* str2, size_t maxCount);
 	static char* strupr(char* string);
 	static char* strlwr(char* string);
-	
+
+#if 0
+
 	// sdl event callback
 	static int SDLEventWatcher(void* userdata, SDL_Event* event);
 #endif

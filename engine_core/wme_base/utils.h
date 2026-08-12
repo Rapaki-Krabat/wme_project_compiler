@@ -1,31 +1,48 @@
-// This file is part of Wintermute Engine
-// For conditions of distribution and use, see copyright notice in license.txt
-// http://dead-code.org/redir.php?target=wme
+/*
+This file is part of WME Lite.
+http://dead-code.org/redir.php?target=wmelite
 
+Copyright (c) 2011 Jan Nedoma
 
-#ifndef UTILS_H
-#define UTILS_H
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+#ifndef __WmeUtils_H__
+#define __WmeUtils_H__
+
 
 class CBGame;
 
 class CBUtils
 {
 public:
-	// static int ClosestColor (BYTE r, BYTE g, BYTE b, PALETTEENTRY* entries, int num_entries);
 	static void Clip(int *DestX, int *DestY, RECT *SrcRect, RECT *DestRect);
 	static void Swap(int *a, int *b);
-//	static DWORD RGBtoNative(DDPIXELFORMAT pf, BYTE red, BYTE green, BYTE blue, DWORD* num_bytes=NULL);
 	static bool StrBeginsI(const char* String, const char* Fragment);
 	static float NormalizeAngle(float Angle);
-	// static DWORD COLORREF2D3D(COLORREF Color);
-	// static COLORREF D3D2COLORREF(DWORD Color);
-	// static void GetWindowsVersion(char* str);
 
-	static void CreatePath(char* Path, bool PathOnly=false);
-	// static HRESULT GetDXVersion(DWORD* pdwDirectXVersion, TCHAR* strDirectXVersion, int cchDirectXVersion);
+	static void CreatePath(const char* Path, bool PathOnly=false);
+
+	static bool FlushContainingDirectory(const char* Path);
 
 	static void DebugMessage(HWND hWnd, const char* Text);
-	static char* SetString(char** String, char* Value);
+	static char* SetString(char** String, const char* Value);
 
 	static int StrNumEntries(const char* Str, const char Delim=',');
 	static char* StrEntry(int Entry, const char* Str, const char Delim=',');
@@ -34,15 +51,8 @@ public:
 	static float RandomFloat(float From, float To);
 	static float RandomAngle(float From, float To);
 
-	// static bool IsWinNT();
-	// static bool IsKeyDown(int VKey);
-
-	static int GetArgCount(const char* CmdLine);
-	static bool GetArg(int Num, const char* CmdLine, char* Buf);
-
 	static bool MatchesPattern(const char* pattern, const char* string);
 
-	static int GetUsedMemMB();
 	static char* GetPath(char* Filename);
 	static char* GetFilename(char* Filename);
 

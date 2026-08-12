@@ -1,17 +1,31 @@
-// This file is part of Wintermute Engine
-// For conditions of distribution and use, see copyright notice in license.txt
-// http://dead-code.org/redir.php?target=wme
+/*
+This file is part of WME Lite.
+http://dead-code.org/redir.php?target=wmelite
 
-//#include "StdAfx.h"
+Copyright (c) 2011 Jan Nedoma
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
 #include "dcgf.h"
-#include "rgbpixel.h"
-#include <direct.h>
-
-#ifdef _DEBUG
-	#include <Psapi.h>
-	#pragma comment(lib, "psapi.lib")
-#endif
-
+#include "PlatformSDL.h"
+#include "PathUtil.h"
 
 //////////////////////////////////////////////////////////////////////
 static inline unsigned Sqr (int x)
@@ -19,27 +33,6 @@ static inline unsigned Sqr (int x)
   return (x * x);
 }
 
-
-//////////////////////////////////////////////////////////////////////
-#if 0
-int CBUtils::ClosestColor (BYTE r, BYTE g, BYTE b, PALETTEENTRY* entries, int num_entries)
-{
-	int closest_idx = -1;
-	unsigned closest_dst = (unsigned)-1;
-
-	for (int idx = 0; idx < num_entries; idx++){
-		unsigned dst =	Sqr (r - entries[idx].peRed)   * R_COEF_SQ +
-						Sqr (g - entries[idx].peGreen) * G_COEF_SQ +
-						Sqr (b - entries[idx].peBlue)  * B_COEF_SQ;
-		if (dst == 0) return idx;
-		if (dst < closest_dst){
-			closest_dst = dst;
-			closest_idx = idx;
-		}
-	}
-	return closest_idx;
-}
-#endif
 
 //////////////////////////////////////////////////////////////////////////////////
 void CBUtils::Clip(int *DestX, int *DestY, RECT *SrcRect, RECT *DestRect)
@@ -83,37 +76,10 @@ void CBUtils::Swap(int *a, int *b)
 	*b = Temp;
 }
 
-
-//////////////////////////////////////////////////////////////////////////
-/*
-DWORD CBUtils::RGBtoNative(DDPIXELFORMAT pf, BYTE red, BYTE green, BYTE blue, DWORD* num_bytes)
-{	
-	DWORD i, j, rshift, gshift, bshift, rbits, gbits, bbits;
-	
-    j = (int) pf.dwRBitMask; rshift = 0;
-	i = 1; while (!(i&j)) { rshift++; i<<=1; }
-	rbits = 0; while (i&j) { rbits++; i<<=1; }
-
-	j = (int) pf.dwGBitMask; gshift = 0;
-	i = 1; while (!(i&j)) { gshift++; i<<=1; }
-	gbits = 0; while (i&j) { gbits++; i<<=1; }
-
-	j = (int) pf.dwBBitMask; bshift = 0;
-	i = 1; while (!(i&j)) { bshift++; i<<=1; }
-	bbits = 0; while (i&j) { bbits++; i<<=1; }
-	
-	if(num_bytes) *num_bytes = pf.dwRGBBitCount / 8;
-
-	return (((red<<rshift)  >>(8-rbits)) & pf.dwRBitMask) |
-      	   (((green<<gshift)>>(8-gbits)) & pf.dwGBitMask) |
-		   (((blue<<bshift) >>(8-bbits)) & pf.dwBBitMask);
-}
-*/
-
 //////////////////////////////////////////////////////////////////////////
 bool CBUtils::StrBeginsI(const char* String, const char* Fragment)
 {
-	return (_strnicmp(String, Fragment, strlen(Fragment))==0);
+	return (CBPlatform::strnicmp(String, Fragment, strlen(Fragment))==0);
 }
 
 
@@ -126,132 +92,70 @@ float CBUtils::NormalizeAngle(float Angle)
 	return Angle;
 }
 
-#if 0
-//////////////////////////////////////////////////////////////////////////
-DWORD CBUtils::COLORREF2D3D(COLORREF Color)
-{
-	BYTE r = GetRValue(Color);
-	BYTE g = GetGValue(Color);
-	BYTE b = GetBValue(Color);
-	BYTE a = 255;
-
-	return ((DWORD)((((a)&0xff)<<24)|(((r)&0xff)<<16)|(((g)&0xff)<<8)|((b)&0xff)));
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-COLORREF CBUtils::D3D2COLORREF(DWORD Color)
-{
-	BYTE b = GetRValue(Color);
-	BYTE g = GetGValue(Color);
-	BYTE r = GetBValue(Color);
-
-	return RGB(r, g, b);
-}
-#endif
-
-#if 0
-//////////////////////////////////////////////////////////////////////////
-void CBUtils::GetWindowsVersion(char* str)
-{
-	strcpy(str, "<unknown>");
-
-	OSVERSIONINFO osvi;
-	
-	ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	if(!GetVersionEx((OSVERSIONINFO*) &osvi)) return;
-	
-	char product[50];
-
-	switch (osvi.dwPlatformId){
-	case VER_PLATFORM_WIN32_NT:
-		
-		// Test for the product.		
-		if(osvi.dwMajorVersion <= 4)
-            strcpy(product, "Windows NT");
-		
-		else if(osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 0)
-            strcpy (product, "Windows 2000");
-		
-		else if(osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 1)
-            strcpy (product, "Windows XP");
-
-	    else if(osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 2)
-            strcpy (product, "Windows Server 2003");
-
-		else if(osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 0)
-			strcpy (product, "Windows Vista");
-
-		else strcpy (product, "Windows XP or higher");
-		
-		
-		if (osvi.dwMajorVersion <= 4){
-            sprintf (str, "%s version %d.%d %s (Build %d)",
-				product,
-				osvi.dwMajorVersion,
-				osvi.dwMinorVersion,
-				osvi.szCSDVersion,
-				osvi.dwBuildNumber & 0xFFFF);
-		}
-		else { 
-            sprintf (str, "%s %s (Build %d)",
-				product,
-				osvi.szCSDVersion,
-				osvi.dwBuildNumber & 0xFFFF);
-		}
-		break;
-		
-	case VER_PLATFORM_WIN32_WINDOWS:
-		
-		if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 0){
-			strcpy (str, "Windows 95");
-			if (osvi.szCSDVersion[1] == 'C' || osvi.szCSDVersion[1] == 'B')
-                strcat(str, " OSR2");
-		} 		
-		else if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 10){
-			strcpy (str, "Windows 98");
-			if(osvi.szCSDVersion[1] == 'A')
-                strcat(str, " SE");
-		} 		
-		else if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 90){
-			strcpy (str, "Windows Me");
-		}
-		else strcpy (str, "Windows 9x");
-
-		break;
-	}
-}
-
-#endif
 
 ////////////////////////////////////////////////////////////////////////////////
-void CBUtils::CreatePath(char* Path, bool PathOnly)
+void CBUtils::CreatePath(const char* Path, bool PathOnly)
 {
-	char fpath[MAX_PATH+1];
+	AnsiString path;
 
-	if(PathOnly) strcpy(fpath, Path);
-	else{
-		char drive[_MAX_DRIVE];
-		char dir[_MAX_DIR];
-		_splitpath(Path, drive, dir, NULL, NULL);
-		sprintf(fpath, "%s%s", drive, dir);
-	}
-	
-	char *ChPtr;
-	ChPtr=fpath;
-	
-	do {
-		if (*ChPtr=='\\' || *ChPtr=='/' || *ChPtr==0)
+	if (!PathOnly) path = PathUtil::GetDirectoryName(Path);
+	else path = Path;
+
+	path = PathUtil::UnifySeparators(path);
+
+	char* fpath = new char[path.length() + 1];
+	strcpy(fpath, path.c_str());
+
+	char* chPtr;
+	chPtr = fpath;
+
+	bool atEnd = false;
+	do
+	{
+		if (*chPtr == '\\' || *chPtr == '/' || *chPtr == 0)
 		{
-			*ChPtr=0;
-			_mkdir(fpath);
-			*ChPtr='\\';
+			if (*chPtr == 0) atEnd = true;
+
+			*chPtr = 0;
+			CBPlatform::CreateDirectory(fpath);
+			*chPtr = '/';
 		}
-		ChPtr++;
-	} while(*ChPtr!=0);
+		chPtr++;
+	} while (!atEnd);
+
+	delete [] fpath;
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+bool CBUtils::FlushContainingDirectory(const char* Path)
+{
+	AnsiString path;
+	int status;
+
+	status = -1;
+
+	path = PathUtil::GetDirectoryName(Path);
+
+	// do not sync if no dir is specified
+	if (path.length() > 0)
+	{
+		path = PathUtil::UnifySeparators(path);
+
+
+		char* fpath = new char[path.length() + 1];
+		strcpy(fpath, path.c_str());
+
+		if (CBPlatform::FlushDirectory(fpath))
+		{
+			status = 0;
+		}
+
+		delete [] fpath;
+	}
+
+	return (status == 0);
+}
 
 //////////////////////////////////////////////////////////////////////////
 void CBUtils::DebugMessage(HWND hWnd, const char* Text)
@@ -261,7 +165,7 @@ void CBUtils::DebugMessage(HWND hWnd, const char* Text)
 
 
 //////////////////////////////////////////////////////////////////////////
-char* CBUtils::SetString(char** String, char* Value)
+char* CBUtils::SetString(char** String, const char* Value)
 {
 	SAFE_DELETE_ARRAY(*String);
 	*String = new char[strlen(Value)+1];
@@ -341,85 +245,6 @@ float CBUtils::RandomAngle(float From, float To)
 }
 
 //////////////////////////////////////////////////////////////////////////
-bool CBUtils::IsWinNT()
-{
-	OSVERSIONINFO osvi;
-	ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	if(!GetVersionEx((OSVERSIONINFO*) &osvi)) return false;
-
-	return osvi.dwPlatformId==VER_PLATFORM_WIN32_NT;
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-bool CBUtils::IsKeyDown(int VKey)
-{
-	return (GetAsyncKeyState(VKey) & 0x8000)!=0;
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-int CBUtils::GetArgCount(const char* CmdLine)
-{
-	int ret = 0;
-
-	bool InQuote = false;
-	for(int i=0; i<strlen(CmdLine); i++)
-	{
-		if(CmdLine[i]=='\"')
-		{
-			InQuote = !InQuote;
-			if(InQuote) ret++;
-		}
-		else
-		{
-			if(CmdLine[i]!=' ' && (i==0 || (CmdLine[i-1]==' ' && !InQuote)))
-			{
-				ret++;
-			}
-		}
-	}
-	return ret;
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-bool CBUtils::GetArg(int Num, const char* CmdLine, char* Buf)
-{
-	int CurrEntry=-1;
-	int Pos = 0;
-	bool InQuote = false;
-	for(int i=0; i<strlen(CmdLine); i++)
-	{
-		if(CmdLine[i]=='\"')
-		{
-			InQuote = !InQuote;
-			if(InQuote) CurrEntry++;
-		}
-		else
-		{
-			if(CmdLine[i]!=' ' && (i==0 || (CmdLine[i-1]==' ' && !InQuote)))
-			{
-				CurrEntry++;
-			}
-
-			if(CurrEntry==Num)
-			{
-				if(CmdLine[i]!=' ' || InQuote)
-				{
-					Buf[Pos] = CmdLine[i];
-					Pos++;
-				}
-			}
-		}
-	}
-	Buf[Pos] = '\0';
-	return Pos > 0;
-}
-
-
-//////////////////////////////////////////////////////////////////////////
 bool CBUtils::MatchesPattern(const char* Pattern, const char* String)
 {
 	char stringc, patternc;
@@ -451,7 +276,7 @@ bool CBUtils::MatchesPattern(const char* Pattern, const char* String)
 					{
 						String=dot;
 						if (strpbrk(Pattern, "*?[")==NULL && strchr(String+1, '.')==NULL)
-							return(stricmp(Pattern+1, String+1)==0);
+							return(CBPlatform::stricmp(Pattern+1, String+1)==0);
 					}
 				}
 
@@ -462,55 +287,42 @@ bool CBUtils::MatchesPattern(const char* Pattern, const char* String)
 
 			default:
 				if (patternc != stringc)
+                {
 					if (patternc=='.' && stringc==0)
+                    {
 						return(CBUtils::MatchesPattern(Pattern, String));
+                    }
 					else
+                    {
 						return false;
+                    }
+                }
 			break;
 		}
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////
-int CBUtils::GetUsedMemMB()
-{
-#ifdef _DEBUG
-	PROCESS_MEMORY_COUNTERS Counters;
-	Counters.cb = sizeof(PROCESS_MEMORY_COUNTERS);
-	GetProcessMemoryInfo(GetCurrentProcess(), &Counters, sizeof(PROCESS_MEMORY_COUNTERS));
-	return (int)(Counters.WorkingSetSize / 1024 / 1024);
-#else
-	return 0;
-#endif
-}
-
-//////////////////////////////////////////////////////////////////////////
 char* CBUtils::GetPath(char* Filename)
 {
-	char drive[_MAX_DRIVE];
-	char dir[_MAX_DIR];
-	char fname[_MAX_FNAME];
-	char ext[_MAX_EXT];
-	_splitpath(Filename, drive, dir, fname, ext);
+	AnsiString path = PathUtil::GetDirectoryName(Filename);
 
-	char* Ret = new char[MAX_PATH];
-
-	sprintf(Ret, "%s%s", drive, dir);
-	_fullpath(Ret, Ret, MAX_PATH);
-	return Ret;
+	char* ret = new char[MAX_PATH];
+#ifdef _WIN32
+	_fullpath(ret, path.c_str(), MAX_PATH);
+#else
+	realpath(path.c_str(), ret);
+#endif
+	return ret;
 }
 
 //////////////////////////////////////////////////////////////////////////
 char* CBUtils::GetFilename(char* Filename)
 {
-	char fname[_MAX_FNAME];
-	char ext[_MAX_EXT];
-	_splitpath(Filename, NULL, NULL, fname, ext);
-
-	char* Ret = new char[MAX_PATH];
-
-	sprintf(Ret, "%s%s", fname, ext);
-	return Ret;
+	AnsiString path = PathUtil::GetFileName(Filename);
+	char* ret = new char[path.length() + 1];
+	strcpy(ret, path.c_str());
+	return ret;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -564,9 +376,8 @@ void CBUtils::RGBtoHSL(DWORD RGBColor, BYTE* OutH, BYTE* OutS, BYTE* OutL)
 	*OutL = L * 255;
 }
 
-
+#if 0
 //////////////////////////////////////////////////////////////////////////
-/*
 DWORD CBUtils::HSLtoRGB(BYTE InH, BYTE InS, BYTE InL)
 {
 	float H = InH / 255.0f;
@@ -595,9 +406,9 @@ DWORD CBUtils::HSLtoRGB(BYTE InH, BYTE InS, BYTE InL)
 		G = 255 * Hue2RGB(var_1, var_2, H);
 		B = 255 * Hue2RGB(var_1, var_2, H - (1.0f / 3.0f));
 	}
-	return D3DCOLOR_ARGB(255, R, G, B);
+	return DRGBA(255, R, G, B);
 }
-*/
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 float CBUtils::Hue2RGB(float v1, float v2, float vH)
