@@ -35,7 +35,7 @@ CBObject::CBObject(CBGame* inGame):CBScriptHolder(inGame)
 
 	m_ID = Game->GetSequence();
 
-	SetRectEmpty(&m_Rect);
+	// SetRectEmpty(&m_Rect);
 	m_RectSet = false;
 
 //	m_Cursor = NULL;

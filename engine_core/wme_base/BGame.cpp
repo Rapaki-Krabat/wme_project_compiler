@@ -498,12 +498,12 @@ void CBGame::DEBUG_DebugEnable(const char* Filename)
 	//LOG(0, "Extensions: %s ver %d.%02d", EXT_NAME, EXT_VER_MAJOR, EXT_VER_MINOR);
 
 	CBUtils::DebugMessage(NULL, "About to get Windows version...");
-	char ver_string[MAX_PATH];
-	CBUtils::GetWindowsVersion(ver_string);
-	LOG(0, "Platform: %s", ver_string);
+	//char ver_string[MAX_PATH];
+	//CBUtils::GetWindowsVersion(ver_string);
+	//LOG(0, "Platform: %s", ver_string);
 	CBUtils::DebugMessage(NULL, "About to get DirectX version...");
 	// CBUtils::GetDXVersion(NULL, ver_string, MAX_PATH);
-	LOG(0, "DirectX version: %s", ver_string);
+	//LOG(0, "DirectX version: %s", ver_string);
 	LOG(0, "");
 }
 
@@ -594,7 +594,7 @@ HRESULT CBGame::InitLoop()
 
 	m_LiveTimerDelta = m_LiveTimer - m_LiveTimerLast;
 	m_LiveTimerLast = m_LiveTimer;
-	m_LiveTimer += min(1000, m_DeltaTime);	
+	m_LiveTimer += std::min(1000, (int) m_DeltaTime);	
 
 	//if(m_State!=GAME_FROZEN)
 	//{
@@ -3924,7 +3924,7 @@ HRESULT CBGame::LoadSettings(char *Filename)
 			case TOKEN_SAVED_GAME_EXT:
 				CBUtils::SetString(&m_SavedGameExt, (char*)params);
 			break;
-
+#if 0
 			case TOKEN_GUID:
 			{
 				OLECHAR olestr[50];
@@ -3932,6 +3932,7 @@ HRESULT CBGame::LoadSettings(char *Filename)
 				IIDFromString(olestr, &m_GameGUID);
 			}
 			break;
+#endif			
 		}
 	}
 	if (cmd == PARSERR_TOKENNOTFOUND)
@@ -4126,7 +4127,7 @@ bool CBGame::HandleKeypress(bool Printable, DWORD CharCode, DWORD KeyData)
 {
 	if(IsVideoPlaying())
 	{
-		if(CharCode==VK_ESCAPE) StopVideo();
+		// if(CharCode==VK_ESCAPE) StopVideo();
 		return true;
 	}
 	/*
@@ -4165,6 +4166,7 @@ bool CBGame::HandleKeypress(bool Printable, DWORD CharCode, DWORD KeyData)
 //////////////////////////////////////////////////////////////////////////
 bool CBGame::HandleAccessKey(bool Printable, DWORD CharCode, DWORD KeyData)
 {
+#if 0	
 	if(m_AccessKeyboardEnabled)
 	{
 		if(CharCode==VK_TAB && (CBUtils::IsKeyDown(VK_CONTROL) || CBUtils::IsKeyDown(VK_RCONTROL)))
@@ -4191,7 +4193,7 @@ bool CBGame::HandleAccessKey(bool Printable, DWORD CharCode, DWORD KeyData)
 			return true;
 		}
 	}
-	
+#endif
 	return false;
 }
 
@@ -4340,7 +4342,7 @@ HRESULT CBGame::GetSaveDir(char* Buffer)
 		else
 		{
 			fclose(TestFile);
-			DeleteFile(TestFilename);
+			// DeleteFile(TestFilename);
 		}
 		m_SaveDirChecked = true;
 	}
@@ -5235,6 +5237,8 @@ HRESULT CBGame::OnWindowClose()
 	return 0;
 }
 //
+
+#if 0
 ////////////////////////////////////////////////////////////////////////////
 HRESULT CBGame::OnWinsock(WPARAM wparam, LPARAM lparam)
 {
@@ -5244,7 +5248,7 @@ HRESULT CBGame::OnWinsock(WPARAM wparam, LPARAM lparam)
 //	}
 	return E_FAIL;
 }
-
+#endif
 //////////////////////////////////////////////////////////////////////////
 HRESULT CBGame::DisplayDebugInfo() 
 {

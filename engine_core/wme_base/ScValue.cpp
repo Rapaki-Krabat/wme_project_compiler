@@ -500,7 +500,7 @@ bool CScValue::GetBool(bool Default)
 		return (m_ValFloat!=0.0f);
 
 	case VAL_STRING:
-		return (_stricmp(m_ValString, "1")==0 || _stricmp(m_ValString, "yes")==0 || _stricmp(m_ValString, "true")==0);
+		return (strcasecmp(m_ValString, "1")==0 || strcasecmp(m_ValString, "yes")==0 || strcasecmp(m_ValString, "true")==0);
 
 	default:
 		return Default;
@@ -594,7 +594,7 @@ char* CScValue::GetString()
 	}
 
 	case VAL_BOOL:
-		SetStringVal(m_ValBool?"yes":"no");
+		SetStringVal(const_cast<char*>(m_ValBool ? "yes" : "no"));
 		break;
 
 	case VAL_INT:

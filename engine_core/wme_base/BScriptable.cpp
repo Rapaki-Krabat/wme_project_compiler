@@ -149,7 +149,7 @@ int CBScriptable::ScCompare(CBScriptable *Val)
 //////////////////////////////////////////////////////////////////////////
 void CBScriptable::ScDebuggerDesc(char* Buf, int BufSize)
 {
-	strcpy_s(Buf, BufSize, ScToString());
+	strncpy(Buf, ScToString(), BufSize);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -272,7 +272,7 @@ IWmeValue* CBScriptable::GetProperty(const char* PropName)
 void* CBScriptable::GetInterface(const char* ClassName)
 {
 //	if(stricmp(ClassName, "IWmeSubFrame")==0) return (IWmeSubFrame*)((CBSubFrame*)this);
-	if(stricmp(ClassName, "IWmeGame")==0) return (IWmeGame*)((CBGame*)this);
+	if(strcasecmp(ClassName, "IWmeGame")==0) return (IWmeGame*)((CBGame*)this);
 	else return this;
 }
 

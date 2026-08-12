@@ -9,7 +9,7 @@ public:
 	CString() { internal_val = ""; }
 	CString(char* value) { internal_val = std::string(value); }
 	CString(std::string value) { internal_val = value; }
-	~CString();
+	~CString() {};
 	CString(const CString& other) { internal_val = other.value(); }
 	CString& operator=(const CString& other) { internal_val = other.value(); return *this; }
 	CString& operator=(char* value) { internal_val = std::string(value); return *this; }

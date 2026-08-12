@@ -163,7 +163,7 @@ HRESULT CBScriptHolder::ScCallMethod(CScScript* Script, CScStack *Stack, CScStac
 		bool ret = false;
 		for(int i=0; i<m_Scripts.GetSize(); i++)
 		{
-			if(stricmp(m_Scripts[i]->m_Filename, Filename)==0)
+			if(strcasecmp(m_Scripts[i]->m_Filename, Filename)==0)
 			{
 				m_Scripts[i]->Finish(KillThreads);
 				ret = true;
@@ -185,7 +185,7 @@ HRESULT CBScriptHolder::ScCallMethod(CScScript* Script, CScStack *Stack, CScStac
 		bool ret = false;
 		for(int i=0; i<m_Scripts.GetSize(); i++)
 		{
-			if(stricmp(m_Scripts[i]->m_Filename, Filename)==0 && m_Scripts[i]->m_State!=SCRIPT_FINISHED && m_Scripts[i]->m_State!=SCRIPT_ERROR)
+			if(strcasecmp(m_Scripts[i]->m_Filename, Filename)==0 && m_Scripts[i]->m_State!=SCRIPT_FINISHED && m_Scripts[i]->m_State!=SCRIPT_ERROR)
 			{
 				ret = true;
 				break;
@@ -283,7 +283,7 @@ HRESULT CBScriptHolder::AddScript(char *Filename)
 {
 	for(int i=0; i<m_Scripts.GetSize(); i++)
 	{
-		if(stricmp(m_Scripts[i]->m_Filename, Filename)==0)
+		if(strcasecmp(m_Scripts[i]->m_Filename, Filename)==0)
 		{
 			if(m_Scripts[i]->m_State != SCRIPT_FINISHED)
 			{
@@ -479,16 +479,16 @@ CScScript* CBScriptHolder::InvokeMethodThread(char *MethodName)
 //////////////////////////////////////////////////////////////////////////
 void CBScriptHolder::ScDebuggerDesc(char* Buf, int BufSize)
 {
-	strcpy_s(Buf, BufSize, ScToString());
+	strncpy(Buf, ScToString(), BufSize);
 	if(m_Name && strcmp(m_Name, "<unnamed>")!=0)
 	{
-		strcat_s(Buf, BufSize, "  Name: ");
-		strcat_s(Buf, BufSize, m_Name);
+		strncat(Buf, "  Name: ", BufSize);
+		strncat(Buf, m_Name, BufSize);
 	}
 	if(m_Filename)
 	{
-		strcat_s(Buf, BufSize, "  File: ");
-		strcat_s(Buf, BufSize, m_Filename);
+		strncat(Buf, "  File: ", BufSize);
+		strncat(Buf, m_Filename, BufSize);
 	}
 }
 

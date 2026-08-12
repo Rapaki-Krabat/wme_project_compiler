@@ -145,7 +145,7 @@ CScEngine::~CScEngine()
 
 	DisableProfiling();
 
-	if(m_CompilerAvailable && m_CompilerDLL) FreeLibrary(m_CompilerDLL);
+	// if(m_CompilerAvailable && m_CompilerDLL) FreeLibrary(m_CompilerDLL);
 	Cleanup();
 
 	for(int i=0; i<m_Breakpoints.GetSize(); i++)
@@ -754,7 +754,7 @@ HRESULT CScEngine::AddBreakpoint(char* ScriptFilename, int Line)
 	CScBreakpoint* Bp = NULL;
 	for(int i=0; i<m_Breakpoints.GetSize(); i++)
 	{
-		if(stricmp(m_Breakpoints[i]->m_Filename, ScriptFilename)==0)
+		if(strcasecmp(m_Breakpoints[i]->m_Filename, ScriptFilename)==0)
 		{
 			Bp = m_Breakpoints[i];
 			break;
@@ -785,7 +785,7 @@ HRESULT CScEngine::RemoveBreakpoint(char* ScriptFilename, int Line)
 
 	for(int i=0; i<m_Breakpoints.GetSize(); i++)
 	{
-		if(stricmp(m_Breakpoints[i]->m_Filename, ScriptFilename)==0)
+		if(strcasecmp(m_Breakpoints[i]->m_Filename, ScriptFilename)==0)
 		{
 			for(int j=0; j<m_Breakpoints[i]->m_Lines.GetSize(); j++)
 			{
@@ -830,7 +830,7 @@ HRESULT CScEngine::RefreshScriptBreakpoints(CScScript* Script)
 
 	for(int i=0; i<m_Breakpoints.GetSize(); i++)
 	{
-		if(stricmp(m_Breakpoints[i]->m_Filename, Script->m_Filename)==0)
+		if(strcasecmp(m_Breakpoints[i]->m_Filename, Script->m_Filename)==0)
 		{
 			Script->m_Breakpoints.Copy(m_Breakpoints[i]->m_Lines);
 			return S_OK;

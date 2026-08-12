@@ -214,7 +214,7 @@ HRESULT CScScript::Create(char* Filename, BYTE *Buffer, DWORD Size, CBScriptHold
 	if(m_Filename) strcpy(m_Filename, Filename);
 
 	m_Buffer = new BYTE [Size];
-	if(!m_Buffer) return E_POINTER;
+	if(!m_Buffer) return E_FAIL;
 
 	memcpy(m_Buffer, Buffer, Size);
 
@@ -248,7 +248,7 @@ HRESULT CScScript::CreateThread(CScScript *Original, DWORD InitIP, char* EventNa
 
 	// copy buffer
 	m_Buffer = new BYTE [Original->m_BufferSize];
-	if(!m_Buffer) return E_POINTER;
+	if(!m_Buffer) return E_FAIL;
 
 	memcpy(m_Buffer, Original->m_Buffer, Original->m_BufferSize);
 	m_BufferSize = Original->m_BufferSize;
@@ -295,7 +295,7 @@ HRESULT CScScript::CreateMethodThread(CScScript *Original, char* MethodName)
 
 	// copy buffer
 	m_Buffer = new BYTE [Original->m_BufferSize];
-	if(!m_Buffer) return E_POINTER;
+	if(!m_Buffer) return E_FAIL;
 
 	memcpy(m_Buffer, Original->m_Buffer, Original->m_BufferSize);
 	m_BufferSize = Original->m_BufferSize;
@@ -1318,7 +1318,7 @@ CScScript* CScScript::InvokeEventHandler(char *EventName, bool Unbreakable)
 DWORD CScScript::GetEventPos(char *Name)
 {
 	for(int i=m_NumEvents-1; i>=0; i--){
-		if(stricmp(Name, m_Events[i].name)==0) return m_Events[i].pos;
+		if(strcasecmp(Name, m_Events[i].name)==0) return m_Events[i].pos;
 	}
 	return 0;
 }
@@ -1374,7 +1374,7 @@ CScScript::TExternalFunction* CScScript::GetExternal(char *Name)
 	return NULL;
 }
 
-
+#if 0
 //////////////////////////////////////////////////////////////////////////
 HRESULT CScScript::ExternalCall(CScStack *Stack, CScStack *ThisStack, CScScript::TExternalFunction *Function)
 {
@@ -1499,7 +1499,7 @@ HRESULT CScScript::ExternalCall(CScStack *Stack, CScStack *ThisStack, CScScript:
 
 	return Success?S_OK:E_FAIL;
 }
-
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 DWORD CScScript::Call_cdecl(const void* args, size_t sz, DWORD func, bool* StackCorrupt)
@@ -1619,7 +1619,7 @@ HRESULT CScScript::FinishThreads()
 	for(int i=0; i<m_Engine->m_Scripts.GetSize(); i++)
 	{
 		CScScript* Scr = m_Engine->m_Scripts[i];
-		if(Scr->m_Thread && Scr->m_State!=SCRIPT_FINISHED && Scr->m_Owner==m_Owner && stricmp(Scr->m_Filename, m_Filename)==0)
+		if(Scr->m_Thread && Scr->m_State!=SCRIPT_FINISHED && Scr->m_Owner==m_Owner && strcasecmp(Scr->m_Filename, m_Filename)==0)
 			Scr->Finish(true);
 	}
 	return S_OK;
@@ -1773,8 +1773,8 @@ HRESULT CScScript::DbgSendVariables(IWmeDebugClient* Client)
 	{
 		for(int i=0; i<=m_ScopeStack->m_SP; i++)
 		{
-			CScValue* Scope = m_ScopeStack->GetAt(i);
-			Scope->DbgSendVariables(Client, WME_DBGVAR_SCOPE, this, (unsigned int)Scope);
+			//CScValue* Scope = m_ScopeStack->GetAt(i);
+			//Scope->DbgSendVariables(Client, WME_DBGVAR_SCOPE, this, (unsigned int)Scope);
 		}
 	}
 	return S_OK;
