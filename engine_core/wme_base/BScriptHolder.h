@@ -11,6 +11,8 @@
 #endif // _MSC_VER >= 1000
 
 
+#include "coll_templ.h"
+
 class CBScriptHolder : public CBScriptable /*, public IWmeObject*/
 {
 public:

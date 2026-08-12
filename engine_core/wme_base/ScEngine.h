@@ -13,6 +13,9 @@
 #include "BBase.h"
 #include "wme_debugger.h"
 
+#include "PlatformSDL.h"
+#include <cstring>
+
 #define __stdcall
 
 typedef BYTE* (*DLL_COMPILE_BUFFER)(BYTE* Buffer, char* Source, DWORD BufferSize, DWORD* CompiledSize);
@@ -34,7 +37,7 @@ public:
 	{
 	public:
 		CScCachedScript(char* Filename, BYTE* Buffer, DWORD Size){
-			m_Timestamp = timeGetTime();
+			m_Timestamp = CBPlatform::GetTime();
 			m_Buffer = new BYTE[Size];
 			if(m_Buffer) memcpy(m_Buffer, Buffer, Size);
 			m_Size = Size;
@@ -116,7 +119,11 @@ public:
 	CScValue* m_Globals;
 	CScScript* RunScript(char* Filename, CBScriptHolder* Owner=NULL);
 	bool m_CompilerAvailable;
+#if defined(__LINUX__) || defined(__ANDROID__) || defined(__MACOSX__)
+	void *m_CompilerDLL;
+#else
 	HINSTANCE m_CompilerDLL;
+#endif
 	CScEngine(CBGame* inGame);
 	virtual ~CScEngine();
 	static void WINAPI AddError (void* Data, int Line, char* Text);

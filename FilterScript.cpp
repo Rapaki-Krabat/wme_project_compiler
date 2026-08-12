@@ -7,6 +7,7 @@
 // #include "ProjectDoc.h"
 #include "FilterScript.h"
 #include "utils_mfc.h"
+#include "wintypes.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -69,9 +70,9 @@ CString CFilterScript::GetSection()
 //////////////////////////////////////////////////////////////////////////
 bool CFilterScript::Initialize(CPackageBuilder::TPackage* Package)
 {
-	m_Document->PrioritizePackage(Package->Name);
+//	m_Document->PrioritizePackage(Package->Name);
 //	m_Game->m_Registry->SetIniName((char*)LPCSTR(m_Document->GetPathName()));
-	m_Game->m_FileManager->SetBasePath((char*)LPCSTR(m_Document->m_ProjectRoot));
+//	m_Game->m_FileManager->SetBasePath((char*)LPCSTR(m_Document->m_ProjectRoot));
 	m_Game->m_ScEngine->EmptyScriptCache();
 
 	return true;
@@ -87,7 +88,7 @@ CPackagerFilter::TProcessedType CFilterScript::ProcessFile(CString FullFilename,
 
 	m_CurrentFile = Filename;
 	DWORD CompSize = 0;
-	BYTE* CompBuffer = m_Game->m_ScEngine->GetCompiledScript((char*)LPCSTR(Filename), &CompSize, true);
+	BYTE* CompBuffer = m_Game->m_ScEngine->GetCompiledScript(const_cast<char*>(Filename.c_str()), &CompSize, true);
 	if(CompBuffer==NULL){
 		return CPackagerFilter::PROC_ERROR;
 	}
@@ -114,9 +115,10 @@ void CFilterScript::ErrorCallback(int Line, char *Text, void *Data)
 {
 	CFilterScript* _this = (CFilterScript*)Data;
 	if(_this){
-		if(_this->m_CurrentFile!="") _this->m_Document->AddInfo(CString(LOC("/str0100/Compiling file")) + " '" + _this->m_CurrentFile + "'...", _this->m_CurrentFile);
-		CString Error;
-		Error.Format(CString(LOC("/str0101/Line")) + " %d: %s", Line, Text);
-		_this->m_Document->AddError(Error, _this->m_CurrentFile);
+		// if(_this->m_CurrentFile!="") _this->m_Document->AddInfo(CString(LOC("/str0100/Compiling file")) + " '" + _this->m_CurrentFile + "'...", _this->m_CurrentFile);
+		// CString Error;
+		// Error.Format(CString(LOC("/str0101/Line")) + " %d: %s", Line, Text);
+		printf("Script compiler error, line=%d, text=%s.\n", Line, Text);
+		// _this->m_Document->AddError(Error, _this->m_CurrentFile);
 	}
 }

@@ -82,7 +82,7 @@ public:
 	virtual HRESULT OnMouseMiddleUp();
 	virtual HRESULT OnPaint();
 	virtual HRESULT OnWindowClose();
-	virtual HRESULT OnWinsock(WPARAM wparam, LPARAM lparam);
+	// virtual HRESULT OnWinsock(WPARAM wparam, LPARAM lparam);
 
 	bool m_AutorunDisabled;
 	DWORD m_LastMiniUpdate;
@@ -368,7 +368,7 @@ public:
 	virtual HRESULT InitAfterLoad();
 
 //	CBSaveThumbHelper* m_CachedThumbnail;
-	GUID m_GameGUID;
+	// GUID m_GameGUID;
 
 private:
 	HRESULT GetSaveDir(char* Buffer);
