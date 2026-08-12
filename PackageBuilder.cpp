@@ -23,6 +23,8 @@
 #include "FilterExclude.h"
 #include "FilterScript.h"
 
+#include "CFileFind.h"
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -449,40 +451,43 @@ bool CPackageBuilder::Compile(const char *inputFolder, const char *outputFolder,
 //////////////////////////////////////////////////////////////////////////
 bool CPackageBuilder::GetAllFiles(TPackage *Package, CString Path, int build_number)
 {
-	if(Path[Path.GetLength()-1]!='\\') Path+="\\";
+	if(Path[Path.GetLength()-1]!='/') Path+="/";
 
 	CFileFind finder;
-	BOOL working = finder.FindFile(Path + "*.*");
+	bool working = finder.FindFile(Path.c_str());
 	while(working){
 		working = finder.FindNextFile();
-		if(finder.IsDots()) continue;
-
-		if(finder.IsDirectory()) GetAllFiles(Package, Path + finder.GetFileName() + "\\", build_number);
-		else{
-			m_TotalFiles++;
-			TFile* file = new TFile;
-			file->PackageOffset = 0;
-			file->Length = 0;
-			file->CompressedLength = 0;
-			file->Flags = 0;
-			file->FullName = finder.GetFilePath();
-			file->ShortName = finder.GetFileName();
-			file->Name = file->FullName.Right(file->FullName.GetLength() - Package->FullName.GetLength());
-			file->Valid = true;
-
-			if (build_number == 0)
-			{
-				CTime time;
-				finder.GetLastWriteTime(time);
-				file->TimeDate1 = time.GetTime();
+		if (working == true)
+		{
+			if(finder.IsDots()) continue;
+	
+			if(finder.IsDirectory()) GetAllFiles(Package, CString(Path.value() + finder.GetFileName() + std::string("/")), build_number);
+			else{
+				m_TotalFiles++;
+				TFile* file = new TFile;
+				file->PackageOffset = 0;
+				file->Length = 0;
+				file->CompressedLength = 0;
+				file->Flags = 0;
+				file->FullName = CString(finder.GetFilePath());
+				file->ShortName = CString(finder.GetFileName());
+				file->Name = file->FullName.Right(file->FullName.GetLength() - Package->FullName.GetLength());
+				file->Valid = true;
+	
+//				if (build_number == 0)
+//				{
+//					CTime time;
+//					finder.GetLastWriteTime(time);
+//					file->TimeDate1 = time.GetTime();
+//				}
+//				else
+//				{
+					file->TimeDate1 = (DWORD) build_number;
+//				}
+				file->TimeDate2 = 0;
+	
+				Package->m_Files.Add(file);
 			}
-			else
-			{
-				file->TimeDate1 = (DWORD) build_number;
-			}
-			file->TimeDate2 = 0;
-
-			Package->m_Files.Add(file);
 		}
 	}
 	return true;
@@ -511,19 +516,21 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 	for(i = 0; i < m_Filters.GetSize(); i++) m_Filters[i]->Initialize(Package);
 
 
-	printf("/str0117/Package: " + const_cast<char*>(Package->Name.c_str()));
+	printf("/str0117/Package: %s\n", Package->Name.c_str());
 	// m_Doc->AddInfo(CString(LOC("/str0118/Creating package")) + " '" + Package->Name + "'");
 	CString Filename = OutputPath + Package->Name + "." + PACKAGE_EXTENSION;
 
+#if 0
 	char fullfilename[512];
 	DWORD ffnlength;
 
 	ffnlength = GetFullPathNameA(Filename, 512, fullfilename, NULL);
 	printf("Filename for writing full path '%s'.\n", fullfilename);
+#endif
 
 	FILE* f = fopen(Filename.c_str(), "wb");
 	if(!f){
-		printf(CString(LOC("/str0119/Error opening file")) + " '" + const_cast<char*>(Filename.c_str()) + "' " + LOC("/str0120/for writing"));
+		printf("/str0119/Error opening file '%s' for writing\n", Filename.c_str());
 		return false;
 	}
 
@@ -537,18 +544,18 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 	hdr.Priority = Package->Priority;
 	hdr.CD = Package->CD;
 	hdr.MasterIndex = false;
-	if (build_number != 0)
-	{
+//	if (build_number != 0)
+//	{
 		printf("Repeatable build with number=%d.\n", build_number);
 		hdr.CreationTime = build_number;
-	}
-	else
-	{
-		_time32(&hdr.CreationTime);
-		printf("Non-repeatable build with time stamp=%d.\n", hdr.CreationTime);
-	}
+//	}
+//	else
+//	{
+//		_time32(&hdr.CreationTime);
+//		printf("Non-repeatable build with time stamp=%ld.\n", hdr.CreationTime);
+//	}
 	memset(hdr.Desc, 0, 100);
-	memcpy(&hdr.Desc, Package->Description.c_str(), min(99, Package->Description.GetLength()));
+	memcpy(&hdr.Desc, Package->Description.c_str(), std::min(99, (int) Package->Description.GetLength()));
 	hdr.NumDirs = 1;
 	fwrite(&hdr, sizeof(TPackageHeader), 1, f);
 
@@ -567,7 +574,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		TFile* File = Package->m_Files[i];
 
 		m_ProcessedFiles++;
-		printf("/str0121/File: " + const_cast<char*>(File->Name.c_str()) + "\n");
+		printf("/str0121/File: %s\n", + File->Name.c_str());
 		// dlg->m_Progress.SetPos(m_ProcessedFiles);
 		//dlg->Update();
 		/*
@@ -579,10 +586,10 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		*/
 
 		// read file
-		FILE* entry = fopen(File->FullName, "rb");
+		FILE* entry = fopen(File->FullName.c_str(), "rb");
 		if(!entry){
 			fclose(f);
-			printf(CString(LOC("/str0122/Cannot open file")) + " '" + const_cast<char*>(File->FullName.c_str()) + "' " + LOC("/str0123/for reading\n"));
+			printf("/str0122/Cannot open file '%s' for reading\n", File->FullName.c_str());
 			return false;
 		}
 		fseek(entry, 0, SEEK_END);
@@ -592,7 +599,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		if(!Buffer){
 			fclose(entry);
 			fclose(f);
-			printf(CString(LOC("/str0124/Cannot allocate memory for file")) + " '" + const_cast<char*>(File->FullName.c_str()) + "'\n");
+			printf("/str0124/Cannot allocate memory for file '%s'\n", File->FullName.c_str());
 			return false;
 		}
 
@@ -606,8 +613,8 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		BYTE* NewBuffer = NULL;
 		DWORD NewSize = 0;
 
-		for(int j=0; j<m_Doc->m_Filters.GetSize(); j++){
-			CPackagerFilter* Filter = m_Doc->m_Filters[j];
+		for(int j = 0; j < m_Filters.GetSize(); j++){
+			CPackagerFilter* Filter = m_Filters[j];
 			if(!Filter->m_Active) continue;
 
 			if(Filter->FilenameMatches(File->ShortName)){
@@ -619,7 +626,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		// error applying filter?
 		if(Processed==CPackagerFilter::PROC_ERROR){
 			fclose(f);
-			printf(CString(LOC("/str0125/Error applying filter to file")) + " '" + const_cast<char*>(File->Name.c_str()) + "'\n");
+			printf("/str0125/Error applying filter to file '%s'\n", File->Name.c_str());
 			return false;
 		}
 
@@ -641,14 +648,14 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		if(NewFilename!="" && NewFilename!=File->Name) File->Name = NewFilename;
 
 		// compress?
-		DWORD CompressedSize = 0;
+		uLongf CompressedSize = 0;
 		if(Processed==CPackagerFilter::PROC_USE_ORIGINAL || Processed==CPackagerFilter::PROC_USE_BUFFER){
 			CompressedSize = 2*Size;
 			BYTE* CompBuffer = new BYTE[CompressedSize];
 			if(!CompBuffer) CompressedSize = 0;
 			else{
 				if(Z_OK!=compress(CompBuffer, &CompressedSize, Buffer, Size)){
-					printf(CString(LOC("/str0126/Error compressing file")) + " '" + const_cast<char*>(File->FullName.c_str()) + "'", File->Name);
+					printf("/str0126/Error compressing file '%s'\n", File->Name.c_str());
 					delete [] CompBuffer;
 					CompressedSize = 0;
 				}
@@ -843,6 +850,7 @@ void CPackageBuilder::DeleteAllPAckages(CString Path, CPackage* SinglePackage)
 }
 #endif
 
+#if 0
 //////////////////////////////////////////////////////////////////////////
 bool CPackageBuilder::AppendFiles(CString File1, CString File2)
 {
@@ -876,6 +884,7 @@ bool CPackageBuilder::AppendFiles(CString File1, CString File2)
 }
 
 //////////////////////////////////////////////////////////////////////////
+#endif 
 
 #if 0
 

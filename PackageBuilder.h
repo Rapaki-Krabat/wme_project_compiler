@@ -20,7 +20,7 @@ class CPackagerFilter;
 class CPackageBuilder  
 {
 public:	
-	bool AppendFiles(CString File1, CString File2);
+	// bool AppendFiles(CString File1, CString File2);
 	typedef struct{
 		CString Name;
 		CString FullName;
