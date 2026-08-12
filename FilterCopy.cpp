@@ -42,10 +42,13 @@ CPackagerFilter::TProcessedType CFilterCopy::ProcessFile(CString FullFilename, C
 	*NewBuffer = NULL;
 
 	CString TargetFile = OutputPath + Filename;
-	MakePath(TargetFile);
+	//MakePath(TargetFile);
 
-	if(::CopyFile(FullFilename, TargetFile, FALSE))
-		return CPackagerFilter::PROC_IGNORE;
-	else
-		return CPackagerFilter::PROC_ERROR;
+	printf("FilterCopy: ignore copy command from %s to %s.\n", FullFilename.c_str(), TargetFile.c_str());
+	
+	//if(::CopyFile(FullFilename, TargetFile, FALSE))
+	//	return CPackagerFilter::PROC_IGNORE;
+	//else
+	//	return CPackagerFilter::PROC_ERROR;
+	return CPackagerFilter::PROC_IGNORE;
 }

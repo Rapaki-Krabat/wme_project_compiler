@@ -18,6 +18,11 @@
 #include <algorithm>
 #include <cstring>
 
+#include "FilterCopy.h"
+#include "FilterUncompressed.h"
+#include "FilterExclude.h"
+#include "FilterScript.h"
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -372,8 +377,9 @@ bool CPackageBuilder::Compile(const char *inputFolder, const char *outputFolder,
 	
 	if(m_Packages.GetSize()==0){
 		printf(LOC("/str0114/All packages are empty.\n"));
-		goto finish;
 	}
+	else
+	{
 
 
 	// dlg.m_Progress.SetRange32(0, m_TotalFiles);
@@ -416,10 +422,18 @@ bool CPackageBuilder::Compile(const char *inputFolder, const char *outputFolder,
 //	if(ret && m_Doc->m_PackBuildMasterIndex)
 //		ret = CreateMasterPackage(NULL/*&dlg */, OutputPath);
 
+	m_Filters.RemoveAll();
+
+
+	delete FilterCopy;
+	delete FilterScript;
+	delete FilterUncompressed;
+	delete FilterExclude;
 
 
 
-finish:
+    }
+    
 	//dlg.EndDialog(IDOK);
 	//dlg.DestroyWindow();
 	//AfxGetMainWnd()->EnableWindow(TRUE);
