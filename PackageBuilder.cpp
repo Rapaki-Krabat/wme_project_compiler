@@ -508,11 +508,11 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 	printf(LOC("/str0116/Initializing filters..."));
 	//dlg->m_Title2.SetWindowText("");
 	//dlg->Update();
-	for(i = 0; i < m_Filters.GetSize(); i++) m_Doc->m_Filters[i]->Initialize(Package);
+	for(i = 0; i < m_Filters.GetSize(); i++) m_Filters[i]->Initialize(Package);
 
 
-	printf(CString(LOC("/str0117/Package")) + ": " + Package->Name);
-	m_Doc->AddInfo(CString(LOC("/str0118/Creating package")) + " '" + Package->Name + "'");
+	printf("/str0117/Package: " + const_cast<char*>(Package->Name.c_str()));
+	// m_Doc->AddInfo(CString(LOC("/str0118/Creating package")) + " '" + Package->Name + "'");
 	CString Filename = OutputPath + Package->Name + "." + PACKAGE_EXTENSION;
 
 	char fullfilename[512];
@@ -521,9 +521,9 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 	ffnlength = GetFullPathNameA(Filename, 512, fullfilename, NULL);
 	printf("Filename for writing full path '%s'.\n", fullfilename);
 
-	FILE* f = fopen(Filename, "wb");
+	FILE* f = fopen(Filename.c_str(), "wb");
 	if(!f){
-		printf(CString(LOC("/str0119/Error opening file")) + " '" + Filename + "' " + LOC("/str0120/for writing"));
+		printf(CString(LOC("/str0119/Error opening file")) + " '" + const_cast<char*>(Filename.c_str()) + "' " + LOC("/str0120/for writing"));
 		return false;
 	}
 
@@ -548,7 +548,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		printf("Non-repeatable build with time stamp=%d.\n", hdr.CreationTime);
 	}
 	memset(hdr.Desc, 0, 100);
-	memcpy(&hdr.Desc, LPCSTR(Package->Description), min(99, Package->Description.GetLength()));
+	memcpy(&hdr.Desc, Package->Description.c_str(), min(99, Package->Description.GetLength()));
 	hdr.NumDirs = 1;
 	fwrite(&hdr, sizeof(TPackageHeader), 1, f);
 
@@ -567,7 +567,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		TFile* File = Package->m_Files[i];
 
 		m_ProcessedFiles++;
-		printf(CString(LOC("/str0121/File")) + ": " + File->Name + "\n");
+		printf("/str0121/File: " + const_cast<char*>(File->Name.c_str()) + "\n");
 		// dlg->m_Progress.SetPos(m_ProcessedFiles);
 		//dlg->Update();
 		/*
@@ -582,7 +582,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		FILE* entry = fopen(File->FullName, "rb");
 		if(!entry){
 			fclose(f);
-			printf(CString(LOC("/str0122/Cannot open file")) + " '" + File->FullName + "' " + LOC("/str0123/for reading\n"));
+			printf(CString(LOC("/str0122/Cannot open file")) + " '" + const_cast<char*>(File->FullName.c_str()) + "' " + LOC("/str0123/for reading\n"));
 			return false;
 		}
 		fseek(entry, 0, SEEK_END);
@@ -592,7 +592,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		if(!Buffer){
 			fclose(entry);
 			fclose(f);
-			printf(CString(LOC("/str0124/Cannot allocate memory for file")) + " '" + File->FullName + "'\n");
+			printf(CString(LOC("/str0124/Cannot allocate memory for file")) + " '" + const_cast<char*>(File->FullName.c_str()) + "'\n");
 			return false;
 		}
 
@@ -619,7 +619,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		// error applying filter?
 		if(Processed==CPackagerFilter::PROC_ERROR){
 			fclose(f);
-			printf(CString(LOC("/str0125/Error applying filter to file")) + " '" + File->Name + "'\n");
+			printf(CString(LOC("/str0125/Error applying filter to file")) + " '" + const_cast<char*>(File->Name.c_str()) + "'\n");
 			return false;
 		}
 
@@ -648,7 +648,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 			if(!CompBuffer) CompressedSize = 0;
 			else{
 				if(Z_OK!=compress(CompBuffer, &CompressedSize, Buffer, Size)){
-					printf(CString(LOC("/str0126/Error compressing file")) + " '" + File->FullName + "'", File->Name);
+					printf(CString(LOC("/str0126/Error compressing file")) + " '" + const_cast<char*>(File->FullName.c_str()) + "'", File->Name);
 					delete [] CompBuffer;
 					CompressedSize = 0;
 				}
@@ -688,7 +688,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 	// write directory
 	DWORD DirOffset = ftell(f);
 
-	WriteString(f, Package->Name);
+	WriteString(f, Package->Name.c_str());
 	fwrite(&Package->CD, sizeof(BYTE), 1, f);
 
 	//dw = Package->m_Files.GetSize();
@@ -702,7 +702,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		TFile* File = Package->m_Files[i];
 		if(!File->Valid) continue;
 
-		WriteString(f, File->Name, 'D');
+		WriteString(f, File->Name.c_str(), 'D');
 		fwrite(&File->PackageOffset,    sizeof(DWORD), 1, f);
 		fwrite(&File->Length,           sizeof(DWORD), 1, f);
 		fwrite(&File->CompressedLength, sizeof(DWORD), 1, f);
@@ -848,10 +848,10 @@ bool CPackageBuilder::AppendFiles(CString File1, CString File2)
 {
 	BYTE buf[32768];
 
-	FILE* f1 = fopen(File1, "ab");
+	FILE* f1 = fopen(File1.c_str(), "ab");
 	if(!f1) return false;
 
-	FILE* f2 = fopen(File2, "rb");
+	FILE* f2 = fopen(File2.c_str(), "rb");
 	if(!f2){
 		fclose(f1);
 		return false;
