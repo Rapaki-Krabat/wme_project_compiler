@@ -26,7 +26,7 @@ typedef struct{
 #if defined(__WIN32__) && !defined(__MINGW32__)
 	__time32_t CreationTime;
 #else
-	time_t CreationTime;
+	DWORD CreationTime;
 #endif
 	char Desc[100];
 	DWORD NumDirs;
