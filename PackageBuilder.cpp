@@ -557,7 +557,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 //		printf("Non-repeatable build with time stamp=%ld.\n", hdr.CreationTime);
 //	}
 	memset(hdr.Desc, 0, 100);
-	memcpy(&hdr.Desc, Package->Description.c_str(), std::min(99, (int) Package->Description.GetLength()));
+	memcpy(&hdr.Desc, Package->Description.c_str(), std::min((unsigned int) 99, (unsigned int) Package->Description.GetLength()));
 	hdr.NumDirs = 1;
 	fwrite(&hdr, sizeof(TPackageHeader), 1, f);
 
