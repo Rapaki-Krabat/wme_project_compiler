@@ -712,7 +712,10 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 		TFile* File = Package->m_Files[i];
 		if(!File->Valid) continue;
 
-		WriteString(f, File->Name.c_str(), 'D');
+		std::string goodName = File->Name.value();
+		std::replace(goodName.begin(), goodName.end(), '/', '\\');
+		
+		WriteString(f, goodName.c_str(), 'D');
 		fwrite(&File->PackageOffset,    sizeof(DWORD), 1, f);
 		fwrite(&File->Length,           sizeof(DWORD), 1, f);
 		fwrite(&File->CompressedLength, sizeof(DWORD), 1, f);
