@@ -53,7 +53,7 @@ public:
 	bool GetAllFiles(TPackage* Package, CString Path, int build_number);
 	int m_TotalFiles;
 	int m_ProcessedFiles;
-	bool Compile(const char *inputFolder, const char *outputFolder, const char *outputName, int build_number);
+	bool Compile(const char *inputFolder, const char *outputFolder, const char *outputName, int build_number, const char* customPaths);
 	CPackageBuilder();
 	virtual ~CPackageBuilder();
 	// CProjectDoc* m_Doc;

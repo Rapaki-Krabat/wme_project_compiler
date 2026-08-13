@@ -40,7 +40,7 @@ public:
 	}
 	std::string GetFilePath()
 	{
-		return searchpath;
+		return searchpath + entry->d_name;
 	}
 private:
 	DIR* dir;

@@ -8,6 +8,9 @@
 #include "FilterScript.h"
 #include "utils_mfc.h"
 #include "wintypes.h"
+#include "BFileManager.h" 
+
+#include <sstream>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -58,7 +61,14 @@ HRESULT CFilterScript::DefaultSettings()
 	return S_OK;
 }
 
-
+HRESULT CFilterScript::LoadSettings(CString Filename)
+{
+	printf("HACK: announce custom single paths here: %s.\n", Filename.c_str());
+	
+	m_singlePath = Filename;
+	
+	return S_OK;
+}
 
 //////////////////////////////////////////////////////////////////////////
 CString CFilterScript::GetSection()
@@ -73,6 +83,14 @@ bool CFilterScript::Initialize(CPackageBuilder::TPackage* Package)
 //	m_Document->PrioritizePackage(Package->Name);
 //	m_Game->m_Registry->SetIniName((char*)LPCSTR(m_Document->GetPathName()));
 //	m_Game->m_FileManager->SetBasePath((char*)LPCSTR(m_Document->m_ProjectRoot));
+	
+	std::stringstream ss(m_singlePath.value());
+	std::string single_path;
+	while (std::getline(ss, single_path, ':')) {
+		printf("HACK: set file namager custom single path: %s.\n", single_path.c_str());
+		m_Game->m_FileManager->AddPath(CBFileManager::PATH_SINGLE, single_path.c_str());
+	}
+
 	m_Game->m_ScEngine->EmptyScriptCache();
 
 	return true;

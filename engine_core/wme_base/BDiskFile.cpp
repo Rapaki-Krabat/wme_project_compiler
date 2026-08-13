@@ -24,6 +24,19 @@ CBDiskFile::~CBDiskFile()
 	Close();	
 }
 
+static void unify_separators(char *buf)
+{
+	int len = strlen(buf);
+
+	for (int i = 0; i < len; i++)
+	{
+		if (buf[i] == '\\')
+		{
+			buf[i] = '/';
+		}
+	}
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 HRESULT CBDiskFile::Open(char* Filename)
@@ -36,12 +49,16 @@ HRESULT CBDiskFile::Open(char* Filename)
 	{
 		sprintf(FullPath, "%s%s", Game->m_FileManager->m_SinglePaths[i], Filename);
 
-		// printf("Try to open file here: '%s'.\n", FullPath);
+		unify_separators(FullPath);
+		
+		printf("Try to open file with path here: '%s'.\n", FullPath);
 
 		m_File = fopen(FullPath, "rb");
 		if(m_File!=NULL) break;
 	}
 
+	printf("BDiskFile - try to open %s.\n", Filename);
+	
 	// if we didn't find it in search paths, try to open directly
 	if(!m_File) m_File = fopen(Filename, "rb");
 
@@ -121,7 +138,11 @@ HRESULT CBDiskFile::Open(char* Filename)
 
 		return S_OK;
 	}
-	else return E_FAIL;
+	else
+	{
+		printf("BDiskFile - open %s FAILED!\n", Filename);
+		return E_FAIL;
+	}
 }
 
 

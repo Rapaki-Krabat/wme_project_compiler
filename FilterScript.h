@@ -19,8 +19,10 @@ public:
 	static void __stdcall ErrorCallback(int Line, char* Text, void* Data);
 	virtual bool Initialize(CPackageBuilder::TPackage* Package);
 	CAdGame* m_Game;
+	CString m_singlePath;
 	virtual CString GetSection();
 	virtual HRESULT DefaultSettings();
+	virtual HRESULT LoadSettings(CString Filename);
 	CFilterScript();
 	virtual ~CFilterScript();
 	virtual CPackagerFilter::TProcessedType ProcessFile(CString FullFilename, CString Filename, CString OutputPath, CString& NewFilename, BYTE* Buffer, DWORD Size, BYTE** NewBuffer, DWORD* NewSize);

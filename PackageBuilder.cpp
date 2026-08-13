@@ -75,7 +75,7 @@ void CPackageBuilder::Cleanup()
 
 
 //////////////////////////////////////////////////////////////////////////
-bool CPackageBuilder::Compile(const char *inputFolder, const char *outputFolder, const char *outputName, int build_number)
+bool CPackageBuilder::Compile(const char *inputFolder, const char *outputFolder, const char *outputName, int build_number, const char* customPaths)
 // bool CPackageBuilder::Compile(CPackage* SinglePackage, char *outputFolder, char *toolsFolder, bool addCrashLib, bool enableLogWriting, int build_number)
 {
 	int i;
@@ -388,7 +388,7 @@ bool CPackageBuilder::Compile(const char *inputFolder, const char *outputFolder,
 
 	// load filter settings (we adjusted defaults to what was specified in project files)
 	CFilterExclude* FilterExclude = new CFilterExclude();
-	//FilterExclude->LoadSettings(lpszPathName);
+	// FilterExclude->LoadSettings(lpszPathName);
 	m_Filters.Add(FilterExclude);
 	
 	CFilterUncompressed* FilterUncompressed = new CFilterUncompressed();
@@ -396,7 +396,7 @@ bool CPackageBuilder::Compile(const char *inputFolder, const char *outputFolder,
 	m_Filters.Add(FilterUncompressed);
 
 	CFilterScript* FilterScript = new CFilterScript();
-	//FilterScript->LoadSettings(lpszPathName);
+	FilterScript->LoadSettings(const_cast<char*>(customPaths));
 	m_Filters.Add(FilterScript);
 
 	CFilterCopy* FilterCopy = new CFilterCopy();
@@ -486,6 +486,8 @@ bool CPackageBuilder::GetAllFiles(TPackage *Package, CString Path, int build_num
 //				}
 				file->TimeDate2 = 0;
 	
+				printf("Add file %s to package %s.\n", file->FullName.c_str(), Package->Name.c_str());
+				
 				Package->m_Files.Add(file);
 			}
 		}
@@ -618,6 +620,7 @@ bool CPackageBuilder::CreatePackage(TPackage* Package, void* /*CCompileDlg*/ dlg
 			if(!Filter->m_Active) continue;
 
 			if(Filter->FilenameMatches(File->ShortName)){
+				printf("Apply filter %d to file %s.\n", Filter->m_Type, File->FullName.c_str());
 				Processed = Filter->ProcessFile(File->FullName, File->Name, OutputPath, NewFilename, Buffer, Size, &NewBuffer, &NewSize);
 				break;
 			}

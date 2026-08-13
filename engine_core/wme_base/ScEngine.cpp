@@ -307,7 +307,7 @@ BYTE* CScEngine::GetCompiledScript(char *Filename, DWORD *OutSize, bool IgnoreCa
 	BYTE* Buffer = Game->m_FileManager->ReadWholeFile(Filename, &Size);
 	if(!Buffer)
 	{
-		Game->LOG(0, "CScEngine::GetCompiledScript - error opening script '%s'", Filename);
+		printf("CScEngine::GetCompiledScript - error opening script '%s'\n", Filename);
 		return NULL;
 	}
 

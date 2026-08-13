@@ -163,7 +163,7 @@ BYTE* CBFileManager::ReadWholeFile(const char* Filename, DWORD* Size, bool MustE
 	CBFile* File = OpenFile(Filename);
 	if(!File)
 	{
-		if(MustExist) Game->LOG(0, "Error opening file '%s'", Filename);
+		if(MustExist) printf("CBFileManager::ReadWholeFile - Error opening file '%s'\n", Filename);
 		return NULL;
 	}
 

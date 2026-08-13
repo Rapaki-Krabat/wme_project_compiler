@@ -19,7 +19,7 @@ g++ -o FilterUncompressed.o -c FilterUncompressed.cpp  $OPTIONS -fPIC -Wall -Wex
 echo "FilterUncompressed.o"
 g++ -o PlatformSDL.o        -c PlatformSDL.cpp         $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-unused-parameter || exit;
 echo "PlatformSDL.o"
-g++ -o FilterScript.o       -c FilterScript.cpp        $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter || exit;
+g++ -o FilterScript.o       -c FilterScript.cpp        $OPTIONS -fPIC -Wall -Wextra -I. -Iengine_core/wme_base/ -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter || exit;
 echo "FilterScript.o"
 g++ -o FilterCopy.o         -c FilterCopy.cpp          $OPTIONS -fPIC -Wall -Wextra -Wno-unused-parameter -Wno-write-strings || exit;
 echo "FilterCopy.o"
