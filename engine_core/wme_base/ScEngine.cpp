@@ -6,7 +6,7 @@
 //#include "StdAfx.h"
 #include "dcgf.h"
 #include "ScEngine.h"
-#include "BStringUtil.h"
+#include "StringUtil.h"
 #include <algorithm>
 
 extern "C" {
@@ -901,7 +901,7 @@ void CScEngine::AddScriptTime(const char* Filename, DWORD Time)
 	if (!m_IsProfiling) return;
 
 	std::string fileName = Filename;
-	CBStringUtil::ToLowerCase(fileName);
+	StringUtil::ToLowerCase(fileName);
 	m_ScriptTimes[fileName] += Time;
 }
 

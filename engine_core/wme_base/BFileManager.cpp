@@ -387,7 +387,7 @@ HRESULT CBFileManager::RequestCD(int CD, char *PackageFile, char *Filename)
 	// unmount all non-local packages
 	for(int i=0; i<m_Packages.GetSize(); i++)
 	{
-		if(m_Packages[i]->m_CD > 0) m_Packages[i]->Close();
+		// if(m_Packages[i]->m_CD > 0) m_Packages[i]->Close();
 	}
 
 
@@ -543,7 +543,7 @@ HRESULT CBFileManager::RegisterPackages()
 		for (AnsiStringList::iterator it = files.begin(); it != files.end(); ++it)
 		{
 			if (!IsValidPackage(PathUtil::Combine(fullPath, (*it)))) continue;
-			RegisterPackage(fullPath.c_str(), (*it).c_str());
+			// RegisterPackage(fullPath.c_str(), (*it).c_str());
 		}
 	}
 	Game->LOG(0, "  Registered %d files in %d package(s)", m_Files.size(), m_Packages.GetSize());
@@ -745,20 +745,20 @@ HRESULT CBFileManager::RegisterPackage(const AnsiString& path, const AnsiString&
 	return S_OK;
 }
 
+#endif
+
 //////////////////////////////////////////////////////////////////////////
 bool CBFileManager::IsValidPackage(const AnsiString& fileName) const
 {
 	AnsiString plainName = PathUtil::GetFileNameWithoutExtension(fileName);
 
 	// check for device-type specific packages
-	if (StringUtil::StartsWith(plainName, "xdevice_", true))
-	{				
-		return StringUtil::CompareNoCase(plainName, "xdevice_" + Game->GetDeviceType());
-	}
+	//if (StringUtil::StartsWith(plainName, "xdevice_", true))
+	//{				
+		// return StringUtil::CompareNoCase(plainName, "xdevice_" + Game->GetDeviceType());
+	//}
 	return true;
 }
-
-#endif
 
 //////////////////////////////////////////////////////////////////////////
 FILEHANDLE CBFileManager::OpenPackage(char *Name, generic_file_ops **ops)
@@ -901,13 +901,12 @@ HRESULT CBFileManager::CloseFile(CBFile *File)
 	return E_FAIL;
 }
 
-#if 0
-
 //////////////////////////////////////////////////////////////////////////
 CBFile* CBFileManager::OpenFileRaw(const char *Filename)
 {
 	RestoreCurrentDir();
 
+	/*
 	if(CBPlatform::strnicmp(Filename, "savegame:", 9)==0)
 	{
 		CBSaveThumbFile* SaveThumbFile = new CBSaveThumbFile(Game);
@@ -918,12 +917,14 @@ CBFile* CBFileManager::OpenFileRaw(const char *Filename)
 			return NULL;
 		}
 	}
+	*/
 
 	CBDiskFile* DiskFile = new CBDiskFile(Game);
-	if(SUCCEEDED(DiskFile->Open(Filename))) return DiskFile;
+	if(SUCCEEDED(DiskFile->Open(const_cast<char*>(Filename)))) return DiskFile;
 
 	delete DiskFile;
 
+	/*
 	CBPkgFile* PkgFile = new CBPkgFile(Game);
 	if(SUCCEEDED(PkgFile->Open(Filename))) return PkgFile;
 
@@ -933,11 +934,11 @@ CBFile* CBFileManager::OpenFileRaw(const char *Filename)
 	if(SUCCEEDED(ResFile->Open(Filename))) return ResFile;
 
 	delete ResFile;
+	
+	*/
 
 	return NULL;
 }
-
-#endif
 
 //////////////////////////////////////////////////////////////////////////
 HRESULT CBFileManager::RestoreCurrentDir()

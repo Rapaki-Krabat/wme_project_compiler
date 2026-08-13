@@ -1374,11 +1374,18 @@ CScScript::TExternalFunction* CScScript::GetExternal(char *Name)
 	return NULL;
 }
 
-#if 0
 //////////////////////////////////////////////////////////////////////////
 HRESULT CScScript::ExternalCall(CScStack *Stack, CScStack *ThisStack, CScScript::TExternalFunction *Function)
 {
 	//Game->LOG(0, "External: %s (%s)", Function->name, Function->dll_name);
+#if 1
+
+	Game->LOG(0, "External functions are not supported on this platform.");
+	Stack->CorrectParams(0);
+	Stack->PushNULL();
+	return E_FAIL;
+
+#else
 
 	bool Success = false;
 
@@ -1498,8 +1505,8 @@ HRESULT CScScript::ExternalCall(CScStack *Stack, CScStack *ThisStack, CScScript:
 	if(hDll) FreeLibrary(hDll);
 
 	return Success?S_OK:E_FAIL;
+#endif	
 }
-#endif
 
 //////////////////////////////////////////////////////////////////////////
 DWORD CScScript::Call_cdecl(const void* args, size_t sz, DWORD func, bool* StackCorrupt)

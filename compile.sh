@@ -69,15 +69,16 @@ g++ -o AdGame.o         -c engine_core/wme_ad/AdGame.cpp        $OPTIONS -fPIC -
 echo "AdGame.o"
 g++ -o BPluginMgr.o         -c engine_core/wme_base/BPluginMgr.cpp        $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
 echo "BPluginMgr.o"
-# g++ -o BTextUtils.o         -c engine_core/wme_base/BTextUtils.cpp        $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
-# echo "BTextUtils.o"
+g++ -o BDiskFile.o         -c engine_core/wme_base/BDiskFile.cpp        $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
+echo "BDiskFile.o"
+g++ -o BFile.o         -c engine_core/wme_base/BFile.cpp        $OPTIONS -fPIC -Wall -Wextra -I. -Wno-unknown-pragmas -Wno-write-strings -Wno-unused-parameter -Wno-unused-variable || exit;
+echo "BFile.o"
 
-g++ -o packagebuilder -lz -ldcscomp -Lexternal_lib/compiler \
+g++ -o packagebuilder \
 main.o Package.o utils_mfc.o  PackagerFilter.o   FilterExclude.o FilterUncompressed.o PlatformSDL.o FilterScript.o FilterCopy.o PackageBuilder.o  ScEngine.o BBase.o BGame.o \
 ScValue.o  ScScript.o    ScStack.o BObject.o  BScriptable.o   BScriptHolder.o FileOperations.o DirectoryOperations.o BFileManager.o StringUtil.o ConvertUTF.o PathUtil.o utils.o \
-BParser.o BDynBuffer.o BNamedObject.o BStringTable.o AdGame.o BPluginMgr.o 
-
-#  BTextUtils.o
+BParser.o BDynBuffer.o BNamedObject.o BStringTable.o AdGame.o BPluginMgr.o BDiskFile.o BFile.o \
+-lz -ldcscomp -Lexternal_lib/compiler 
 
 echo "Success"
 

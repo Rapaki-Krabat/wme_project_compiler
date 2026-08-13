@@ -780,6 +780,8 @@ bool CBPlatform::CopyFile(const char* from, const char* to, bool failIfExists)
 	return ret;
 }
 
+#endif
+
 //////////////////////////////////////////////////////////////////////////
 bool CBPlatform::CreateDirectory(const char* path)
 {
@@ -833,6 +835,8 @@ bool CBPlatform::FlushDirectory(const char* path)
 
 	return (success == 0);
 }
+
+#if 0
 
 //////////////////////////////////////////////////////////////////////////
 HWND CBPlatform::SetCapture(HWND hWnd)
@@ -1014,6 +1018,8 @@ AnsiString CBPlatform::GetPlatformName()
 	return AnsiString(SDL_GetPlatform());
 }
 
+#endif
+
 //////////////////////////////////////////////////////////////////////////
 int CBPlatform::stricmp(const char* str1, const char* str2)
 {
@@ -1034,6 +1040,7 @@ int CBPlatform::strnicmp(const char* str1, const char* str2, size_t maxCount)
 #endif
 }
 
+#if 0
 
 //////////////////////////////////////////////////////////////////////////
 char* CBPlatform::strupr(char* string)

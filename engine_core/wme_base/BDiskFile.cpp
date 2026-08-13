@@ -71,7 +71,8 @@ HRESULT CBDiskFile::Open(char* Filename)
 
 		if(m_Compressed)
 		{
-			DWORD DataOffset, CompSize, UncompSize;
+			DWORD DataOffset, CompSize;
+			uLongf UncompSize;
 			fread(&DataOffset, sizeof(DWORD), 1, m_File);
 			fread(&CompSize, sizeof(DWORD), 1, m_File);
 			fread(&UncompSize, sizeof(DWORD), 1, m_File);
